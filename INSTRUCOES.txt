@@ -1,0 +1,57 @@
+MAPA IA-PPPM — Aulas 1 e 2
+Eixo Estratégico · Formação de Consultores em IA aplicada ao PPPM
+Prof. Dr. José Bezerra (BSBr)
+
+===============================================================
+COMO USAR
+===============================================================
+
+1. Extraia todo o conteúdo deste ZIP em uma pasta do seu computador.
+
+2. Localize o arquivo "index.html".
+
+3. Dê duplo-clique no "index.html".
+   Ele abrirá no seu navegador padrão (Chrome, Safari, Firefox, Edge).
+
+4. Preencha as 10 etapas em sequência:
+   - Bloco Aula 1: Identificação, Diagnóstico de maturidade (5D), Mapa Inicial (5 blocos)
+   - Bloco Aula 2: Cadastro de casos, Avaliação, Matriz, Governança HITL,
+                   Seleção dos 3 prioritários, Recomendação executiva, Relatório
+
+5. Ao final (etapa 10), você pode:
+   - Exportar PDF (menu Arquivo > Imprimir > Salvar como PDF)
+   - Exportar CSV (tabela dos casos)
+   - Salvar JSON (o estado completo, para retomar depois)
+
+6. Envie o PDF individualmente ao professor, se este for o pedido da turma.
+
+===============================================================
+DÚVIDAS FREQUENTES
+===============================================================
+
+- Preciso instalar alguma coisa?
+  Não. Só navegador moderno.
+
+- Preciso de internet?
+  Não. Funciona 100% offline após abrir o arquivo.
+
+- Meus dados vão para algum servidor?
+  Não. Tudo fica no seu navegador. O botão "Feedback anônimo" só aparece
+  se um endpoint for configurado — e mesmo assim é opt-in explícito.
+
+- Posso parar no meio e retomar depois?
+  Sim. Clique em "Salvar JSON" a qualquer momento, guarde o arquivo,
+  depois use "Carregar progresso" para retomar.
+
+- O tooltip com o conceito das palavras não aparece?
+  Passe o mouse (sem clicar) sobre palavras com pontilhado vermelho.
+  Aguarde meio segundo. Se ainda não aparecer, feche e reabra a página.
+
+===============================================================
+CONTATO
+===============================================================
+
+Eixo Estratégico
+Instagram: @estrategicoe
+WhatsApp: (21) 99835-7302
+E-mail:   eixoestrategico10@gmail.com
