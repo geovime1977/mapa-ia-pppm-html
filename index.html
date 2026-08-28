@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa IA-PPPM · Eixo Estratégico</title>
+<style>
+  :root{
+    --ink:#101820;
+    --paper:#f5f3ee;
+    --paper-2:#fbfaf7;
+    --muted:#87939b;
+    --line:#e0ddd4;
+    --red:#8e2430;
+    --red-light:#c85b63;
+    --red-bg:#fbeceb;
+    --green:#6e9b82;
+    --green-bg:#f0f5f2;
+    --amber:#c89a4b;
+    --gray:#a3a3a3;
+    --blue:#3b82f6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--paper);color:var(--ink);}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.55;}
+  header{background:var(--ink);color:var(--paper);padding:22px 32px;}
+  header .brand-eixo{color:var(--red-light);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;display:block;margin-bottom:8px;font-weight:700;}
+  header h1{font-size:22px;letter-spacing:-.4px;margin-bottom:4px;}
+  header .subtitle{font-size:12px;color:#c8c8c8;letter-spacing:.2px;}
+  main{max-width:1000px;margin:0 auto;padding:28px 32px 56px;}
+  .progress-wrap{margin-bottom:22px;}
+  .progress-bar{height:6px;background:#e5e2d9;border-radius:3px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--red);transition:width .3s ease;width:10%;}
+  .progress-label{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.4px;text-transform:uppercase;font-weight:700;}
+  .step{display:none;background:#fff;border:1px solid var(--line);border-radius:14px;padding:32px;margin-bottom:20px;}
+  .step.active{display:block;}
+  h2{font-size:22px;margin-bottom:6px;color:var(--ink);}
+  h3{font-size:15px;color:var(--red);margin-top:14px;margin-bottom:8px;}
+  .hint{color:var(--muted);font-size:13px;margin-bottom:20px;}
+  label{display:block;font-size:13px;font-weight:700;margin-top:14px;margin-bottom:5px;}
+  input[type=text],input[type=email],input[type=number],select,textarea{
+    width:100%;padding:10px 12px;border:1px solid #ccc7ba;border-radius:8px;font-size:14px;
+    font-family:inherit;background:#fff;color:var(--ink);
+  }
+  textarea{min-height:84px;resize:vertical;}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-bg);}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .row-full{grid-column:1/-1;}
+  button{cursor:pointer;border:0;border-radius:999px;font-weight:800;font-size:12px;letter-spacing:.5px;text-transform:uppercase;padding:12px 22px;font-family:inherit;}
+  .btn-primary{background:var(--red);color:#fff;}
+  .btn-primary:hover{background:var(--red-light);}
+  .btn-secondary{background:#e5e2d9;color:var(--ink);}
+  .btn-secondary:hover{background:#d8d4c7;}
+  .btn-secondary:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:9px 16px;}
+  .btn-ghost:hover{background:var(--paper);}
+  .nav-buttons{display:flex;justify-content:space-between;margin-top:26px;gap:10px;flex-wrap:wrap;}
+  .nav-right{display:flex;gap:10px;flex-wrap:wrap;}
+  .alert{background:var(--red-bg);border:1px solid var(--red-light);color:var(--red);padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;display:none;}
+  .alert.show{display:block;}
+  .info-box{background:var(--green-bg);border-left:4px solid var(--green);border-radius:8px;padding:12px 16px;font-size:13px;color:#3f6350;margin-top:12px;}
+  .warn-box{background:#fff5eb;border-left:4px solid var(--amber);border-radius:8px;padding:12px 16px;font-size:13px;color:#7a5610;margin-top:12px;}
+  .card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+  .card-red{border-left:4px solid var(--red);}
+  .card h3{margin-top:0;}
+
+  /* Dimensão + slider */
+  .dim-block{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px;background:#fff;}
+  .dim-title{font-weight:700;font-size:14px;color:var(--ink);display:flex;justify-content:space-between;align-items:center;}
+  .dim-value{background:var(--red);color:#fff;border-radius:999px;padding:2px 12px;font-size:12px;font-weight:800;}
+  .dim-desc{color:var(--muted);font-size:12px;margin:4px 0 10px;}
+  input[type=range]{width:100%;-webkit-appearance:none;height:6px;background:#e0ddd4;border-radius:3px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--red);cursor:pointer;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--red);cursor:pointer;border:2px solid #fff;}
+  .range-scale{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;}
+
+  /* Diagnóstico resultado */
+  .diag-result{background:var(--ink);color:var(--paper);border-radius:12px;padding:20px;margin-top:18px;}
+  .diag-result .diag-total{font-size:34px;font-weight:800;color:var(--red-light);}
+  .diag-result .diag-nivel{font-size:16px;margin-top:2px;}
+  .diag-result .diag-gargalo{font-size:13px;color:#c8c8c8;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15);}
+
+  /* Casos - cadastro */
+  .case-input-card{border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;background:var(--paper-2);}
+  .case-input-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .case-tag{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-weight:800;font-size:13px;}
+  .btn-remove-case{background:transparent;border:1px solid var(--red-light);color:var(--red);padding:5px 12px;font-size:10px;border-radius:999px;}
+  .btn-add-case{background:var(--paper);border:2px dashed #ccc7ba;color:var(--ink);padding:14px;width:100%;border-radius:12px;font-size:12px;margin-top:6px;}
+  .case-counter{font-size:12px;color:var(--muted);margin-top:8px;}
+
+  /* Avaliação — critérios */
+  .criteria-block{border-top:1px solid var(--line);padding:14px 0;}
+  .criteria-block:first-of-type{border-top:none;}
+  .criteria-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px;}
+  .criteria-label{font-weight:700;font-size:13px;color:var(--ink);}
+  .criteria-peso{font-size:11px;color:var(--muted);}
+  .criteria-desc{font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .criteria-scale{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px;font-size:11px;}
+  .criteria-scale-item{background:#f0eee7;padding:8px 10px;border-radius:6px;color:#59656d;}
+  .criteria-scale-item strong{display:block;color:var(--red);font-size:11px;margin-bottom:2px;}
+  .criteria-slider{margin-top:10px;display:grid;grid-template-columns:1fr 40px;gap:10px;align-items:center;}
+  .criteria-value{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px;text-align:center;font-weight:800;font-size:14px;color:var(--red);}
+  .criteria-interp{font-size:11px;color:var(--muted);font-style:italic;margin-top:4px;min-height:14px;}
+  .score-box{margin-top:16px;padding:14px;background:#f7f5ef;border-radius:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .score-box strong{color:var(--red);font-size:22px;}
+  .badge{padding:5px 12px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;}
+  .badge-fazer{background:var(--green);}
+  .badge-preparar{background:var(--amber);}
+  .badge-nao{background:var(--gray);}
+  .badge-bloqueado{background:var(--red);}
+  .conservative-rule{background:var(--red-bg);border-left:4px solid var(--red);border-radius:8px;padding:12px 16px;font-size:13px;color:#6f1d27;margin-bottom:18px;}
+
+  /* Matriz Impacto x Viabilidade */
+  .matrix-wrap{margin-top:16px;}
+  .matrix{position:relative;width:100%;height:440px;border:1px solid var(--line);border-radius:12px;
+    background:linear-gradient(to right,#f5f3ee 50%,#fff 50%),linear-gradient(to bottom,#fff 50%,#f5f3ee 50%);
+    background-blend-mode:multiply;padding:36px;overflow:visible;}
+  .matrix-plot{position:relative;width:100%;height:100%;}
+  .axis-label{position:absolute;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+  .lbl-top{top:-24px;left:50%;transform:translateX(-50%);}
+  .lbl-bottom{bottom:-24px;left:50%;transform:translateX(-50%);}
+  .lbl-left{left:-28px;top:50%;transform:translateY(-50%) rotate(-90deg);transform-origin:center;white-space:nowrap;}
+  .lbl-right{right:-28px;top:50%;transform:translateY(-50%) rotate(90deg);transform-origin:center;white-space:nowrap;}
+  .dot{position:absolute;width:38px;height:38px;border-radius:50%;background:var(--red);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;
+    box-shadow:0 4px 10px rgba(0,0,0,.25);transform:translate(-50%,-50%);border:3px solid #fff;}
+  .matrix-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:12px;color:var(--muted);}
+  .matrix-legend span{display:flex;align-items:center;gap:6px;}
+  .dot-mini{width:16px;height:16px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;}
+
+  /* Governança */
+  .gov-card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px;background:#fff;}
+  .gov-card h4{font-size:14px;color:var(--ink);margin-bottom:8px;}
+  .gov-status{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;margin-top:8px;padding:4px 10px;border-radius:999px;display:inline-block;}
+  .gov-status-ok{background:var(--green-bg);color:#3f6350;border:1px solid var(--green);}
+  .gov-status-bad{background:var(--red-bg);color:var(--red);border:1px solid var(--red-light);}
+
+  /* Seleção 3 casos */
+  .selection-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px;}
+  .sel-item{border:2px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;transition:.15s;background:#fff;}
+  .sel-item:hover{border-color:var(--red-light);}
+  .sel-item.selected{border-color:var(--red);background:var(--red-bg);}
+  .sel-item strong{display:block;font-size:14px;margin-bottom:4px;color:var(--ink);}
+  .sel-item .sel-meta{font-size:12px;color:var(--muted);}
+  .sel-counter{font-size:12px;color:var(--muted);margin-top:10px;}
+
+  /* Recomendação */
+  .suggestion-box{background:var(--green-bg);border:1px solid var(--green);border-radius:10px;padding:14px 16px;margin-bottom:14px;font-size:13px;white-space:pre-wrap;line-height:1.6;}
+  .suggestion-box strong.suggestion-label{display:block;color:#3f6350;margin-bottom:8px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;}
+  .btn-use-suggestion{background:var(--green);color:#fff;font-size:10px;padding:8px 14px;margin-top:10px;}
+
+  /* Relatório final */
+  .final-report{border:1px solid var(--line);border-radius:12px;padding:24px;margin-top:8px;background:#fff;}
+  .final-report h2{margin-bottom:14px;font-size:20px;}
+  .final-report h3{margin-top:22px;margin-bottom:8px;font-size:14px;color:var(--red);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line);padding-bottom:4px;}
+  .meta-line{font-size:13px;margin-bottom:4px;color:var(--ink);}
+  .meta-line strong{color:var(--muted);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.3px;margin-right:6px;}
+  .report-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12px;}
+  .report-table th,.report-table td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top;}
+  .report-table th{background:#f7f5ef;font-weight:700;}
+  .report-recomendacao{font-size:13px;white-space:pre-wrap;line-height:1.65;background:var(--paper-2);border-radius:8px;padding:14px 16px;border:1px solid var(--line);}
+  .report-mapa{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .report-mapa-block{background:var(--paper-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;}
+  .report-mapa-block strong{display:block;font-size:11px;color:var(--red);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+  .report-mapa-block .mapa-text{font-size:12px;color:var(--ink);white-space:pre-wrap;}
+
+  /* Tooltip abbr */
+  abbr[title]{border-bottom:1.5px dotted var(--red);cursor:help;text-decoration:none;background:rgba(142,36,48,0.04);padding:0 2px;border-radius:2px;transition:background .15s;}
+  abbr[title]:hover{background:var(--red-bg);}
+
+  footer{text-align:center;font-size:11px;color:var(--muted);padding:20px 0 0;letter-spacing:.3px;}
+
+  @media (max-width: 700px){
+    main{padding:20px 16px 40px;}
+    .step{padding:22px 18px;}
+    .grid2,.grid3,.report-mapa{grid-template-columns:1fr;}
+    .criteria-scale{grid-template-columns:1fr;}
+    .matrix{height:340px;padding:30px;}
+    .dot{width:32px;height:32px;font-size:11px;}
+    header{padding:18px 20px;}
+    header h1{font-size:18px;}
+  }
+
+  /* Impressão */
+  @page{size:A4 portrait;margin:18mm 16mm;}
+  @media print{
+    html,body{background:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    header,.progress-wrap,.nav-buttons,#exportButtons,footer{display:none !important;}
+    main{max-width:100%;padding:0 !important;margin:0 !important;}
+    .step{display:none !important;border:none !important;padding:0 !important;margin:0 !important;box-shadow:none !important;}
+    .step[data-step="10"]{display:block !important;}
+    .final-report{border:none;padding:0 !important;}
+    .final-report h2{font-size:16pt;}
+    .final-report h3{font-size:11pt;margin-top:12pt;page-break-after:avoid;}
+    .meta-line,.report-recomendacao,.report-mapa,.report-table tr{page-break-inside:avoid;}
+    .report-table{page-break-inside:auto;font-size:9pt;}
+    .report-table thead{display:table-header-group;}
+    .report-table th,.report-table td{padding:4pt 5pt;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="brand-eixo">Eixo Estratégico &middot; BSBr</span>
+  <h1>Mapa Inicial de Oportunidades de IA-PPPM &mdash; Aulas 1 e 2</h1>
+  <p class="subtitle">Formação de Consultores em IA aplicada ao PPPM &middot; Prof. Dr. José Bezerra</p>
+</header>
+
+<main>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Etapa 1 de 10</div>
+  </div>
+
+  <!-- STEP 1: Identificação -->
+  <section class="step active" data-step="1">
+    <h2>1. Identificação</h2>
+    <p class="hint">Preencha seus dados. Nada é enviado — o preenchimento fica no seu navegador.</p>
+    <div class="grid2">
+      <div><label>Nome completo *</label><input type="text" id="idNome" required></div>
+      <div><label>E-mail *</label><input type="email" id="idEmail" required></div>
+      <div><label>Turma</label><input type="text" id="idTurma" placeholder="Ex: Turma 01 &mdash; Agosto/2026"></div>
+      <div><label>Empresa / organização</label><input type="text" id="idEmpresa"></div>
+      <div><label>Cargo / função</label><input type="text" id="idCargo"></div>
+      <div><label>Porte</label>
+        <select id="idPorte">
+          <option value="">Selecione&hellip;</option>
+          <option>Micro</option><option>Pequena</option><option>Média</option>
+          <option>Grande</option><option>Órgão público</option>
+        </select>
+      </div>
+      <div class="row-full"><label>Contexto de aplicação</label>
+        <select id="idContexto">
+          <option>Projeto</option><option>Programa</option><option>Portfólio</option>
+          <option>PMO</option><option>Processo organizacional</option><option>Consultoria</option>
+        </select>
+      </div>
+    </div>
+    <div class="alert" id="alertStep1">Nome e e-mail são obrigatórios.</div>
+    <div class="nav-buttons">
+      <div>
+        <button class="btn-ghost" onclick="importJSON()">Carregar progresso</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none" onchange="handleImport(event)">
+      </div>
+      <div class="nav-right">
+        <button class="btn-primary" onclick="goToStep(2)">Iniciar &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: Diagnóstico -->
+  <section class="step" data-step="2">
+    <h2>2. Diagnóstico de maturidade</h2>
+    <p class="hint">Pontue cada dimensão de 0 a 6. Total 0-30 mapeia para 4 níveis. O gargalo é a dimensão com menor nota.</p>
+    <div id="dimContainer"></div>
+    <div class="diag-result" id="diagResult"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(1)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(3)">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 3: Mapa Inicial 5 blocos -->
+  <section class="step" data-step="3">
+    <h2>3. Mapa Inicial &mdash; 5 blocos</h2>
+    <p class="hint">Enquadre um caso concreto respondendo às 5 perguntas orientadoras da Aula 1.</p>
+    <div id="mapaContainer"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(2)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(4)">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 4: Cadastro de casos -->
+  <section class="step" data-step="4">
+    <h2>4. Cadastro de casos de uso</h2>
+    <p class="hint">Cadastre de 2 a 6 casos que serão comparados. Nome + descrição por caso.</p>
+    <div id="caseInputsContainer"></div>
+    <button type="button" class="btn-add-case" onclick="addCaseInput()">+ Adicionar caso de uso</button>
+    <div class="case-counter" id="caseCounter"></div>
+    <div class="alert" id="caseInputAlert">Cadastre pelo menos 2 casos com nome preenchido.</div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(3)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="confirmCases()">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 5: Avaliação dos casos -->
+  <section class="step" data-step="5">
+    <h2>5. Avaliação dos casos</h2>
+    <div class="conservative-rule">
+      <strong>Regra conservadora:</strong> se não houver evidência suficiente para atribuir nota alta, use uma nota conservadora &mdash; preferencialmente <strong>2</strong>. O registro da evidência é recomendado, mas opcional.
+    </div>
+    <div id="casesContainer"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(4)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(6)">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 6: Matriz -->
+  <section class="step" data-step="6">
+    <h2>6. Matriz Impacto &times; Viabilidade</h2>
+    <p class="hint">Posição automática dos casos com base nas notas de <abbr title="Peso 0.30 no score">Impacto</abbr> e <abbr title="Peso 0.20 no score">Viabilidade</abbr>.</p>
+    <div class="matrix-wrap">
+      <div class="matrix">
+        <div class="matrix-plot" id="matrixPlot">
+          <span class="axis-label lbl-top">Alta viabilidade</span>
+          <span class="axis-label lbl-bottom">Baixa viabilidade</span>
+          <span class="axis-label lbl-left">Baixo impacto</span>
+          <span class="axis-label lbl-right">Alto impacto</span>
+        </div>
+      </div>
+      <div class="matrix-legend" id="matrixLegend"></div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(5)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(7)">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 7: Governança HITL -->
+  <section class="step" data-step="7">
+    <h2>7. Governança &amp; HITL</h2>
+    <p class="hint"><strong>Princípio de ouro:</strong> quanto maior o impacto da decisão, maior deve ser a validação humana. Sem responsável + validador + métrica, o caso não pode ser "Fazer agora".</p>
+    <div id="govContainer"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(6)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(8)">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 8: Seleção dos 3 -->
+  <section class="step" data-step="8">
+    <h2>8. Seleção dos 3 prioritários</h2>
+    <p class="hint">Clique para selecionar exatamente 3 casos entre os cadastrados.</p>
+    <div class="selection-grid" id="selectionContainer"></div>
+    <div class="sel-counter" id="selCounter"></div>
+    <div class="alert" id="selectionAlert">Selecione exatamente 3 casos para continuar.</div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(7)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="continueFromSelection()">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 9: Recomendação executiva -->
+  <section class="step" data-step="9">
+    <h2>9. Recomendação executiva</h2>
+    <p class="hint">A sugestão abaixo é gerada por template determinístico com os dados que você preencheu. Revise, edite ou reescreva &mdash; o texto final é seu.</p>
+    <div class="suggestion-box" id="suggestionBox">
+      <strong class="suggestion-label">Sugestão automática</strong>
+      <div id="suggestionText"></div>
+      <button type="button" class="btn-use-suggestion" onclick="useSuggestion()">Usar esta sugestão no campo abaixo</button>
+    </div>
+    <label>Recomendação executiva (editável)</label>
+    <textarea id="recomendacaoTexto" placeholder="Edite livremente o texto sugerido ou escreva sua própria recomendação..."></textarea>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(8)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(10)">Gerar relatório &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 10: Relatório final -->
+  <section class="step" data-step="10">
+    <div class="final-report" id="finalReport"></div>
+    <div class="nav-buttons" id="exportButtons">
+      <button class="btn-secondary" onclick="goToStep(9)">&larr; Voltar</button>
+      <div class="nav-right">
+        <button class="btn-ghost" onclick="exportJSON()">Salvar JSON</button>
+        <button class="btn-ghost" onclick="exportCSV()">Exportar CSV</button>
+        <button class="btn-primary" onclick="window.print()">Exportar PDF</button>
+        <button class="btn-ghost" id="btnTelemetria" onclick="enviarTelemetria()" style="display:none;">Feedback anônimo</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Eixo Estratégico &middot; v1.0 HTML &middot; baseado na v1.3 Streamlit &middot; Prof. Dr. José Bezerra (BSBr)
+  </footer>
+</main>
+
+<script>
+/* ============================================================
+   DADOS EMBUTIDOS - copiados exatos dos JSONs da v1.3 Streamlit
+   ============================================================ */
+
+const DIMENSOES = [
+  {id:"estrategia_valor", rotulo:"Estratégia e valor",
+   descricao:"IA está alinhada aos objetivos de negócio e à estratégia de portfólio?",
+   referencia:"Aula 1 · slide 27"},
+  {id:"dados_processos", rotulo:"Dados e processos",
+   descricao:"Há dados limpos, acessíveis e processos que sustentam a análise?",
+   referencia:"Aula 1 · slide 27"},
+  {id:"casos_uso", rotulo:"Casos de uso",
+   descricao:"Há casos concretos, com dor identificada e dono, rodando ou pilotados?",
+   referencia:"Aula 1 · slide 27"},
+  {id:"governanca_hitl", rotulo:"Governança e HITL",
+   descricao:"Existe validação humana, ética, rastreabilidade e controle sobre as decisões?",
+   referencia:"Aula 1 · slide 27"},
+  {id:"beneficios_roi", rotulo:"Benefícios e ROI",
+   descricao:"O valor gerado é medido, comunicado e sustentado ao longo do tempo?",
+   referencia:"Aula 1 · slide 27"}
+];
+
+const BLOCOS_MAPA = [
+  {id:"contexto", rotulo:"Contexto", pergunta:"Qual projeto, processo ou área será analisado?"},
+  {id:"dor",      rotulo:"Dor",      pergunta:"Qual problema real precisa ser resolvido?"},
+  {id:"dados",    rotulo:"Dados",    pergunta:"Que informações existem para apoiar a decisão?"},
+  {id:"riscos",   rotulo:"Riscos",   pergunta:"O que exige validação humana, ética ou segurança?"},
+  {id:"valor",    rotulo:"Valor",    pergunta:"Que benefício executivo pode ser gerado?"}
+];
+
+const NIVEIS = [
+  {numero:0, rotulo:"Inexistente",  descricao:"Nenhum uso estruturado de IA.",                    faixa:[0,5]},
+  {numero:1, rotulo:"Reativo",      descricao:"Uso pontual, sem método nem governança.",          faixa:[6,12]},
+  {numero:2, rotulo:"Experimental", descricao:"Pilotos isolados, aprendizado em curso.",          faixa:[13,20]},
+  {numero:3, rotulo:"Estruturado",  descricao:"Governança, métricas e escala consolidadas.",      faixa:[21,30]}
+];
+
+const CRITERIOS = [
+  {id:"impacto", rotulo:"Impacto no resultado", peso:0.30,
+   descricao:"Quanto esse caso melhora resultado, prazo, custo, qualidade, risco ou satisfação do cliente?",
+   interpretacoes:{
+     "1":"Impacto pequeno, local ou pouco relevante.",
+     "2":"Posição intermediária entre o nível 1 e o nível 3.",
+     "3":"Impacto relevante, mas restrito a uma área ou processo.",
+     "4":"Posição intermediária entre o nível 3 e o nível 5.",
+     "5":"Impacto elevado, estratégico e diretamente relacionado a resultados mensuráveis."
+   },
+   escala:{
+     "1":"Impacto pequeno, local ou pouco relevante.",
+     "3":"Impacto relevante, mas restrito a uma área ou processo.",
+     "5":"Impacto elevado, estratégico e diretamente relacionado a resultados mensuráveis."
+   }},
+  {id:"viabilidade", rotulo:"Viabilidade técnica", peso:0.20,
+   descricao:"É possível implementar com tecnologia, orçamento, tempo, pessoas e processo disponíveis?",
+   interpretacoes:{
+     "1":"Tecnologia, equipe ou infraestrutura ainda não estão disponíveis.",
+     "2":"Posição intermediária entre o nível 1 e o nível 3.",
+     "3":"A implementação é possível, mas exige adaptações, testes ou recursos adicionais.",
+     "4":"Posição intermediária entre o nível 3 e o nível 5.",
+     "5":"A solução é tecnicamente viável com os recursos atuais e pode ser testada rapidamente."
+   },
+   escala:{
+     "1":"Tecnologia, equipe ou infraestrutura ainda não estão disponíveis.",
+     "3":"A implementação é possível, mas exige adaptações, testes ou recursos adicionais.",
+     "5":"A solução é tecnicamente viável com os recursos atuais e pode ser testada rapidamente."
+   }},
+  {id:"dados", rotulo:"Dados disponíveis", peso:0.20,
+   descricao:"Os dados necessários existem, são acessíveis, confiáveis e suficientes para apoiar a recomendação?",
+   interpretacoes:{
+     "1":"Dados inexistentes, inacessíveis ou sem qualidade conhecida.",
+     "2":"Posição intermediária entre o nível 1 e o nível 3.",
+     "3":"Existem dados parciais, dispersos ou que precisam de tratamento.",
+     "4":"Posição intermediária entre o nível 3 e o nível 5.",
+     "5":"Dados suficientes, acessíveis, confiáveis e prontos para uso controlado."
+   },
+   escala:{
+     "1":"Dados inexistentes, inacessíveis ou sem qualidade conhecida.",
+     "3":"Existem dados parciais, dispersos ou que precisam de tratamento.",
+     "5":"Dados suficientes, acessíveis, confiáveis e prontos para uso controlado."
+   }},
+  {id:"risco", rotulo:"Risco / segurança", peso:0.15,
+   descricao:"Quais riscos éticos, legais, operacionais, reputacionais ou de segurança podem surgir? (Nota alta = risco BAIXO / bem controlado)",
+   interpretacoes:{
+     "1":"Riscos elevados, sem responsável, controle de acesso ou plano de resposta.",
+     "2":"Posição intermediária entre o nível 1 e o nível 3.",
+     "3":"Riscos conhecidos, com controles parciais ou ainda em definição.",
+     "4":"Posição intermediária entre o nível 3 e o nível 5.",
+     "5":"Riscos controlados, responsáveis definidos, acessos adequados e plano de resposta estabelecido."
+   },
+   escala:{
+     "1":"Riscos elevados, sem responsável, controle de acesso ou plano de resposta.",
+     "3":"Riscos conhecidos, com controles parciais ou ainda em definição.",
+     "5":"Riscos controlados, responsáveis definidos, acessos adequados e plano de resposta estabelecido."
+   }},
+  {id:"valor", rotulo:"Valor potencial", peso:0.15,
+   descricao:"Qual benefício executivo pode ser demonstrado, medido e comunicado?",
+   interpretacoes:{
+     "1":"Benefício incerto, difícil de medir ou pouco relevante.",
+     "2":"Posição intermediária entre o nível 1 e o nível 3.",
+     "3":"Benefício plausível, mas ainda depende de validação.",
+     "4":"Posição intermediária entre o nível 3 e o nível 5.",
+     "5":"Benefício claro, mensurável e alinhado a uma necessidade prioritária."
+   },
+   escala:{
+     "1":"Benefício incerto, difícil de medir ou pouco relevante.",
+     "3":"Benefício plausível, mas ainda depende de validação.",
+     "5":"Benefício claro, mensurável e alinhado a uma necessidade prioritária."
+   }}
+];
+
+const FAIXAS = [
+  {id:"fazer_agora",   rotulo:"Fazer agora",   score_min:4.0, cor:"#22c55e", classe:"badge-fazer"},
+  {id:"preparar",      rotulo:"Preparar",      score_min:3.0, cor:"#f59e0b", classe:"badge-preparar"},
+  {id:"nao_priorizar", rotulo:"Não priorizar", score_min:0.0, cor:"#a3a3a3", classe:"badge-nao"}
+];
+
+const NIVEIS_HITL = [
+  {id:"leve",        min:1, max:2, aprovador:"PM ou analista",           descricao:"Validação leve — checagem pontual."},
+  {id:"estruturada", min:3, max:4, aprovador:"Especialista + PM",         descricao:"Validação estruturada — dupla checagem antes da decisão."},
+  {id:"executiva",   min:5, max:5, aprovador:"Sponsor / comitê executivo", descricao:"Validação executiva formal — registro em ata obrigatório."}
+];
+
+const GLOSSARIO = {
+  versao:"1.0",
+  termos:{
+    hitl:{termo_canonico:"HITL",
+      definicao:"Human-in-the-Loop — humano valida, ajusta ou aprova a recomendação da IA antes que ela vire decisão executiva.",
+      aliases:["HITL","human-in-the-loop","humano no loop","validação humana"]},
+    impacto:{termo_canonico:"Impacto",
+      definicao:"Quanto o caso melhora resultado, prazo, custo, qualidade, risco ou satisfação do cliente. Peso 0.30 no score.",
+      aliases:["impacto no resultado","impacto"]},
+    viabilidade:{termo_canonico:"Viabilidade",
+      definicao:"Possibilidade real de implementar com tecnologia, orçamento, tempo, pessoas e processo disponíveis. Peso 0.20.",
+      aliases:["viabilidade técnica","viabilidade"]},
+    dados_qualidade:{termo_canonico:"Dados disponíveis",
+      definicao:"Existência, acesso, confiabilidade e suficiência dos dados necessários para apoiar a recomendação. Peso 0.20.",
+      aliases:["disponibilidade e qualidade dos dados","dados disponíveis","qualidade dos dados"]},
+    risco_controle:{termo_canonico:"Risco / segurança",
+      definicao:"Riscos éticos, legais, operacionais, reputacionais e de segurança. Nota alta = risco baixo/bem controlado. Peso 0.15.",
+      aliases:["controle de risco e segurança","risco / segurança","risco e segurança"]},
+    valor:{termo_canonico:"Valor potencial",
+      definicao:"Benefício executivo que pode ser demonstrado, medido e comunicado — ROI, economia, velocidade, redução de retrabalho. Peso 0.15.",
+      aliases:["valor potencial","valor"]},
+    score_ponderado:{termo_canonico:"Score ponderado",
+      definicao:"Média ponderada 1-5 das notas nos 5 critérios usando os pesos oficiais da Aula 2. Score final vai de 1.0 a 5.0.",
+      aliases:["score executivo","score ponderado","score final"]},
+    fazer_agora:{termo_canonico:"Fazer agora",
+      definicao:"Faixa de score ≥ 4.0. Caso pronto para virar piloto imediato, desde que tenha dono humano declarado.",
+      aliases:["fazer agora"]},
+    preparar:{termo_canonico:"Preparar",
+      definicao:"Faixa de score entre 3.0 e 3.99. Caso promissor que ainda precisa de dados, viabilidade ou governança amadurecida.",
+      aliases:["preparar"]},
+    nao_priorizar:{termo_canonico:"Não priorizar",
+      definicao:"Faixa de score abaixo de 3.0. Caso que não sustenta prioridade agora — arquivar ou reformular.",
+      aliases:["não priorizar","nao priorizar"]},
+    dados_sensiveis:{termo_canonico:"Dados sensíveis",
+      definicao:"Informação que exige classificação e controle de acesso — pessoal, financeira, contratual ou estratégica.",
+      aliases:["dados sensíveis","dados sensiveis"]},
+    governanca:{termo_canonico:"Governança",
+      definicao:"Conjunto de regras, papéis e evidências que garantem uso seguro, ético e rastreável da IA — Aula 2 · slides 32-36.",
+      aliases:["governança","governanca"]},
+    pppm:{termo_canonico:"PPPM",
+      definicao:"Project, Program & Portfolio Management — gestão de projetos, programas e portfólio segundo o padrão PMBOK.",
+      aliases:["PPPM","gestão de projetos programas e portfólio"]},
+    mapa_inicial:{termo_canonico:"Mapa Inicial",
+      definicao:"Estrutura de 5 blocos (contexto, dor, dados, riscos, valor) usada na Aula 1 para enquadrar um caso concreto antes de priorizar.",
+      aliases:["mapa inicial","mapa de 5 blocos","mapa 5 blocos"]},
+    piloto:{termo_canonico:"Piloto",
+      definicao:"Implementação inicial pequena, controlada e mensurável de um caso de IA antes de escalar para produção.",
+      aliases:["piloto","prova de conceito","POC"]},
+    corte_dono:{termo_canonico:"Corte obrigatório",
+      definicao:"Regra da Aula 2 · slide 30: sem dono humano da decisão declarado, o caso NÃO está pronto independentemente do score.",
+      aliases:["corte obrigatório","corte obrigatorio","corte do dono"]},
+    pmbok_8:{termo_canonico:"PMBOK 8",
+      definicao:"Oitava edição do Guia PMBOK — referência PMI para os 40 processos de gestão de projetos, base do curso PPPM.",
+      aliases:["PMBOK 8","PMBOK 8ª edição","PMBOK 8a edicao"]},
+    aula_1:{termo_canonico:"Aula 1",
+      definicao:"Aula do Prof. Bezerra sobre diagnóstico de maturidade (5 dimensões, 0-6) e Mapa Inicial (5 blocos).",
+      aliases:["Aula 1"]},
+    aula_2:{termo_canonico:"Aula 2",
+      definicao:"Aula do Prof. Bezerra sobre 5 erros, priorização com 5 critérios ponderados, corte obrigatório e governança HITL.",
+      aliases:["Aula 2"]},
+    contexto:{termo_canonico:"Contexto",
+      definicao:"Bloco do Mapa Inicial que descreve organização, projeto ou processo em que o caso de IA será aplicado.",
+      aliases:["contexto"]}
+  }
+};
+
+const TELEMETRIA_URL = ""; // opt-in; deixar vazio = botão oculto
+
+/* ============================================================
+   ESTADO GLOBAL
+   ============================================================ */
+let state = {
+  identificacao:{nome:"",email:"",turma:"",empresa:"",cargo:"",porte:"",contexto:"Projeto"},
+  diagnostico:{estrategia_valor:0, dados_processos:0, casos_uso:0, governanca_hitl:0, beneficios_roi:0},
+  mapa:{contexto:"", dor:"", dados:"", riscos:"", valor:""},
+  casos:[],       // {id, rotulo, descricao, dor, dono, notas:{...}}
+  governanca:{},  // {caso_id:{responsavel,validador,dados_sensiveis,metrica}}
+  selecionados:[],
+  recomendacao_texto:""
+};
+
+const TOTAL_STEPS = 10;
+let caseCounter = 0;
+function nextCaseId(){ return "c" + Date.now().toString(36) + Math.floor(Math.random()*1000).toString(36); }
+
+/* ============================================================
+   LÓGICA - portada de src/*.py v1.3
+   ============================================================ */
+
+function scoreCase(caso){
+  return CRITERIOS.reduce((acc,c) => acc + (Number(caso.notas[c.id])||0)*c.peso, 0);
+}
+
+function scoreCaseRounded(caso){
+  return Math.round(scoreCase(caso)*100)/100;
+}
+
+function faixaRanking(score){
+  for(const f of FAIXAS){
+    if(score >= f.score_min) return f;
+  }
+  return FAIXAS[FAIXAS.length-1];
+}
+
+function prontoParaExecutar(caso){
+  if(!caso.dono || !caso.dono.trim()){
+    return {pronto:false, motivo:"Sem dono humano da decisão declarado (corte obrigatório — Aula 2 · slide 30)."};
+  }
+  const g = state.governanca[caso.id] || {};
+  const faltantes = [];
+  if(!(g.responsavel||"").trim()) faltantes.push("responsável");
+  if(!(g.validador||"").trim())   faltantes.push("validador");
+  if(!(g.metrica||"").trim())     faltantes.push("métrica");
+  if(faltantes.length){
+    return {pronto:false, motivo:"Governança incompleta — falta: " + faltantes.join(", ") + "."};
+  }
+  return {pronto:true, motivo:"Dono humano e governança declarados."};
+}
+
+function nivelPorTotal(total){
+  for(const n of NIVEIS){
+    if(total >= n.faixa[0] && total <= n.faixa[1]) return n;
+  }
+  return NIVEIS[NIVEIS.length-1];
+}
+
+function identificarGargalo(){
+  let menor = Infinity;
+  let dim = DIMENSOES[0];
+  for(const d of DIMENSOES){
+    const v = Number(state.diagnostico[d.id]||0);
+    if(v < menor){ menor = v; dim = d; }
+  }
+  return {dim, nota:menor};
+}
+
+function totalMaturidade(){
+  return DIMENSOES.reduce((acc,d) => acc + (Number(state.diagnostico[d.id])||0), 0);
+}
+
+function leituraExecutiva(){
+  const total = totalMaturidade();
+  const nivel = nivelPorTotal(total);
+  const g = identificarGargalo();
+  return `Total ${total}/30 · Nível ${nivel.numero} — ${nivel.rotulo}. ${nivel.descricao} Gargalo prioritário: <strong>${g.dim.rotulo}</strong> (${g.nota}/6).`;
+}
+
+function interpretarNota(criterioId, nota){
+  const c = CRITERIOS.find(c => c.id === criterioId);
+  if(!c) return "";
+  return (c.interpretacoes && c.interpretacoes[String(nota)]) || "Posição intermediária.";
+}
+
+function nivelHitlPorImpacto(impacto){
+  for(const n of NIVEIS_HITL){
+    if(impacto >= n.min && impacto <= n.max) return n;
+  }
+  return NIVEIS_HITL[1];
+}
+
+/* Escapa HTML mínimo */
+function esc(s){
+  return String(s==null?"":s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+
+/* Tooltips via glossário */
+function aplicarTooltips(texto){
+  if(!texto) return "";
+  const escaped = esc(texto);
+  const aplicados = new Set();
+  const entries = [];
+  Object.entries(GLOSSARIO.termos).forEach(([slug,t]) => {
+    (t.aliases || [t.termo_canonico]).forEach(alias => {
+      entries.push({slug, def:t.definicao, alias});
+    });
+  });
+  entries.sort((a,b) => b.alias.length - a.alias.length);
+  let out = escaped;
+  entries.forEach(({slug,def,alias}) => {
+    if(aplicados.has(slug)) return;
+    const re = new RegExp("\\b(" + alias.replace(/[.*+?^${}()|[\]\\]/g,"\\$&") + ")\\b", "i");
+    if(re.test(out)){
+      const defEsc = esc(def);
+      out = out.replace(re, (m) => `<abbr title="${defEsc}">${m}</abbr>`);
+      aplicados.add(slug);
+    }
+  });
+  return out;
+}
+
+/* Aplica tooltips do glossário em qualquer elemento já renderizado.
+   Usa TreeWalker para pegar text nodes e substituir por HTML com <abbr>,
+   pulando o que estiver dentro de <abbr>, <script>, <style>, <input>, <textarea>.
+   Idempotente via dataset.tooltipsApplied. */
+function enriquecerTooltipsEl(el){
+  if(!el || el.dataset.tooltipsApplied === "1") return;
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+    acceptNode: node => {
+      let p = node.parentElement;
+      while(p && p !== el){
+        const tag = p.tagName;
+        if(tag === "ABBR" || tag === "SCRIPT" || tag === "STYLE"
+           || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || tag === "OPTION") return NodeFilter.FILTER_REJECT;
+        p = p.parentElement;
+      }
+      return node.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const nodes = [];
+  let cur;
+  while((cur = walker.nextNode())) nodes.push(cur);
+  nodes.forEach(node => {
+    const orig = node.nodeValue;
+    const substituido = aplicarTooltips(orig);
+    if(substituido !== esc(orig)){
+      const span = document.createElement("span");
+      span.innerHTML = substituido;
+      node.parentNode.replaceChild(span, node);
+    }
+  });
+  el.dataset.tooltipsApplied = "1";
+}
+
+/* Percorre a página inteira aplicando tooltips onde faz sentido.
+   Chamado após cada goToStep e no DOMContentLoaded. */
+function enriquecerTooltipsPagina(){
+  const seletor = ".hint, .desc, .card-desc, .criteria-guidance, .diag-result, .conservative-rule, .step h2, .step h3, .case-card h3, .badge, .axis-label, .suggestion-label, footer, .card-desc, .gov-hint, .final-report h3, .final-report p, .matrix-legend, header .subtitle";
+  document.querySelectorAll(seletor).forEach(enriquecerTooltipsEl);
+}
+
+function dorCurta(caso){
+  const t = (caso.dor||"").trim();
+  if(!t) return "não informada";
+  return t.length > 140 ? t.slice(0,140)+"…" : t;
+}
+
+function metricaSugerida(caso){
+  const g = state.governanca[caso.id] || {};
+  if((g.metrica||"").trim()) return g.metrica.trim();
+  if((g.responsavel||"").trim()) return "acompanhamento com " + g.responsavel.trim();
+  return "definir métrica na aba Governança";
+}
+
+function gerarSugestaoRecomendacao(){
+  const prontos = state.casos
+    .filter(c => (c.dono||"").trim() && scoreCase(c) >= 3.0)
+    .sort((a,b) => scoreCase(b) - scoreCase(a))
+    .slice(0,3);
+  if(prontos.length === 0){
+    return "Ainda não há caso pronto para virar recomendação executiva. Registre pelo menos 1 caso com dono humano declarado, score ponderado ≥ 3.0 e governança em preenchimento. Comece pela aba 4 (Casos de uso) e pela aba 7 (Governança).";
+  }
+  const empresa = (state.identificacao.empresa||"").trim();
+  const escopo = empresa ? ` para ${empresa}` : "";
+  const total = totalMaturidade();
+  const nivel = nivelPorTotal(total);
+  const g = identificarGargalo();
+  const diagFrase = `Nível ${nivel.numero} — ${nivel.rotulo} (total ${total}/30)`;
+  const abertura = `Recomendo priorizar ${prontos.length} caso(s) de uso de IA em PPPM${escopo}, com base no diagnóstico de maturidade ${diagFrase} e no gargalo prioritário em ${g.dim.rotulo}. Os casos abaixo foram selecionados por combinarem score executivo ≥ 3.0, dono humano da decisão declarado e enquadramento na matriz Impacto × Viabilidade.`;
+  const blocos = prontos.map((c,i) => {
+    const s = scoreCaseRounded(c);
+    const f = faixaRanking(s);
+    return `Caso ${i+1}: ${c.rotulo||"(sem rótulo)"} (id ${c.id}) — score ponderado ${s.toFixed(2)}, faixa ${f.rotulo}. Responsável: ${c.dono}. Dor endereçada: ${dorCurta(c)}. Métrica de acompanhamento sugerida: ${metricaSugerida(c)}.`;
+  });
+  const fechamento = "Como próximo passo, recomendo iniciar pelo caso de maior score, respeitando o princípio de ouro da governança: quanto maior o impacto da decisão, maior deve ser a validação humana. A implementação deverá ocorrer com HITL em cada etapa crítica, rastreabilidade completa (entrada · processamento · saída · validação · registro) e decisão executiva registrada em ata ou sistema equivalente. Reavaliar o portfólio de casos a cada 90 dias para incorporar novas dores e novos dados.";
+  return [abertura, ...blocos, fechamento].join("\n\n");
+}
+
+/* ============================================================
+   NAVEGAÇÃO
+   ============================================================ */
+function goToStep(n){
+  if(n === 2){
+    saveIdentificacao();
+    if(!state.identificacao.nome || !state.identificacao.email){
+      document.getElementById("alertStep1").classList.add("show");
+      return;
+    }
+    document.getElementById("alertStep1").classList.remove("show");
+  }
+  if(n >= 3) saveDiagnostico();
+  if(n >= 4) saveMapa();
+  if(n >= 5) saveCases();
+  if(n >= 6) saveNotas();
+  if(n >= 8) saveGovernanca();
+  if(n === 9) saveSelecionados();
+
+  document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+  const destino = document.querySelector(`.step[data-step="${n}"]`);
+  if(!destino){ console.error("Etapa não encontrada:", n); return; }
+  destino.classList.add("active");
+
+  document.getElementById("progressFill").style.width = ((n/TOTAL_STEPS)*100) + "%";
+  document.getElementById("progressLabel").textContent = `Etapa ${n} de ${TOTAL_STEPS}`;
+  window.scrollTo({top:0, behavior:"smooth"});
+
+  if(n === 2) renderDiagnostico();
+  if(n === 3) renderMapa();
+  if(n === 4){
+    if(state.casos.length === 0){ addCaseInput(); addCaseInput(); }
+    renderCaseInputs();
+  }
+  if(n === 5) renderAvaliacao();
+  if(n === 6) renderMatriz();
+  if(n === 7) renderGovernanca();
+  if(n === 8) renderSelecao();
+  if(n === 9){
+    const sug = gerarSugestaoRecomendacao();
+    document.getElementById("suggestionText").innerHTML = aplicarTooltips(sug);
+    delete document.getElementById("suggestionText").dataset.tooltipsApplied;
+    if(!state.recomendacao_texto){
+      state.recomendacao_texto = sug;
+    }
+    document.getElementById("recomendacaoTexto").value = state.recomendacao_texto;
+  }
+  if(n === 10){
+    state.recomendacao_texto = document.getElementById("recomendacaoTexto").value;
+    renderRelatorio();
+    if(TELEMETRIA_URL){ document.getElementById("btnTelemetria").style.display = "inline-block"; }
+  }
+
+  requestAnimationFrame(enriquecerTooltipsPagina);
+}
+
+function saveIdentificacao(){
+  state.identificacao = {
+    nome: document.getElementById("idNome").value.trim(),
+    email: document.getElementById("idEmail").value.trim(),
+    turma: document.getElementById("idTurma").value.trim(),
+    empresa: document.getElementById("idEmpresa").value.trim(),
+    cargo: document.getElementById("idCargo").value.trim(),
+    porte: document.getElementById("idPorte").value,
+    contexto: document.getElementById("idContexto").value
+  };
+}
+
+function saveDiagnostico(){
+  DIMENSOES.forEach(d => {
+    const el = document.getElementById("dim_"+d.id);
+    if(el) state.diagnostico[d.id] = Number(el.value);
+  });
+}
+
+function saveMapa(){
+  BLOCOS_MAPA.forEach(b => {
+    const el = document.getElementById("mapa_"+b.id);
+    if(el) state.mapa[b.id] = el.value;
+  });
+}
+
+function saveCases(){
+  const cards = document.querySelectorAll("#caseInputsContainer .case-input-card");
+  const casos = [];
+  cards.forEach(card => {
+    const id = card.dataset.caseid;
+    const rotulo = card.querySelector(".ci-rotulo").value.trim();
+    const descricao = card.querySelector(".ci-desc").value.trim();
+    const existing = state.casos.find(c => c.id === id) || {};
+    const notas = existing.notas || {impacto:3, viabilidade:3, dados:3, risco:3, valor:3};
+    casos.push({
+      id, rotulo, descricao,
+      dor: existing.dor || descricao,
+      dono: existing.dono || "",
+      notas
+    });
+  });
+  state.casos = casos;
+}
+
+function saveNotas(){
+  document.querySelectorAll("#casesContainer .case-eval-card").forEach(card => {
+    const id = card.dataset.caseid;
+    const caso = state.casos.find(c => c.id === id);
+    if(!caso) return;
+    CRITERIOS.forEach(cr => {
+      const el = card.querySelector(`.crit-slider[data-crit="${cr.id}"]`);
+      if(el) caso.notas[cr.id] = Number(el.value);
+    });
+    const donoEl = card.querySelector(".case-dono");
+    if(donoEl) caso.dono = donoEl.value.trim();
+    const dorEl = card.querySelector(".case-dor");
+    if(dorEl) caso.dor = dorEl.value.trim();
+  });
+}
+
+function saveGovernanca(){
+  document.querySelectorAll("#govContainer .gov-card").forEach(card => {
+    const id = card.dataset.caseid;
+    state.governanca[id] = {
+      responsavel: card.querySelector(".gov-resp").value.trim(),
+      validador:   card.querySelector(".gov-valid").value.trim(),
+      dados_sensiveis: card.querySelector(".gov-sens").value,
+      metrica:     card.querySelector(".gov-metrica").value.trim()
+    };
+  });
+}
+
+function saveSelecionados(){
+  const sel = [];
+  document.querySelectorAll("#selectionContainer .sel-item.selected").forEach(el => sel.push(el.dataset.caseid));
+  state.selecionados = sel;
+}
+
+function continueFromSelection(){
+  saveSelecionados();
+  if(state.selecionados.length !== 3){
+    document.getElementById("selectionAlert").classList.add("show");
+    return;
+  }
+  document.getElementById("selectionAlert").classList.remove("show");
+  goToStep(9);
+}
+
+/* ============================================================
+   RENDERIZADORES
+   ============================================================ */
+
+function renderDiagnostico(){
+  const cont = document.getElementById("dimContainer");
+  cont.innerHTML = DIMENSOES.map(d => `
+    <div class="dim-block">
+      <div class="dim-title">
+        <span>${esc(d.rotulo)}</span>
+        <span class="dim-value" id="dimval_${d.id}">${state.diagnostico[d.id]||0}</span>
+      </div>
+      <div class="dim-desc">${esc(d.descricao)} <em style="opacity:.7">· ${esc(d.referencia)}</em></div>
+      <input type="range" min="0" max="6" step="1" value="${state.diagnostico[d.id]||0}"
+             id="dim_${d.id}" oninput="onDimChange('${d.id}', this.value)">
+      <div class="range-scale"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+    </div>
+  `).join("");
+  updateDiagResult();
+}
+
+function onDimChange(id, val){
+  state.diagnostico[id] = Number(val);
+  document.getElementById("dimval_"+id).textContent = val;
+  updateDiagResult();
+}
+
+function updateDiagResult(){
+  const total = totalMaturidade();
+  const nivel = nivelPorTotal(total);
+  const g = identificarGargalo();
+  document.getElementById("diagResult").innerHTML = `
+    <div class="diag-total">${total}/30</div>
+    <div class="diag-nivel">Nível ${nivel.numero} — ${nivel.rotulo}. ${esc(nivel.descricao)}</div>
+    <div class="diag-gargalo">Gargalo prioritário: <strong>${esc(g.dim.rotulo)}</strong> (${g.nota}/6)</div>
+  `;
+}
+
+function renderMapa(){
+  const cont = document.getElementById("mapaContainer");
+  cont.innerHTML = BLOCOS_MAPA.map(b => `
+    <div>
+      <label>${esc(b.rotulo)} — ${esc(b.pergunta)}</label>
+      <textarea id="mapa_${b.id}" placeholder="Responda em 2-3 frases...">${esc(state.mapa[b.id]||"")}</textarea>
+    </div>
+  `).join("");
+}
+
+function addCaseInput(){
+  const id = nextCaseId();
+  state.casos.push({
+    id, rotulo:"", descricao:"", dor:"", dono:"",
+    notas:{impacto:3, viabilidade:3, dados:3, risco:3, valor:3}
+  });
+  renderCaseInputs();
+}
+
+function removeCaseInput(id){
+  if(state.casos.length <= 2){ alert("Mínimo de 2 casos."); return; }
+  saveCases();
+  state.casos = state.casos.filter(c => c.id !== id);
+  delete state.governanca[id];
+  state.selecionados = state.selecionados.filter(sid => sid !== id);
+  renderCaseInputs();
+}
+
+function renderCaseInputs(){
+  const cont = document.getElementById("caseInputsContainer");
+  cont.innerHTML = state.casos.map((c,i) => `
+    <div class="case-input-card" data-caseid="${c.id}">
+      <div class="case-input-head">
+        <span class="case-tag">${i+1}</span>
+        <button class="btn-remove-case" onclick="removeCaseInput('${c.id}')">Remover</button>
+      </div>
+      <label>Nome do caso</label>
+      <input type="text" class="ci-rotulo" value="${esc(c.rotulo)}" placeholder="Ex: Alerta preditivo de atraso">
+      <label>Descrição</label>
+      <textarea class="ci-desc" placeholder="Qual decisão a IA apoiaria neste caso?">${esc(c.descricao)}</textarea>
+    </div>
+  `).join("");
+  document.getElementById("caseCounter").textContent = `${state.casos.length} caso(s) cadastrado(s) · mínimo 2, máximo 6.`;
+}
+
+function confirmCases(){
+  saveCases();
+  const validos = state.casos.filter(c => c.rotulo.trim());
+  if(validos.length < 2){
+    document.getElementById("caseInputAlert").classList.add("show");
+    return;
+  }
+  document.getElementById("caseInputAlert").classList.remove("show");
+  goToStep(5);
+}
+
+function renderAvaliacao(){
+  const cont = document.getElementById("casesContainer");
+  cont.innerHTML = state.casos.map((c,i) => renderCaseEval(c,i)).join("");
+  state.casos.forEach(c => atualizarScoreCard(c.id));
+}
+
+function renderCaseEval(c, i){
+  return `
+    <div class="card card-red case-eval-card" data-caseid="${c.id}">
+      <div class="case-input-head"><h3>Caso ${i+1}: ${esc(c.rotulo||"(sem nome)")}</h3></div>
+      <div class="hint" style="margin-bottom:14px">${esc(c.descricao||"")}</div>
+
+      <label>Dor específica endereçada</label>
+      <textarea class="case-dor" onchange="onCaseFieldChange('${c.id}')" placeholder="Descreva a dor concreta que este caso resolve...">${esc(c.dor||"")}</textarea>
+
+      <label>Dono humano da decisão (corte obrigatório — Aula 2 · slide 30)</label>
+      <input type="text" class="case-dono" onchange="onCaseFieldChange('${c.id}')" value="${esc(c.dono||"")}" placeholder="Nome / cargo / responsável formal">
+
+      ${CRITERIOS.map(cr => `
+        <div class="criteria-block">
+          <div class="criteria-head">
+            <span class="criteria-label">${esc(cr.rotulo)}</span>
+            <span class="criteria-peso">peso ${cr.peso.toFixed(2)}</span>
+          </div>
+          <div class="criteria-desc">${esc(cr.descricao)}</div>
+          <div class="criteria-scale">
+            <div class="criteria-scale-item"><strong>Nota 1</strong>${esc(cr.escala["1"])}</div>
+            <div class="criteria-scale-item"><strong>Nota 3</strong>${esc(cr.escala["3"])}</div>
+            <div class="criteria-scale-item"><strong>Nota 5</strong>${esc(cr.escala["5"])}</div>
+          </div>
+          <div class="criteria-slider">
+            <input type="range" class="crit-slider" data-crit="${cr.id}" min="1" max="5" step="1" value="${c.notas[cr.id]||3}"
+                   oninput="onNotaChange('${c.id}','${cr.id}',this.value)">
+            <div class="criteria-value" id="critval_${c.id}_${cr.id}">${c.notas[cr.id]||3}</div>
+          </div>
+          <div class="criteria-interp" id="critinterp_${c.id}_${cr.id}">${esc(interpretarNota(cr.id, c.notas[cr.id]||3))}</div>
+        </div>
+      `).join("")}
+
+      <div class="score-box" id="scorebox_${c.id}"></div>
+    </div>
+  `;
+}
+
+function onNotaChange(caseId, critId, val){
+  const c = state.casos.find(x => x.id === caseId);
+  if(!c) return;
+  c.notas[critId] = Number(val);
+  document.getElementById(`critval_${caseId}_${critId}`).textContent = val;
+  document.getElementById(`critinterp_${caseId}_${critId}`).textContent = interpretarNota(critId, Number(val));
+  atualizarScoreCard(caseId);
+}
+
+function onCaseFieldChange(caseId){
+  const card = document.querySelector(`.case-eval-card[data-caseid="${caseId}"]`);
+  if(!card) return;
+  const c = state.casos.find(x => x.id === caseId);
+  if(!c) return;
+  c.dono = card.querySelector(".case-dono").value.trim();
+  c.dor = card.querySelector(".case-dor").value.trim();
+  atualizarScoreCard(caseId);
+}
+
+function atualizarScoreCard(caseId){
+  const c = state.casos.find(x => x.id === caseId);
+  if(!c) return;
+  const s = scoreCaseRounded(c);
+  const f = faixaRanking(s);
+  const ok = prontoParaExecutar(c);
+  const box = document.getElementById(`scorebox_${caseId}`);
+  if(!box) return;
+  let badge = `<span class="badge ${f.classe}">${f.rotulo}</span>`;
+  if(f.id === "fazer_agora" && !ok.pronto){
+    badge = `<span class="badge badge-bloqueado">Preparar — ${esc(ok.motivo)}</span>`;
+  }
+  box.innerHTML = `
+    <div>Score ponderado &middot; <strong>${s.toFixed(2)}</strong></div>
+    ${badge}
+  `;
+}
+
+function renderMatriz(){
+  const plot = document.getElementById("matrixPlot");
+  plot.querySelectorAll(".dot").forEach(d => d.remove());
+  state.casos.forEach((c,i) => {
+    const imp = c.notas.impacto || 1;
+    const via = c.notas.viabilidade || 1;
+    const xPct = ((imp - 1) / 4) * 100;
+    const yPct = 100 - ((via - 1) / 4) * 100;
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    dot.style.left = xPct + "%";
+    dot.style.top = yPct + "%";
+    dot.textContent = String(i+1);
+    dot.title = `${c.rotulo || "Caso "+(i+1)} — Impacto ${imp} · Viabilidade ${via}`;
+    plot.appendChild(dot);
+  });
+  document.getElementById("matrixLegend").innerHTML = state.casos.map((c,i) => `
+    <span><span class="dot-mini">${i+1}</span> ${esc(c.rotulo || "Caso "+(i+1))}</span>
+  `).join("");
+}
+
+function renderGovernanca(){
+  const cont = document.getElementById("govContainer");
+  cont.innerHTML = state.casos.map((c,i) => {
+    const g = state.governanca[c.id] || {responsavel:"", validador:"", dados_sensiveis:"Não", metrica:""};
+    const impacto = c.notas.impacto || 3;
+    const hitl = nivelHitlPorImpacto(impacto);
+    return `
+      <div class="gov-card" data-caseid="${c.id}">
+        <h4>Caso ${i+1}: ${esc(c.rotulo||"(sem nome)")}</h4>
+        <div class="hint" style="margin-bottom:10px">
+          Impacto ${impacto} → HITL sugerido: <strong>${hitl.id}</strong> · ${esc(hitl.aprovador)} · ${esc(hitl.descricao)}
+        </div>
+        <div class="grid2">
+          <div><label>Responsável do caso</label>
+            <input type="text" class="gov-resp" value="${esc(g.responsavel)}" onchange="onGovChange('${c.id}')" placeholder="Nome / cargo">
+          </div>
+          <div><label>Quem valida (HITL)</label>
+            <input type="text" class="gov-valid" value="${esc(g.validador)}" onchange="onGovChange('${c.id}')" placeholder="Ex: Especialista de negócio">
+          </div>
+          <div><label>Dados sensíveis?</label>
+            <select class="gov-sens" onchange="onGovChange('${c.id}')">
+              <option ${g.dados_sensiveis==="Não"?"selected":""}>Não</option>
+              <option ${g.dados_sensiveis==="Sim"?"selected":""}>Sim</option>
+            </select>
+          </div>
+          <div><label>Métrica de acompanhamento</label>
+            <input type="text" class="gov-metrica" value="${esc(g.metrica)}" onchange="onGovChange('${c.id}')" placeholder="Ex: redução de 20% no tempo de decisão">
+          </div>
+        </div>
+        <div id="govstatus_${c.id}"></div>
+      </div>
+    `;
+  }).join("");
+  state.casos.forEach(c => updateGovStatus(c.id));
+}
+
+function onGovChange(caseId){
+  saveGovernanca();
+  updateGovStatus(caseId);
+  atualizarScoreCard(caseId);
+}
+
+function updateGovStatus(caseId){
+  const c = state.casos.find(x => x.id === caseId);
+  if(!c) return;
+  const ok = prontoParaExecutar(c);
+  const el = document.getElementById("govstatus_"+caseId);
+  if(!el) return;
+  const cls = ok.pronto ? "gov-status-ok" : "gov-status-bad";
+  const txt = ok.pronto ? "Governança OK — pode virar Fazer agora se score ≥ 4.0" : ok.motivo;
+  el.innerHTML = `<span class="gov-status ${cls}">${esc(txt)}</span>`;
+}
+
+function renderSelecao(){
+  const cont = document.getElementById("selectionContainer");
+  cont.innerHTML = state.casos.map((c,i) => {
+    const s = scoreCaseRounded(c);
+    const f = faixaRanking(s);
+    const sel = state.selecionados.includes(c.id) ? "selected" : "";
+    return `
+      <div class="sel-item ${sel}" data-caseid="${c.id}" onclick="toggleSelecao('${c.id}')">
+        <strong>${i+1}. ${esc(c.rotulo||"(sem nome)")}</strong>
+        <div class="sel-meta">Score ${s.toFixed(2)} · ${f.rotulo}</div>
+      </div>
+    `;
+  }).join("");
+  updateSelCounter();
+}
+
+function toggleSelecao(id){
+  const el = document.querySelector(`.sel-item[data-caseid="${id}"]`);
+  if(!el) return;
+  if(el.classList.contains("selected")){
+    el.classList.remove("selected");
+  } else {
+    const jaSel = document.querySelectorAll(".sel-item.selected").length;
+    if(jaSel >= 3){ alert("Máximo de 3 casos. Desmarque um antes de selecionar outro."); return; }
+    el.classList.add("selected");
+  }
+  saveSelecionados();
+  updateSelCounter();
+}
+
+function updateSelCounter(){
+  const n = document.querySelectorAll("#selectionContainer .sel-item.selected").length;
+  document.getElementById("selCounter").textContent = `${n} de 3 selecionados.`;
+}
+
+function useSuggestion(){
+  const sug = gerarSugestaoRecomendacao();
+  document.getElementById("recomendacaoTexto").value = sug;
+  state.recomendacao_texto = sug;
+}
+
+function renderRelatorio(){
+  const id = state.identificacao;
+  const total = totalMaturidade();
+  const nivel = nivelPorTotal(total);
+  const g = identificarGargalo();
+  const selecionados = state.selecionados.map(sid => state.casos.find(c => c.id === sid)).filter(Boolean);
+
+  const casosTable = state.casos.map((c,i) => {
+    const s = scoreCaseRounded(c);
+    const f = faixaRanking(s);
+    const ok = prontoParaExecutar(c);
+    const gov = state.governanca[c.id] || {};
+    const notasStr = CRITERIOS.map(cr => `${cr.id[0].toUpperCase()}${cr.id.slice(1,3)}:${c.notas[cr.id]}`).join(" · ");
+    return `<tr>
+      <td>${i+1}</td>
+      <td><strong>${esc(c.rotulo||"(sem nome)")}</strong><br><span style="color:#87939b;font-size:11px">${esc(c.descricao||"")}</span></td>
+      <td>${notasStr}</td>
+      <td><strong>${s.toFixed(2)}</strong></td>
+      <td>${f.rotulo}</td>
+      <td>${esc(c.dono||"—")}</td>
+      <td>${esc(gov.metrica||"—")}</td>
+      <td>${ok.pronto ? "OK" : "Bloqueado"}</td>
+    </tr>`;
+  }).join("");
+
+  const mapaBlocks = BLOCOS_MAPA.map(b => `
+    <div class="report-mapa-block">
+      <strong>${esc(b.rotulo)}</strong>
+      <div class="mapa-text">${esc(state.mapa[b.id]||"(não preenchido)")}</div>
+    </div>
+  `).join("");
+
+  const selHtml = selecionados.length
+    ? selecionados.map((c,i) => `<div class="meta-line">${i+1}. <strong>${esc(c.rotulo)}</strong> — score ${scoreCaseRounded(c).toFixed(2)}</div>`).join("")
+    : `<div class="meta-line">Nenhum caso selecionado na etapa 8.</div>`;
+
+  const rec = state.recomendacao_texto || "(não preenchida)";
+
+  document.getElementById("finalReport").innerHTML = `
+    <h2>Mapa Executivo de IA-PPPM</h2>
+    <div class="meta-line">Gerado em ${new Date().toLocaleString("pt-BR")}</div>
+
+    <h3>Identificação</h3>
+    <div class="meta-line"><strong>Nome</strong> ${esc(id.nome||"—")}</div>
+    <div class="meta-line"><strong>E-mail</strong> ${esc(id.email||"—")}</div>
+    <div class="meta-line"><strong>Turma</strong> ${esc(id.turma||"—")}</div>
+    <div class="meta-line"><strong>Empresa</strong> ${esc(id.empresa||"—")} <strong style="margin-left:12px">Cargo</strong> ${esc(id.cargo||"—")}</div>
+    <div class="meta-line"><strong>Porte</strong> ${esc(id.porte||"—")} <strong style="margin-left:12px">Contexto</strong> ${esc(id.contexto||"—")}</div>
+
+    <h3>Diagnóstico de maturidade</h3>
+    <div class="meta-line"><strong>Total</strong> ${total}/30 &middot; <strong>Nível</strong> ${nivel.numero} — ${esc(nivel.rotulo)}</div>
+    <div class="meta-line" style="color:#87939b;font-size:12px">${esc(nivel.descricao)}</div>
+    <div class="meta-line"><strong>Gargalo</strong> ${esc(g.dim.rotulo)} (${g.nota}/6)</div>
+    <table class="report-table" style="margin-top:8px">
+      <thead><tr><th>Dimensão</th><th>Nota</th></tr></thead>
+      <tbody>
+        ${DIMENSOES.map(d => `<tr><td>${esc(d.rotulo)}</td><td>${state.diagnostico[d.id]||0}/6</td></tr>`).join("")}
+      </tbody>
+    </table>
+
+    <h3>Mapa Inicial — 5 blocos</h3>
+    <div class="report-mapa">${mapaBlocks}</div>
+
+    <h3>Casos avaliados</h3>
+    <table class="report-table">
+      <thead><tr><th>#</th><th>Caso</th><th>Notas</th><th>Score</th><th>Faixa</th><th>Dono</th><th>Métrica</th><th>Status</th></tr></thead>
+      <tbody>${casosTable}</tbody>
+    </table>
+
+    <h3>Selecionados (3 prioritários)</h3>
+    ${selHtml}
+
+    <h3>Recomendação executiva</h3>
+    <div class="report-recomendacao">${aplicarTooltips(rec)}</div>
+
+    <div class="meta-line" style="margin-top:18px;font-size:11px;color:#87939b">
+      Eixo Estratégico · Mapa IA-PPPM v1.0 HTML · baseado na v1.3 Streamlit · Aulas 1 e 2 (Prof. Dr. José Bezerra, BSBr).
+    </div>
+  `;
+}
+
+/* ============================================================
+   IMPORT / EXPORT
+   ============================================================ */
+function exportJSON(){
+  saveIdentificacao(); saveDiagnostico(); saveMapa(); saveCases(); saveNotas(); saveGovernanca(); saveSelecionados();
+  state.recomendacao_texto = document.getElementById("recomendacaoTexto") ? document.getElementById("recomendacaoTexto").value : state.recomendacao_texto;
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,"-");
+  const nome = (state.identificacao.nome||"anonimo").replace(/\s+/g,"_").toLowerCase();
+  a.href = url;
+  a.download = `mapa-ia-pppm_${nome}_${stamp}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function exportCSV(){
+  saveNotas(); saveGovernanca();
+  const header = ["id","rotulo","descricao","dor","dono","impacto","viabilidade","dados","risco","valor","score","faixa","responsavel","validador","dados_sensiveis","metrica","pronto"];
+  const rows = state.casos.map(c => {
+    const s = scoreCaseRounded(c);
+    const f = faixaRanking(s);
+    const g = state.governanca[c.id] || {};
+    const ok = prontoParaExecutar(c);
+    return [
+      c.id, c.rotulo, c.descricao, c.dor, c.dono,
+      c.notas.impacto, c.notas.viabilidade, c.notas.dados, c.notas.risco, c.notas.valor,
+      s.toFixed(2), f.rotulo,
+      g.responsavel||"", g.validador||"", g.dados_sensiveis||"", g.metrica||"",
+      ok.pronto ? "sim":"nao"
+    ].map(v => `"${String(v==null?"":v).replace(/"/g,'""')}"`).join(",");
+  });
+  const csv = [header.join(","), ...rows].join("\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,"-");
+  a.href = url;
+  a.download = `mapa-ia-pppm_casos_${stamp}.csv`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importJSON(){
+  document.getElementById("importFile").click();
+}
+
+function handleImport(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const data = JSON.parse(e.target.result);
+      hidratarState(data);
+      alert("Progresso carregado. Navegue pelas etapas para revisar.");
+    }catch(err){
+      alert("Arquivo inválido: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function hidratarState(data){
+  // Aceita schema HTML v1.0 (identificacao/diagnostico/...) OU snapshot v1.3 Streamlit
+  if(data.identificacao) state.identificacao = {...state.identificacao, ...data.identificacao};
+  if(data.diagnostico)   state.diagnostico   = {...state.diagnostico,   ...data.diagnostico};
+  if(data.mapa)          state.mapa          = {...state.mapa,          ...data.mapa};
+
+  // v1.3 Streamlit usa 'casos_uso' e notas dentro do próprio caso
+  const casosOrigem = data.casos || data.casos_uso || [];
+  if(casosOrigem.length){
+    state.casos = casosOrigem.map(c => ({
+      id: c.id || nextCaseId(),
+      rotulo: c.rotulo || c.nome || "",
+      descricao: c.descricao || "",
+      dor: c.dor || "",
+      dono: c.dono || "",
+      notas: {
+        impacto: (c.notas && c.notas.impacto) || 3,
+        viabilidade: (c.notas && c.notas.viabilidade) || 3,
+        dados: (c.notas && c.notas.dados) || 3,
+        risco: (c.notas && c.notas.risco) || 3,
+        valor: (c.notas && c.notas.valor) || 3
+      }
+    }));
+  }
+  if(data.governanca) state.governanca = data.governanca;
+  if(data.selecionados) state.selecionados = data.selecionados;
+  if(data.recomendacao_texto) state.recomendacao_texto = data.recomendacao_texto;
+
+  // popular UI da etapa 1
+  document.getElementById("idNome").value    = state.identificacao.nome    || "";
+  document.getElementById("idEmail").value   = state.identificacao.email   || "";
+  document.getElementById("idTurma").value   = state.identificacao.turma   || "";
+  document.getElementById("idEmpresa").value = state.identificacao.empresa || "";
+  document.getElementById("idCargo").value   = state.identificacao.cargo   || "";
+  document.getElementById("idPorte").value   = state.identificacao.porte   || "";
+  document.getElementById("idContexto").value= state.identificacao.contexto|| "Projeto";
+}
+
+function enviarTelemetria(){
+  if(!TELEMETRIA_URL) return;
+  if(!confirm("Enviar estatísticas de uso anônimas para melhorar a ferramenta? Nenhum dado pessoal é enviado.")) return;
+  const total = totalMaturidade();
+  const nivel = nivelPorTotal(total);
+  const g = identificarGargalo();
+  const payload = {
+    v:"1.0-html",
+    ts: new Date().toISOString(),
+    porte: state.identificacao.porte || "",
+    contexto: state.identificacao.contexto || "",
+    diag_total: total,
+    nivel: nivel.numero,
+    gargalo: g.dim.id,
+    n_casos: state.casos.length,
+    n_casos_com_dono: state.casos.filter(c => (c.dono||"").trim()).length,
+    scores: state.casos.map(c => scoreCaseRounded(c))
+  };
+  fetch(TELEMETRIA_URL, {method:"POST", body:JSON.stringify(payload), headers:{"Content-Type":"application/json"}})
+    .then(() => alert("Obrigado pelo feedback!"))
+    .catch(() => alert("Falha ao enviar. Sem problema — o app continua funcionando."));
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  goToStep(1);
+  enriquecerTooltipsPagina();
+});
+</script>
+</body>
+</html>

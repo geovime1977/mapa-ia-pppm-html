@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 2 — Simulador de Priorização de Casos de Uso de IA | BSBr | V2</title>
+<style>
+  :root{
+    --black:#101820; --paper:#f5f3ee; --muted:#87939b;
+    --red:#8e2430; --red-light:#c85b63; --green:#6e9b82;
+    --amber:#c89a4b; --white:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:Arial,Helvetica,sans-serif;background:var(--paper);color:var(--black);line-height:1.5;}
+  header{background:var(--black);color:var(--paper);padding:24px 32px;}
+  header h1{font-size:22px;letter-spacing:-.5px;}
+  header span{color:var(--red-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:6px;}
+  main{max-width:980px;margin:0 auto;padding:32px;}
+  .step{display:none;background:#fff;border:1px solid #e0ddd4;border-radius:14px;padding:32px;margin-bottom:24px;}
+  .step.active{display:block;}
+  h2{font-size:22px;margin-bottom:8px;color:var(--black);}
+  .hint{color:var(--muted);font-size:14px;margin-bottom:22px;}
+  label{display:block;font-size:13px;font-weight:700;margin-top:14px;margin-bottom:5px;}
+  input[type=text],input[type=email],select,textarea{
+    width:100%;padding:10px 12px;border:1px solid #ccc7ba;border-radius:8px;font-size:14px;font-family:inherit;
+  }
+  textarea{min-height:80px;resize:vertical;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .quiz-q{border-top:1px solid #eee;padding:16px 0;}
+  .quiz-q p{font-weight:700;margin-bottom:10px;}
+  .quiz-q label{font-weight:400;display:flex;gap:8px;align-items:center;margin:0 0 8px 0;cursor:pointer;}
+  .case-card{border:1px solid #e0ddd4;border-radius:12px;padding:20px;margin-bottom:18px;position:relative;}
+  .case-card h3{color:var(--red);font-size:16px;margin-bottom:4px;}
+  .case-card .desc{color:var(--muted);font-size:13px;margin-bottom:14px;}
+  .criteria-row{display:grid;grid-template-columns:180px 1fr 40px;gap:10px;align-items:center;margin-bottom:2px;font-size:13px;}
+  .criteria-row input[type=range]{width:100%;}
+  .score-box{margin-top:14px;padding:12px;background:#f7f5ef;border-radius:8px;font-size:14px;display:flex;justify-content:space-between;align-items:center;}
+  .score-box strong{color:var(--red);font-size:20px;}
+  .badge{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;}
+  .badge.fazer{background:var(--green);color:#fff;}
+  .badge.preparar{background:var(--amber);color:#fff;}
+  .badge.nao{background:#c2c2c2;color:#333;}
+  .gov-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+
+  /* ===== CADASTRO DE CASOS ===== */
+  .case-input-card{
+    border:1px solid #e0ddd4;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:16px;
+    position:relative;
+    background:#fbfaf7;
+  }
+  .case-input-card .case-input-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:4px;
+  }
+  .case-input-card .case-tag{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:var(--red);
+    color:#fff;
+    font-weight:800;
+    font-size:13px;
+  }
+  .btn-remove-case{
+    background:none;
+    border:1px solid var(--red-light);
+    color:var(--red);
+    padding:6px 12px;
+    font-size:11px;
+    border-radius:999px;
+  }
+  .btn-add-case{
+    background:var(--paper);
+    border:2px dashed #ccc7ba;
+    color:var(--black);
+    padding:14px;
+    width:100%;
+    border-radius:12px;
+    font-size:13px;
+    margin-top:6px;
+  }
+  .case-counter{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+
+  /* =========================================================
+     INSTRUÇÕES PARA AVALIAÇÃO OBJETIVA (ETAPA 4)
+     ========================================================= */
+  .evaluation-instructions {
+    margin: 20px 0 26px 0;
+    padding: 20px 22px;
+    border-left: 4px solid var(--red);
+    border-radius: 10px;
+    background: #f7f5ef;
+    color: var(--black);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .evaluation-instructions h3 {
+    margin-bottom: 10px;
+    color: var(--red);
+    font-size: 16px;
+  }
+  .evaluation-instructions p { margin-bottom: 10px; }
+  .evaluation-instructions ul { margin: 10px 0 12px 20px; padding: 0; }
+  .evaluation-instructions li { margin-bottom: 5px; }
+  .evaluation-rule {
+    margin-top: 14px;
+    padding: 10px 12px;
+    border-radius: 7px;
+    background: #fbeceb;
+    color: #6f1d27;
+  }
+
+  .criteria-guidance {
+    margin: 14px 0 18px 0;
+    padding: 12px 14px;
+    border: 1px solid #ddd8cc;
+    border-radius: 8px;
+    background: #fcfbf8;
+    color: #59656d;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .criteria-guidance strong { color: var(--black); }
+  .criteria-scale {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .criteria-scale-item {
+    padding: 8px;
+    border-radius: 6px;
+    background: #f0eee7;
+    font-size: 11px;
+  }
+  .criteria-scale-item strong {
+    display: block;
+    color: var(--red);
+    font-size: 12px;
+    margin-bottom: 3px;
+  }
+
+  .score-evidence { margin-top: 14px; }
+  .score-evidence label { margin-top: 0; }
+  .score-evidence textarea { min-height: 58px; font-size: 12px; }
+
+  .score-interpretation {
+    min-height: 18px;
+    margin-top: 3px;
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 11px;
+    font-style: italic;
+  }
+
+  .evaluation-optional-note {
+    margin-top: 16px;
+    padding: 10px 12px;
+    border-radius: 7px;
+    background: #f0f5f2;
+    border: 1px solid #b7d1bf;
+    color: #3f6350;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  @media screen and (max-width: 700px) {
+    .criteria-scale { grid-template-columns: 1fr; }
+    .criteria-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  /* ===== MATRIZ COM MAIS ESPAÇO ===== */
+  .matrix-wrapper{ margin-top:20px; }
+  .matrix{
+    position:relative;
+    width:100%;
+    height:420px;
+    border:1px solid #ccc7ba;
+    border-radius:12px;
+    background:
+      linear-gradient(to right, #f0eee7 50%, #fff 50%),
+      linear-gradient(to bottom, #fff 50%, #f0eee7 50%);
+    background-blend-mode:multiply;
+    overflow:visible;
+    padding:36px;
+  }
+  .matrix-plot{ position:relative; width:100%; height:100%; }
+  .matrix .axis-label{position:absolute;font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+  .matrix .lbl-top{top:-28px;left:50%;transform:translateX(-50%);}
+  .matrix .lbl-bottom{bottom:-28px;left:50%;transform:translateX(-50%);}
+  .matrix .lbl-left{left:-30px;top:50%;transform:translateY(-50%) rotate(-90deg);transform-origin:center;white-space:nowrap;}
+  .matrix .lbl-right{right:-30px;top:50%;transform:translateY(-50%) rotate(90deg);transform-origin:center;white-space:nowrap;}
+  .dot{
+    position:absolute;width:40px;height:40px;border-radius:50%;background:var(--red);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;
+    box-shadow:0 4px 10px rgba(0,0,0,.25);transform:translate(-50%,-50%);
+    border:3px solid #fff;
+  }
+  .matrix-legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-top:16px;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .matrix-legend span{display:flex;align-items:center;gap:6px;}
+  .matrix-legend .dot-mini{
+    width:16px;height:16px;border-radius:50%;background:var(--red);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;
+  }
+
+  .selection-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;margin-top:16px;}
+  .sel-item{border:2px solid #e0ddd4;border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:.2s;}
+  .sel-item.selected{border-color:var(--red);background:#fbeceb;}
+  .sel-item strong{display:block;font-size:14px;margin-bottom:4px;}
+  .sel-item span{font-size:12px;color:var(--muted);}
+  .nav-buttons{display:flex;justify-content:space-between;margin-top:26px;}
+  button{cursor:pointer;border:0;border-radius:999px;font-weight:800;font-size:13px;letter-spacing:.5px;text-transform:uppercase;padding:12px 22px;}
+  .btn-primary{background:var(--red);color:#fff;}
+  .btn-primary:hover{background:var(--red-light);}
+  .btn-secondary{background:#e5e2d9;color:var(--black);}
+  .btn-secondary:disabled{opacity:.4;cursor:not-allowed;}
+  .alert{background:#fbeceb;border:1px solid var(--red-light);color:var(--red);padding:12px 16px;border-radius:8px;font-size:13px;margin-top:14px;display:none;}
+  .alert.show{display:block;}
+
+  /* ===== RECOMENDAÇÃO SUGERIDA ===== */
+  .suggestion-box{
+    background:#f0f5f2;
+    border:1px solid var(--green);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:14px;
+    font-size:13px;
+    white-space:pre-wrap;
+  }
+  .suggestion-box strong{
+    display:block;
+    color:#3f6350;
+    margin-bottom:6px;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+  .btn-use-suggestion{
+    background:var(--green);
+    color:#fff;
+    font-size:11px;
+    padding:8px 14px;
+    margin-top:10px;
+  }
+
+  /* ===== RELATÓRIO FINAL ===== */
+  .final-report{border:1px solid #e0ddd4;border-radius:12px;padding:24px;margin-top:20px;}
+  .final-report h3{color:var(--red);margin-bottom:10px;margin-top:18px;}
+  .final-report .meta-line{margin-bottom:6px;font-size:13px;}
+  .report-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:12px;}
+  .report-table th,.report-table td{border:1px solid #e0ddd4;padding:6px 8px;text-align:left;vertical-align:top;}
+  .report-table th{background:#f7f5ef;}
+  .report-recomendacao{font-size:13px;white-space:pre-wrap;line-height:1.6;}
+
+  .progress-bar{height:6px;background:#e5e2d9;border-radius:3px;overflow:hidden;margin-bottom:24px;}
+  .progress-fill{height:100%;background:var(--red);transition:width .3s ease;}
+
+  /* =========================================================
+     IMPRESSÃO / EXPORTAÇÃO EM PDF
+  ========================================================= */
+  @page{
+    size: A4 portrait;
+    margin: 20mm 18mm;
+  }
+
+  @media print{
+    html, body{
+      background:#fff !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      width:100%;
+      margin:0;
+    }
+
+    header,
+    .progress-bar,
+    .nav-buttons,
+    #exportButtons{
+      display:none !important;
+    }
+
+    main{
+      max-width:100%;
+      width:100%;
+      padding:10mm 8mm !important;
+      margin:0 !important;
+    }
+
+    .step{
+      display:none !important;
+      border:none !important;
+      padding:0 !important;
+      margin:0 !important;
+      box-shadow:none !important;
+    }
+
+    .step[data-step="9"]{
+      display:block !important;
+      width:100%;
+    }
+
+    .final-report{
+      border:none;
+      padding:6mm 4mm !important;
+      margin:0 !important;
+      width:100%;
+    }
+
+    .final-report h2{ font-size:16pt; margin-bottom:10pt; }
+    .final-report h3{ font-size:12pt; margin-top:14pt; margin-bottom:6pt; page-break-after: avoid; }
+    .meta-line{ font-size:10pt; margin-bottom:5pt; }
+
+    .meta-line,
+    .report-recomendacao,
+    .report-table tr{ page-break-inside: avoid; }
+
+    .report-recomendacao{ font-size:10pt; line-height:1.5; }
+
+    .report-table{ page-break-inside: auto; font-size:9.5pt; width:100%; }
+    .report-table thead{ display: table-header-group; }
+    .report-table th, .report-table td{ padding:5pt 6pt; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span>BSBr &bull; Formação de Consultores em IA aplicada ao PPPM</span>
+  <h1>Aula 2 — Simulador de Priorização de Casos de Uso (Versão 2)</h1>
+</header>
+
+<main>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:12%"></div></div>
+
+  <!-- STEP 1 — IDENTIFICAÇÃO -->
+  <section class="step active" data-step="1">
+    <h2>1. Identificação</h2>
+    <p class="hint">Preencha seus dados antes de iniciar a atividade.</p>
+    <div class="grid2">
+      <div><label for="alunoNome">Nome completo</label><input type="text" id="alunoNome" required></div>
+      <div><label for="alunoEmail">E-mail</label><input type="email" id="alunoEmail" required></div>
+      <div><label for="alunoTurma">Turma</label><input type="text" id="alunoTurma" placeholder="Ex: Turma 01 — Agosto/2026"></div>
+      <div><label for="alunoEmpresa">Empresa / organização</label><input type="text" id="alunoEmpresa"></div>
+    </div>
+    <label for="alunoContexto">Contexto de aplicação</label>
+    <select id="alunoContexto">
+      <option>Projeto</option><option>Programa</option><option>Portfólio</option>
+      <option>PMO</option><option>Processo organizacional</option><option>Consultoria</option>
+    </select>
+    <div class="nav-buttons">
+      <span></span>
+      <button class="btn-primary" onclick="goToStep(2)">Iniciar atividade &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 2 — QUIZ -->
+  <section class="step" data-step="2">
+    <h2>2. Diagnóstico conceitual</h2>
+    <p class="hint">Selecione a alternativa correta para cada pergunta.</p>
+    <div id="quizContainer"></div>
+    <div class="alert" id="quizAlert">Responda todas as perguntas antes de continuar.</div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(1)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="checkQuiz()">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 3 — CADASTRO DOS CASOS -->
+  <section class="step" data-step="3">
+    <h2>3. Cadastro dos casos de uso</h2>
+    <p class="hint">
+      Cadastre de 2 a 6 casos de uso de IA que serão comparados nesta atividade.
+      Descreva o problema e a decisão que a IA apoiaria em cada caso.
+    </p>
+    <div id="caseInputsContainer"></div>
+    <button type="button" class="btn-add-case" onclick="addCaseInput()">
+      + Adicionar caso de uso
+    </button>
+    <div class="case-counter" id="caseCounter"></div>
+    <div class="alert" id="caseInputAlert">
+      Cadastre pelo menos 2 casos, preenchendo nome e descrição, antes de continuar.
+    </div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(2)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="confirmCaseInputs()">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 4 — AVALIAÇÃO DOS CASOS (COM CRITÉRIOS OBJETIVOS) -->
+  <section class="step" data-step="4">
+    <h2>4. Avaliação dos casos cadastrados</h2>
+
+    <div class="evaluation-instructions">
+      <h3>Como atribuir as notas</h3>
+
+      <p>
+        Avalie cada caso com base nas evidências disponíveis e não apenas
+        na percepção pessoal. Utilize a escala de <strong>1 a 5</strong>,
+        comparando cada caso com os pontos de referência apresentados.
+      </p>
+
+      <ul>
+        <li>
+          <strong>Nota 1:</strong> condição inexistente, desconhecida ou muito desfavorável.
+        </li>
+        <li>
+          <strong>Nota 3:</strong> condição parcialmente atendida ou que exige investigação.
+        </li>
+        <li>
+          <strong>Nota 5:</strong> condição claramente atendida, comprovada e favorável.
+        </li>
+      </ul>
+
+      <p>
+        Para as notas <strong>2 e 4</strong>, utilize uma posição intermediária
+        entre os critérios apresentados.
+      </p>
+
+      <p class="evaluation-rule">
+        <strong>Regra de decisão:</strong>
+        se não houver informação suficiente para atribuir uma nota alta,
+        utilize uma nota conservadora, preferencialmente <strong>2</strong>.
+        O registro da evidência ou justificativa é recomendado, mas opcional.
+      </p>
+    </div>
+
+    <div id="casesContainer"></div>
+
+    <div class="evaluation-optional-note">
+      As evidências ou justificativas são opcionais, mas podem ser úteis para explicar
+      as notas atribuídas e apoiar a análise posterior.
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(3)">
+        &larr; Voltar
+      </button>
+      <button class="btn-primary" onclick="validateCaseEvaluation()">
+        Continuar &rarr;
+      </button>
+    </div>
+  </section>
+
+  <!-- STEP 5 — MATRIZ -->
+  <section class="step" data-step="5">
+    <h2>5. Matriz Impacto &times; Viabilidade</h2>
+    <p class="hint">Posição automática dos casos com base nas notas atribuídas.</p>
+
+    <div class="matrix-wrapper">
+      <div class="matrix" id="matrixBox">
+        <div class="matrix-plot" id="matrixPlot">
+          <span class="axis-label lbl-top">Alta viabilidade</span>
+          <span class="axis-label lbl-bottom">Baixa viabilidade</span>
+          <span class="axis-label lbl-left">Baixo impacto</span>
+          <span class="axis-label lbl-right">Alto impacto</span>
+        </div>
+      </div>
+      <div class="matrix-legend" id="matrixLegend"></div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(4)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(6)">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 6 — GOVERNANÇA -->
+  <section class="step" data-step="6">
+    <h2>6. Governança e Human-in-the-Loop</h2>
+    <p class="hint">Para cada caso, defina responsável, validação e métrica. Sem isso, o caso não pode ser classificado como "Fazer agora".</p>
+    <div id="govContainer"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(5)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="renderSelection()">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 7 — SELEÇÃO DOS 3 CASOS -->
+  <section class="step" data-step="7">
+    <h2>7. Seleção dos três casos prioritários</h2>
+    <p class="hint">Clique para selecionar exatamente 3 casos entre os cadastrados.</p>
+    <div class="selection-grid" id="selectionContainer"></div>
+    <div class="alert" id="selectionAlert">Selecione exatamente 3 casos para continuar.</div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(6)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="checkSelection()">Continuar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 8 — RECOMENDAÇÃO EXECUTIVA (COM SUGESTÃO AUTOMÁTICA) -->
+  <section class="step" data-step="8">
+    <h2>8. Recomendação executiva</h2>
+    <p class="hint">
+      O aplicativo gerou uma sugestão de texto com base nos casos selecionados.
+      Revise, edite ou reescreva livremente antes de avançar — o texto final é de sua responsabilidade.
+    </p>
+
+    <div class="suggestion-box" id="suggestionBox">
+      <strong>Sugestão gerada automaticamente</strong>
+      <div id="suggestionText"></div>
+      <button type="button" class="btn-use-suggestion" onclick="useSuggestion()">
+        Usar esta sugestão no campo abaixo
+      </button>
+    </div>
+
+    <label for="recomendacaoTexto">Recomendação executiva (editável)</label>
+    <textarea id="recomendacaoTexto" placeholder="Edite livremente o texto sugerido ou escreva sua própria recomendação..."></textarea>
+
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(7)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="renderFinalReport()">Gerar relatório final &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 9 — RELATÓRIO FINAL -->
+  <section class="step" data-step="9">
+    <div class="final-report" id="finalReport"></div>
+    <div class="nav-buttons" id="exportButtons">
+      <button class="btn-secondary" onclick="goToStep(8)">&larr; Voltar</button>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-secondary" onclick="exportCSV()">Exportar CSV</button>
+        <button class="btn-primary" onclick="window.print()">Exportar PDF</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ===================== DADOS FIXOS (QUIZ) ===================== */
+const quizData = [
+  {q:"Qual alternativa representa melhor um caso de uso de IA em PPPM?",
+   options:["Usar IA em todos os projetos.","Comprar uma ferramenta de IA para a empresa.",
+   "Utilizar IA para identificar sinais de atraso em atividades críticas e apoiar a decisão do gerente de projetos.",
+   "Criar uma conta em uma plataforma de IA."], correct:2},
+  {q:"Qual caso deveria ser priorizado primeiro?",
+   options:["Alto impacto, baixa viabilidade e dados inexistentes.","Baixo impacto, alta complexidade e risco elevado.",
+   "Alto impacto, alta viabilidade, dados disponíveis e risco controlável.","Caso inovador, mas sem dono da decisão."], correct:2},
+  {q:"Qual é a função do Human-in-the-Loop (HITL)?",
+   options:["Substituir completamente a decisão humana.","Permitir que a IA aprove decisões críticas automaticamente.",
+   "Garantir que uma pessoa qualificada valide, ajuste ou rejeite a recomendação da IA.","Eliminar a necessidade de registrar decisões."], correct:2},
+  {q:"O que fazer quando um caso depende de dados sensíveis sem controle de acesso definido?",
+   options:["Executar o piloto normalmente.","Classificar os dados e definir acessos antes de prosseguir.",
+   "Ignorar o risco, pois a IA corrige sozinha.","Cancelar definitivamente o caso de uso."], correct:1},
+  {q:"Qual erro está descrito em 'escolher pelo fascínio técnico'?",
+   options:["Priorizar problemas relevantes.","Escolher casos chamativos que não geram valor executivo.",
+   "Medir ROI antes de implementar.","Definir governança antes da ferramenta."], correct:1},
+  {q:"Por que 'valor sem controle não sustenta escala'?",
+   options:["Porque a IA sempre erra.","Porque sem métricas e governança, o piloto vira opinião e o resultado pode ser inseguro.",
+   "Porque a escala exige mais servidores.","Porque o valor gerado é sempre baixo."], correct:1}
+];
+
+/* ===================== CRITÉRIOS DE AVALIAÇÃO OBJETIVOS ===================== */
+const criterios = [
+  {
+    key: "impacto",
+    label: "Impacto no resultado",
+    peso: 0.30,
+    nota1: "Impacto pequeno, local ou pouco relevante.",
+    nota3: "Impacto relevante, mas restrito a uma área ou processo.",
+    nota5: "Impacto elevado, estratégico e diretamente relacionado a resultados mensuráveis."
+  },
+  {
+    key: "viabilidade",
+    label: "Viabilidade técnica",
+    peso: 0.20,
+    nota1: "Tecnologia, equipe ou infraestrutura ainda não estão disponíveis.",
+    nota3: "A implementação é possível, mas exige adaptações, testes ou recursos adicionais.",
+    nota5: "A solução é tecnicamente viável com os recursos atuais e pode ser testada rapidamente."
+  },
+  {
+    key: "dados",
+    label: "Disponibilidade e qualidade dos dados",
+    peso: 0.20,
+    nota1: "Dados inexistentes, inacessíveis ou sem qualidade conhecida.",
+    nota3: "Existem dados parciais, dispersos ou que precisam de tratamento.",
+    nota5: "Dados suficientes, acessíveis, confiáveis e prontos para uso controlado."
+  },
+  {
+    key: "risco",
+    label: "Controle de risco e segurança",
+    peso: 0.15,
+    nota1: "Riscos elevados, sem responsável, controle de acesso ou plano de resposta.",
+    nota3: "Riscos conhecidos, com controles parciais ou ainda em definição.",
+    nota5: "Riscos controlados, responsáveis definidos, acessos adequados e plano de resposta estabelecido."
+  },
+  {
+    key: "valor",
+    label: "Valor potencial",
+    peso: 0.15,
+    nota1: "Benefício incerto, difícil de medir ou pouco relevante.",
+    nota3: "Benefício plausível, mas ainda depende de validação.",
+    nota5: "Benefício claro, mensurável e alinhado a uma necessidade prioritária."
+  }
+];
+
+/* ===================== ESTADO GLOBAL ===================== */
+let alunoData = {};
+let caseScores = {};
+let govData = {};
+let selectedCases = [];
+let caseJustifications = {};
+
+/*
+ * casesData é preenchido dinamicamente pelo aluno na etapa 3.
+ * Estrutura de cada item: { id, nome, desc }
+ */
+let casesData = [];
+let caseInputCount = 0;
+
+/* ===================== IDENTIFICAÇÃO DO ALUNO ===================== */
+function saveStudentData() {
+  alunoData = {
+    nome: document.getElementById("alunoNome").value.trim(),
+    email: document.getElementById("alunoEmail").value.trim(),
+    turma: document.getElementById("alunoTurma").value.trim(),
+    empresa: document.getElementById("alunoEmpresa").value.trim(),
+    contexto: document.getElementById("alunoContexto").value
+  };
+}
+
+/* ===================== NAVEGAÇÃO ===================== */
+const TOTAL_STEPS = 9;
+
+function goToStep(n) {
+  if (n === 2) {
+    saveStudentData();
+
+    if (!alunoData.nome) {
+      alert("Informe o nome completo antes de iniciar.");
+      document.getElementById("alunoNome").focus();
+      return;
+    }
+
+    if (!alunoData.email) {
+      alert("Informe o e-mail antes de iniciar.");
+      document.getElementById("alunoEmail").focus();
+      return;
+    }
+  }
+
+  document.querySelectorAll(".step").forEach(function (step) {
+    step.classList.remove("active");
+  });
+
+  const destino = document.querySelector('.step[data-step="' + n + '"]');
+
+  if (!destino) {
+    console.error("Etapa não encontrada:", n);
+    return;
+  }
+
+  destino.classList.add("active");
+
+  document.getElementById("progressFill").style.width =
+    ((n / TOTAL_STEPS) * 100) + "%";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (n === 2 && document.getElementById("quizContainer").innerHTML.trim() === "") {
+    renderQuiz();
+  }
+
+  if (n === 3 && caseInputCount === 0) {
+    addCaseInput();
+    addCaseInput();
+    addCaseInput();
+  }
+
+  if (n === 4 && document.getElementById("casesContainer").innerHTML.trim() === "") {
+    renderCases();
+  }
+
+  if (n === 5) {
+    renderMatrix();
+  }
+
+  if (n === 6) {
+    renderGovernance();
+  }
+
+  if (n === 8) {
+    renderSuggestion();
+  }
+}
+
+/* ===================== QUIZ ===================== */
+function renderQuiz(){
+  const c = document.getElementById("quizContainer");
+  c.innerHTML = quizData.map((item,i)=>`
+    <div class="quiz-q">
+      <p>${i+1}. ${item.q}</p>
+      ${item.options.map((op,j)=>`
+        <label><input type="radio" name="q${i}" value="${j}"> ${op}</label>
+      `).join("")}
+    </div>
+  `).join("");
+}
+function checkQuiz(){
+  let allAnswered = true;
+  quizData.forEach((item,i)=>{
+    if(!document.querySelector(`input[name="q${i}"]:checked`)) allAnswered=false;
+  });
+  if(!allAnswered){
+    document.getElementById("quizAlert").classList.add("show");
+    return;
+  }
+  document.getElementById("quizAlert").classList.remove("show");
+  goToStep(3);
+}
+function getQuizScore(){
+  let correct=0;
+  quizData.forEach((item,i)=>{
+    const sel = document.querySelector(`input[name="q${i}"]:checked`);
+    if(sel && parseInt(sel.value)===item.correct) correct++;
+  });
+  return correct;
+}
+
+/* ===================== CADASTRO DOS CASOS ===================== */
+function generateCaseId(index) {
+  return String.fromCharCode(65 + index); // 65 = "A"
+}
+
+function addCaseInput() {
+  const MAX_CASES = 6;
+
+  if (caseInputCount >= MAX_CASES) {
+    alert("O limite máximo é de 6 casos de uso por atividade.");
+    return;
+  }
+
+  caseInputCount++;
+  const index = caseInputCount - 1;
+  const tempId = "novo_" + caseInputCount;
+
+  const container = document.getElementById("caseInputsContainer");
+
+  const card = document.createElement("div");
+  card.className = "case-input-card";
+  card.id = "caseInputCard_" + tempId;
+  card.dataset.tempId = tempId;
+
+  card.innerHTML = `
+    <div class="case-input-header">
+      <span class="case-tag">${generateCaseId(index)}</span>
+      <button type="button" class="btn-remove-case" onclick="removeCaseInput('${tempId}')">
+        Remover
+      </button>
+    </div>
+
+    <label>Nome do caso de uso</label>
+    <input
+      type="text"
+      class="case-input-nome"
+      placeholder="Ex.: Relatório executivo automático"
+    >
+
+    <label>Descrição / problema que a IA apoiaria</label>
+    <textarea
+      class="case-input-desc"
+      placeholder="Descreva o problema, o processo atual e a decisão que a IA apoiaria neste caso."
+    ></textarea>
+  `;
+
+  container.appendChild(card);
+  updateCaseCounter();
+}
+
+function removeCaseInput(tempId) {
+  const card = document.getElementById("caseInputCard_" + tempId);
+
+  if (card) {
+    card.remove();
+    caseInputCount--;
+    renumberCaseInputs();
+    updateCaseCounter();
+  }
+}
+
+function renumberCaseInputs() {
+  const cards = document.querySelectorAll(".case-input-card");
+
+  cards.forEach(function (card, index) {
+    const tag = card.querySelector(".case-tag");
+    if (tag) {
+      tag.textContent = generateCaseId(index);
+    }
+  });
+}
+
+function updateCaseCounter() {
+  const counter = document.getElementById("caseCounter");
+  const cards = document.querySelectorAll(".case-input-card").length;
+  counter.textContent = cards + " caso(s) cadastrado(s). Mínimo: 2. Máximo: 6.";
+}
+
+function confirmCaseInputs() {
+  const cards = document.querySelectorAll(".case-input-card");
+  const novosCasos = [];
+
+  cards.forEach(function (card, index) {
+    const nome = card.querySelector(".case-input-nome").value.trim();
+    const desc = card.querySelector(".case-input-desc").value.trim();
+
+    if (nome && desc) {
+      novosCasos.push({
+        id: generateCaseId(index),
+        nome: nome,
+        desc: desc
+      });
+    }
+  });
+
+  if (novosCasos.length < 2) {
+    document.getElementById("caseInputAlert").classList.add("show");
+    return;
+  }
+
+  document.getElementById("caseInputAlert").classList.remove("show");
+
+  casesData = novosCasos;
+  caseScores = {};
+  govData = {};
+  selectedCases = [];
+  caseJustifications = {};
+
+  document.getElementById("casesContainer").innerHTML = "";
+
+  goToStep(4);
+}
+
+/* ===================== AVALIAÇÃO DOS CASOS (CRITÉRIOS OBJETIVOS) ===================== */
+function getScoreInterpretation(criterio, nota) {
+  if (nota <= 1) {
+    return "Nota 1: " + criterio.nota1;
+  }
+  if (nota === 2) {
+    return "Nota 2: condição entre o nível desfavorável e o intermediário.";
+  }
+  if (nota === 3) {
+    return "Nota 3: " + criterio.nota3;
+  }
+  if (nota === 4) {
+    return "Nota 4: condição entre o nível intermediário e o favorável.";
+  }
+  return "Nota 5: " + criterio.nota5;
+}
+
+function renderCases() {
+  const container = document.getElementById("casesContainer");
+
+  container.innerHTML = casesData.map(function(caso) {
+    return `
+      <div class="case-card">
+
+        <h3>${caso.id} — ${caso.nome}</h3>
+
+        <div class="desc">
+          ${caso.desc}
+        </div>
+
+        <div class="criteria-guidance">
+          <strong>Escala de referência:</strong>
+
+          <div class="criteria-scale">
+            <div class="criteria-scale-item">
+              <strong>1 — Desfavorável</strong>
+              Condição inexistente, desconhecida ou inadequada.
+            </div>
+
+            <div class="criteria-scale-item">
+              <strong>3 — Intermediária</strong>
+              Condição parcialmente atendida ou ainda incerta.
+            </div>
+
+            <div class="criteria-scale-item">
+              <strong>5 — Favorável</strong>
+              Condição comprovada, suficiente e controlada.
+            </div>
+          </div>
+        </div>
+
+        ${criterios.map(function(criterio) {
+          return `
+            <div class="criteria-row">
+              <span>
+                ${criterio.label}
+              </span>
+
+              <input
+                type="range"
+                min="1"
+                max="5"
+                step="1"
+                value="3"
+                id="${caso.id}_${criterio.key}"
+                oninput="updateScore('${caso.id}')"
+                aria-label="${criterio.label} para o caso ${caso.id}"
+              >
+
+              <span id="${caso.id}_${criterio.key}_val">
+                3
+              </span>
+            </div>
+
+            <div class="score-interpretation"
+                 id="${caso.id}_${criterio.key}_interpretation">
+              ${getScoreInterpretation(criterio, 3)}
+            </div>
+          `;
+        }).join("")}
+
+        <div class="score-box">
+          <span>
+            Score ponderado:
+            <strong id="${caso.id}_score">3.00</strong>
+          </span>
+
+          <span class="badge preparar" id="${caso.id}_badge">
+            Preparar — governança pendente
+          </span>
+        </div>
+
+        <div class="score-evidence">
+          <label for="${caso.id}_justificativa">
+            Evidência ou justificativa das notas
+            <span style="font-weight:400;color:#87939b;">(opcional)</span>
+          </label>
+
+          <textarea
+            id="${caso.id}_justificativa"
+            placeholder="Opcional: registre os fatos, dados ou premissas utilizados para atribuir as notas deste caso."
+            oninput="saveCaseJustification('${caso.id}')"
+          ></textarea>
+        </div>
+
+      </div>
+    `;
+  }).join("");
+
+  casesData.forEach(function(caso) {
+    updateScore(caso.id);
+  });
+}
+
+function updateScore(caseId) {
+  let score = 0;
+
+  criterios.forEach(function(criterio) {
+    const campo = document.getElementById(caseId + "_" + criterio.key);
+    const valor = parseInt(campo.value, 10);
+
+    const indicador = document.getElementById(caseId + "_" + criterio.key + "_val");
+    const interpretacao = document.getElementById(caseId + "_" + criterio.key + "_interpretation");
+
+    indicador.textContent = valor;
+    interpretacao.textContent = getScoreInterpretation(criterio, valor);
+
+    score += valor * criterio.peso;
+  });
+
+  const scoreFinal = Number(score.toFixed(2));
+
+  document.getElementById(caseId + "_score").textContent = scoreFinal.toFixed(2);
+
+  caseScores[caseId] = scoreFinal;
+
+  updateBadge(caseId);
+}
+
+function updateBadge(caseId){
+  const badge = document.getElementById(`${caseId}_badge`);
+  if(!badge) return;
+  const dados = govData[caseId] || {};
+  const govOk = dados.responsavel && dados.validador && dados.metrica;
+  const score = caseScores[caseId] || 0;
+  if(score>=3.5 && govOk){
+    badge.textContent="Fazer agora"; badge.className="badge fazer";
+  } else if(score>=3.5 && !govOk){
+    badge.textContent="Preparar — governança pendente"; badge.className="badge preparar";
+  } else {
+    badge.textContent="Não priorizar"; badge.className="badge nao";
+  }
+}
+
+function saveCaseJustification(caseId) {
+  const campo = document.getElementById(caseId + "_justificativa");
+  if (campo) {
+    caseJustifications[caseId] = campo.value.trim();
+  }
+}
+
+function validateCaseEvaluation() {
+  /*
+   * A justificativa é opcional.
+   * A etapa pode prosseguir independentemente
+   * de o aluno ter preenchido os campos.
+   */
+  const alerta = document.getElementById("evaluationAlert");
+
+  if (alerta) {
+    alerta.classList.remove("show");
+  }
+
+  goToStep(5);
+}
+
+/* ===================== MATRIZ ===================== */
+function renderMatrix(){
+  const plot = document.getElementById("matrixPlot");
+  const legend = document.getElementById("matrixLegend");
+
+  plot.querySelectorAll(".dot").forEach(d=>d.remove());
+
+  const MARGIN = 8;
+  const RANGE = 100 - (MARGIN * 2);
+
+  legend.innerHTML = "";
+
+  casesData.forEach(caso=>{
+    const impactoEl = document.getElementById(`${caso.id}_impacto`);
+    const viabilidadeEl = document.getElementById(`${caso.id}_viabilidade`);
+
+    const impacto = parseInt(impactoEl?.value || 3);
+    const viabilidade = parseInt(viabilidadeEl?.value || 3);
+
+    const x = MARGIN + ((impacto - 1) / 4) * RANGE;
+    const y = MARGIN + (1 - (viabilidade - 1) / 4) * RANGE;
+
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    dot.style.left = x + "%";
+    dot.style.top = y + "%";
+    dot.title = `${caso.id} — ${caso.nome} — Impacto: ${impacto}, Viabilidade: ${viabilidade}`;
+    dot.textContent = caso.id;
+    plot.appendChild(dot);
+
+    const legendItem = document.createElement("span");
+    legendItem.innerHTML = `<span class="dot-mini">${caso.id}</span> ${caso.nome}`;
+    legend.appendChild(legendItem);
+  });
+}
+
+/* ===================== GOVERNANÇA ===================== */
+function renderGovernance() {
+  const c = document.getElementById("govContainer");
+
+  c.innerHTML = casesData.map(function (caso) {
+    const dados = govData[caso.id] || {};
+
+    return `
+      <div class="case-card">
+        <h3>${caso.id} — ${caso.nome}</h3>
+
+        <div class="gov-grid">
+
+          <div>
+            <label for="${caso.id}_resp">Responsável pela decisão</label>
+            <input
+              type="text"
+              id="${caso.id}_resp"
+              value="${dados.responsavel || ""}"
+              placeholder="Ex.: Gerente do projeto"
+              oninput="saveGov('${caso.id}')"
+            >
+          </div>
+
+          <div>
+            <label for="${caso.id}_valid">Quem valida a recomendação</label>
+            <input
+              type="text"
+              id="${caso.id}_valid"
+              value="${dados.validador || ""}"
+              placeholder="Ex.: PMO ou patrocinador"
+              oninput="saveGov('${caso.id}')"
+            >
+          </div>
+
+          <div>
+            <label for="${caso.id}_dados_sens">Dados sensíveis envolvidos?</label>
+            <select id="${caso.id}_dados_sens" onchange="saveGov('${caso.id}')">
+              <option value="Não" ${dados.dadosSensiveis === "Não" ? "selected" : ""}>Não</option>
+              <option value="Sim" ${dados.dadosSensiveis === "Sim" ? "selected" : ""}>Sim</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="${caso.id}_metrica">Métrica de sucesso</label>
+            <input
+              type="text"
+              id="${caso.id}_metrica"
+              value="${dados.metrica || ""}"
+              placeholder="Ex.: redução de atrasos"
+              oninput="saveGov('${caso.id}')"
+            >
+          </div>
+
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  casesData.forEach(function (caso) {
+    saveGov(caso.id);
+  });
+}
+
+function saveGov(caseId) {
+  const responsavel = document.getElementById(caseId + "_resp");
+  const validador = document.getElementById(caseId + "_valid");
+  const dadosSensiveis = document.getElementById(caseId + "_dados_sens");
+  const metrica = document.getElementById(caseId + "_metrica");
+
+  if (!responsavel || !validador || !dadosSensiveis || !metrica) {
+    return;
+  }
+
+  govData[caseId] = {
+    responsavel: responsavel.value.trim(),
+    validador: validador.value.trim(),
+    dadosSensiveis: dadosSensiveis.value,
+    metrica: metrica.value.trim()
+  };
+
+  updateBadge(caseId);
+}
+
+/* ===================== SELEÇÃO ===================== */
+function renderSelection() {
+  const casosSemGovernanca = casesData.filter(function (caso) {
+    const dados = govData[caso.id] || {};
+    return !dados.responsavel || !dados.validador || !dados.metrica;
+  });
+
+  if (casosSemGovernanca.length > 0) {
+    const nomes = casosSemGovernanca
+      .map(function (caso) { return caso.id; })
+      .join(", ");
+
+    alert(
+      "Complete a governança dos casos antes de continuar. " +
+      "Campos pendentes nos casos: " + nomes
+    );
+    return;
+  }
+
+  const c = document.getElementById("selectionContainer");
+
+  c.innerHTML = casesData.map(function (caso) {
+    return `
+      <div
+        class="sel-item ${selectedCases.includes(caso.id) ? "selected" : ""}"
+        id="sel_${caso.id}"
+        onclick="toggleSelection('${caso.id}')"
+      >
+        <strong>${caso.id}</strong>
+        <span>${caso.nome}</span>
+        <div style="margin-top:8px;font-size:12px;color:#8e2430;font-weight:800;">
+          Score: ${caseScores[caso.id] || 0}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  goToStep(7);
+}
+
+function toggleSelection(id){
+  const el = document.getElementById(`sel_${id}`);
+  if(selectedCases.includes(id)){
+    selectedCases = selectedCases.filter(c=>c!==id);
+    el.classList.remove("selected");
+  } else {
+    if(selectedCases.length>=3) return;
+    selectedCases.push(id);
+    el.classList.add("selected");
+  }
+}
+function checkSelection(){
+  if(selectedCases.length!==3){
+    document.getElementById("selectionAlert").classList.add("show");
+    return;
+  }
+  document.getElementById("selectionAlert").classList.remove("show");
+  goToStep(8);
+}
+
+/* ===================== SUGESTÃO AUTOMÁTICA DE RECOMENDAÇÃO ===================== */
+function buildSuggestedRecommendation() {
+  const casosSelecionados = casesData.filter(function (caso) {
+    return selectedCases.includes(caso.id);
+  });
+
+  if (casosSelecionados.length !== 3) {
+    return "Selecione os três casos prioritários na etapa anterior para gerar a sugestão.";
+  }
+
+  const nomesCasos = casosSelecionados
+    .map(function (caso) { return caso.id + " (" + caso.nome + ")"; })
+    .join(", ");
+
+  const paragrafoAbertura =
+    "Recomendo priorizar os casos " + nomesCasos +
+    ", com base na avaliação de impacto, viabilidade, disponibilidade de dados, controle de risco e valor potencial, " +
+    "conduzida na atividade de priorização de casos de uso de IA no PPPM.";
+
+  const paragrafosCasos = casosSelecionados.map(function (caso) {
+    const g = govData[caso.id] || {};
+    const score = caseScores[caso.id] || 0;
+
+    return (
+      "O caso " + caso.id + " — " + caso.nome + " obteve score ponderado de " +
+      score.toFixed(2) + ", com responsável pela decisão definido como " +
+      (g.responsavel || "a definir") + " e validação a cargo de " +
+      (g.validador || "a definir") + ". A métrica de sucesso estabelecida foi: " +
+      (g.metrica || "a definir") + "."
+    );
+  });
+
+  const paragrafoFechamento =
+    "A implementação dos três casos deverá ocorrer com validação humana em cada etapa crítica, " +
+    "responsáveis formalmente designados, registro das decisões tomadas e acompanhamento periódico " +
+    "das métricas de sucesso definidas, de modo a assegurar governança adequada e sustentar o valor gerado em escala.";
+
+  return [paragrafoAbertura]
+    .concat(paragrafosCasos)
+    .concat([paragrafoFechamento])
+    .join("\n\n");
+}
+
+function renderSuggestion() {
+  const suggestionText = document.getElementById("suggestionText");
+  const texto = buildSuggestedRecommendation();
+
+  suggestionText.textContent = texto;
+  suggestionText.dataset.currentSuggestion = texto;
+}
+
+function useSuggestion() {
+  const suggestionText = document.getElementById("suggestionText");
+  const campoRecomendacao = document.getElementById("recomendacaoTexto");
+
+  const jaTemTexto = campoRecomendacao.value.trim().length > 0;
+
+  if (jaTemTexto) {
+    const confirmar = confirm(
+      "O campo de recomendação já contém texto. Deseja substituir pelo texto sugerido?"
+    );
+
+    if (!confirmar) {
+      return;
+    }
+  }
+
+  campoRecomendacao.value = suggestionText.dataset.currentSuggestion || "";
+  campoRecomendacao.focus();
+}
+
+/* ===================== RELATÓRIO FINAL ===================== */
+function renderFinalReport(){
+  const recomendacao = document.getElementById("recomendacaoTexto").value || "Não informada.";
+  const quizScore = getQuizScore();
+  const dataAtual = new Date().toLocaleDateString("pt-BR");
+
+  let rows = casesData.map(caso=>{
+    const g = govData[caso.id] || {};
+    const govOk = g.responsavel && g.validador && g.metrica;
+    const score = caseScores[caso.id] || 0;
+    let classificacao = score>=3.5 && govOk ? "Fazer agora" : score>=3.5 ? "Preparar — governança pendente" : "Não priorizar";
+    return `<tr>
+      <td>${caso.id}</td><td>${caso.nome}</td>
+      <td>${score}</td><td>${classificacao}</td>
+      <td>${g.responsavel || "—"}</td><td>${g.validador || "—"}</td><td>${g.metrica || "—"}</td>
+    </tr>`;
+  }).join("");
+
+  document.getElementById("finalReport").innerHTML = `
+    <h2>Matriz de Priorização de Casos de Uso de IA no PPPM</h2>
+    <p class="meta-line"><strong>Aluno:</strong> ${alunoData.nome} &nbsp;|&nbsp; <strong>Turma:</strong> ${alunoData.turma || "—"} &nbsp;|&nbsp; <strong>Data:</strong> ${dataAtual}</p>
+    <p class="meta-line"><strong>Contexto:</strong> ${alunoData.contexto} &nbsp;|&nbsp; <strong>Empresa:</strong> ${alunoData.empresa || "—"}</p>
+    <p class="meta-line"><strong>Desempenho no quiz conceitual:</strong> ${quizScore} / ${quizData.length}</p>
+    <h3>Casos priorizados</h3>
+    <p class="meta-line">${selectedCases.join(", ")}</p>
+    <table class="report-table">
+      <thead><tr><th>ID</th><th>Caso</th><th>Score</th><th>Classificação</th><th>Responsável</th><th>Validação</th><th>Métrica</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <h3>Recomendação executiva</h3>
+    <p class="report-recomendacao">${recomendacao}</p>
+  `;
+  goToStep(9);
+}
+
+/* ===================== EXPORTAÇÃO CSV ===================== */
+function exportCSV(){
+  const safeName = (alunoData.nome||"aluno").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-");
+  let csv = "ID;Caso;Impacto;Viabilidade;Dados;Controle_de_risco;Valor;Score;Classificacao;Responsavel;Validador;Metrica\n";
+  casesData.forEach(caso=>{
+    const g = govData[caso.id] || {};
+    const govOk = g.responsavel && g.validador && g.metrica;
+    const score = caseScores[caso.id] || 0;
+    const classificacao = score>=3.5 && govOk ? "Fazer agora" : score>=3.5 ? "Preparar" : "Nao priorizar";
+    const vals = criterios.map(cr=>document.getElementById(`${caso.id}_${cr.key}`)?.value || "");
+    csv += `${caso.id};${caso.nome};${vals.join(";")};${score};${classificacao};${g.responsavel||""};${g.validador||""};${g.metrica||""}\n`;
+  });
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `matriz-priorizacao-${safeName}.csv`;
+  link.click();
+}
+</script>
+</body>
+</html>
