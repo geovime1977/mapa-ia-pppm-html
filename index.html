@@ -96,12 +96,13 @@
   .criteria-label{font-weight:700;font-size:13px;color:var(--ink);}
   .criteria-peso{font-size:11px;color:var(--muted);}
   .criteria-desc{font-size:12px;color:var(--muted);margin-bottom:8px;}
-  .criteria-scale{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px;font-size:11px;}
-  .criteria-scale-item{background:#f0eee7;padding:8px 10px;border-radius:6px;color:#59656d;}
-  .criteria-scale-item strong{display:block;color:var(--red);font-size:11px;margin-bottom:2px;}
+  .criteria-scale{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;font-size:12px;}
+  .criteria-scale-item{background:#f7f5ef;padding:10px 12px;border-radius:6px;color:#3d4a52;border-left:3px solid var(--red-light);}
+  .criteria-scale-item strong{display:block;color:var(--red);font-size:11px;margin-bottom:3px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;}
   .criteria-slider{margin-top:10px;display:grid;grid-template-columns:1fr 40px;gap:10px;align-items:center;}
   .criteria-value{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px;text-align:center;font-weight:800;font-size:14px;color:var(--red);}
-  .criteria-interp{font-size:11px;color:var(--muted);font-style:italic;margin-top:4px;min-height:14px;}
+  .criteria-interp{font-size:12px;color:var(--ink);font-style:italic;margin-top:8px;padding:8px 10px;background:var(--red-bg);border-radius:6px;min-height:14px;}
+  .criteria-interp::before{content:"Nota atual — ";font-weight:800;color:var(--red);font-style:normal;}
   .score-box{margin-top:16px;padding:14px;background:#f7f5ef;border-radius:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
   .score-box strong{color:var(--red);font-size:22px;}
   .badge{padding:5px 12px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;}
@@ -137,12 +138,23 @@
   .gov-status-bad{background:var(--red-bg);color:var(--red);border:1px solid var(--red-light);}
 
   /* Seleção 3 casos */
-  .selection-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px;}
-  .sel-item{border:2px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;transition:.15s;background:#fff;}
-  .sel-item:hover{border-color:var(--red-light);}
-  .sel-item.selected{border-color:var(--red);background:var(--red-bg);}
-  .sel-item strong{display:block;font-size:14px;margin-bottom:4px;color:var(--ink);}
-  .sel-item .sel-meta{font-size:12px;color:var(--muted);}
+  .selection-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px;}
+  .sel-item{border:2px solid var(--line);border-radius:10px;padding:16px;cursor:pointer;transition:.15s;background:#fff;position:relative;}
+  .sel-item:hover{border-color:var(--red-light);box-shadow:0 4px 10px rgba(0,0,0,.06);}
+  .sel-item.selected{border-color:var(--red);background:var(--red-bg);box-shadow:0 4px 12px rgba(142,36,48,.15);}
+  .sel-item.sel-dim{opacity:.6;background:#fafafa;}
+  .sel-item.sel-dim:hover{opacity:.85;}
+  .sel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .sel-letra{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;font-weight:800;font-size:15px;}
+  .sel-item.sel-dim .sel-letra{background:var(--gray);}
+  .sel-nome{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:8px;line-height:1.35;}
+  .sel-score{font-size:13px;color:var(--muted);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .sel-score strong{color:var(--red);font-size:16px;margin-left:4px;}
+  .sel-row{display:flex;justify-content:space-between;gap:8px;font-size:12px;margin-top:4px;}
+  .sel-label{color:var(--muted);}
+  .sel-val{color:var(--ink);text-align:right;font-weight:700;}
+  .sel-val.sel-ok{color:var(--green);}
+  .sel-val.sel-warn{color:var(--red);}
   .sel-counter{font-size:12px;color:var(--muted);margin-top:10px;}
 
   /* Recomendação */
@@ -168,6 +180,12 @@
   /* Tooltip abbr */
   abbr[title]{border-bottom:1.5px dotted var(--red);cursor:help;text-decoration:none;background:rgba(142,36,48,0.04);padding:0 2px;border-radius:2px;transition:background .15s;}
   abbr[title]:hover{background:var(--red-bg);}
+  .dim-scale-ref{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 4px;font-size:11px;color:var(--muted);}
+  .dim-scale-ref span{background:#f7f5ef;padding:6px 8px;border-radius:5px;border-left:2px solid var(--red-light);}
+  .dim-scale-ref strong{color:var(--red);font-weight:800;margin-right:4px;}
+  .dim-interp{font-size:12px;color:var(--ink);font-style:italic;margin-top:6px;padding:8px 10px;background:var(--red-bg);border-radius:6px;}
+  .dim-interp::before{content:"Nota atual — ";font-weight:800;color:var(--red);font-style:normal;}
+  @media (max-width:700px){.dim-scale-ref{grid-template-columns:repeat(2,1fr);}}
 
   footer{text-align:center;font-size:11px;color:var(--muted);padding:20px 0 0;letter-spacing:.3px;}
 
@@ -922,26 +940,47 @@ function continueFromSelection(){
    RENDERIZADORES
    ============================================================ */
 
+const INTERPRETACOES_DIMENSAO = {
+  0: "Inexistente — nenhum uso estruturado nesta dimensão.",
+  1: "Muito baixo — pontos isolados sem intenção clara.",
+  2: "Reativo — uso pontual, sem método nem governança.",
+  3: "Em desenvolvimento — primeiras iniciativas com aprendizado em curso.",
+  4: "Experimental — pilotos isolados rodando com resultados iniciais.",
+  5: "Bem encaminhado — práticas se consolidando, com métricas parciais.",
+  6: "Estruturado — governança, métricas e escala consolidadas."
+};
+
 function renderDiagnostico(){
   const cont = document.getElementById("dimContainer");
-  cont.innerHTML = DIMENSOES.map(d => `
+  cont.innerHTML = DIMENSOES.map(d => {
+    const nota = state.diagnostico[d.id]||0;
+    return `
     <div class="dim-block">
       <div class="dim-title">
         <span>${esc(d.rotulo)}</span>
-        <span class="dim-value" id="dimval_${d.id}">${state.diagnostico[d.id]||0}</span>
+        <span class="dim-value" id="dimval_${d.id}">${nota}</span>
       </div>
       <div class="dim-desc">${esc(d.descricao)} <em style="opacity:.7">· ${esc(d.referencia)}</em></div>
-      <input type="range" min="0" max="6" step="1" value="${state.diagnostico[d.id]||0}"
+      <div class="dim-scale-ref">
+        <span><strong>0</strong> Inexistente</span>
+        <span><strong>2</strong> Reativo</span>
+        <span><strong>4</strong> Experimental</span>
+        <span><strong>6</strong> Estruturado</span>
+      </div>
+      <input type="range" min="0" max="6" step="1" value="${nota}"
              id="dim_${d.id}" oninput="onDimChange('${d.id}', this.value)">
       <div class="range-scale"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+      <div class="dim-interp" id="diminterp_${d.id}">${esc(INTERPRETACOES_DIMENSAO[nota])}</div>
     </div>
-  `).join("");
+  `;}).join("");
   updateDiagResult();
 }
 
 function onDimChange(id, val){
-  state.diagnostico[id] = Number(val);
+  const n = Number(val);
+  state.diagnostico[id] = n;
   document.getElementById("dimval_"+id).textContent = val;
+  document.getElementById("diminterp_"+id).textContent = INTERPRETACOES_DIMENSAO[n];
   updateDiagResult();
 }
 
@@ -1167,16 +1206,49 @@ function updateGovStatus(caseId){
   el.innerHTML = `<span class="gov-status ${cls}">${esc(txt)}</span>`;
 }
 
+function letraId(i){ return String.fromCharCode(65 + i); }
+
+function govCompleta(caseId){
+  const g = state.governanca[caseId] || {};
+  return !!(g.responsavel && g.responsavel.trim()
+    && g.validador && g.validador.trim()
+    && g.metrica && g.metrica.trim());
+}
+
 function renderSelecao(){
   const cont = document.getElementById("selectionContainer");
-  cont.innerHTML = state.casos.map((c,i) => {
+  const casosOrdenados = state.casos
+    .map((c, i) => ({ caso: c, letra: letraId(i) }))
+    .sort((a, b) => scoreCase(b.caso) - scoreCase(a.caso));
+
+  cont.innerHTML = casosOrdenados.map(({ caso: c, letra }) => {
     const s = scoreCaseRounded(c);
     const f = faixaRanking(s);
+    const dono = (c.dono||"").trim();
+    const govOk = govCompleta(c.id);
     const sel = state.selecionados.includes(c.id) ? "selected" : "";
+    const recomendado = dono && s >= 3.0;
+    const dimClass = recomendado ? "" : "sel-dim";
+    const bloqueado = f.id === "fazer_agora" && !govOk;
+    const badgeCls = bloqueado ? "badge-bloqueado" : f.classe;
+    const badgeTxt = bloqueado ? "Preparar — gov. pendente" : f.rotulo;
+
     return `
-      <div class="sel-item ${sel}" data-caseid="${c.id}" onclick="toggleSelecao('${c.id}')">
-        <strong>${i+1}. ${esc(c.rotulo||"(sem nome)")}</strong>
-        <div class="sel-meta">Score ${s.toFixed(2)} · ${f.rotulo}</div>
+      <div class="sel-item ${sel} ${dimClass}" data-caseid="${c.id}" onclick="toggleSelecao('${c.id}')">
+        <div class="sel-head">
+          <span class="sel-letra">${letra}</span>
+          <span class="badge ${badgeCls}">${badgeTxt}</span>
+        </div>
+        <div class="sel-nome">${esc(c.rotulo||"(sem nome)")}</div>
+        <div class="sel-score">Score ponderado <strong>${s.toFixed(2)}</strong></div>
+        <div class="sel-row">
+          <span class="sel-label">Dono:</span>
+          <span class="sel-val ${dono?"":"sel-warn"}">${dono ? esc(dono) : "⚠ sem dono declarado"}</span>
+        </div>
+        <div class="sel-row">
+          <span class="sel-label">Governança:</span>
+          <span class="sel-val ${govOk?"sel-ok":"sel-warn"}">${govOk ? "✓ completa" : "⚠ pendente"}</span>
+        </div>
       </div>
     `;
   }).join("");
@@ -1199,7 +1271,7 @@ function toggleSelecao(id){
 
 function updateSelCounter(){
   const n = document.querySelectorAll("#selectionContainer .sel-item.selected").length;
-  document.getElementById("selCounter").textContent = `${n} de 3 selecionados.`;
+  document.getElementById("selCounter").textContent = `${n} de 3 selecionados. Ordenação por score decrescente.`;
 }
 
 function useSuggestion(){
