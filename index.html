@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mapa IA-PPPM · Eixo Estratégico</title>
+<title>BSBr — Formação de Consultores em IA aplicada ao PPPM · Aulas 1 e 2</title>
 <style>
   :root{
     --ink:#101820;
@@ -186,6 +186,18 @@
   .dim-interp{font-size:12px;color:var(--ink);font-style:italic;margin-top:6px;padding:8px 10px;background:var(--red-bg);border-radius:6px;}
   .dim-interp::before{content:"Nota atual — ";font-weight:800;color:var(--red);font-style:normal;}
   @media (max-width:700px){.dim-scale-ref{grid-template-columns:repeat(2,1fr);}}
+  .exemplos-box{margin-top:26px;padding:20px;background:var(--paper-2);border:1px solid var(--line);border-radius:12px;}
+  .exemplos-box h3{color:var(--red);font-size:15px;margin-top:0;margin-bottom:6px;}
+  .exemplos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px;}
+  .exemplo-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;transition:.15s;text-align:left;}
+  .exemplo-card:hover{border-color:var(--red);background:var(--red-bg);box-shadow:0 4px 12px rgba(142,36,48,.12);}
+  .exemplo-titulo{font-size:13px;font-weight:800;color:var(--red);margin-bottom:6px;letter-spacing:.2px;}
+  .exemplo-desc{font-size:12px;color:var(--muted);line-height:1.45;}
+  .carregar-progresso-box{margin-top:18px;padding:14px 16px;background:#fff;border:1px dashed var(--line);border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;}
+  .carregar-progresso-box strong{display:block;color:var(--ink);font-size:13px;margin-bottom:2px;}
+  .carregar-progresso-box span{color:var(--muted);font-size:12px;}
+  .carregar-progresso-box code{background:var(--paper);padding:1px 5px;border-radius:3px;font-size:11px;}
+  @media (max-width:700px){.carregar-progresso-box{flex-direction:column;align-items:stretch;}.carregar-progresso-box button{width:100%;}}
 
   footer{text-align:center;font-size:11px;color:var(--muted);padding:20px 0 0;letter-spacing:.3px;}
 
@@ -221,9 +233,9 @@
 <body>
 
 <header>
-  <span class="brand-eixo">Eixo Estratégico &middot; BSBr</span>
-  <h1>Mapa Inicial de Oportunidades de IA-PPPM &mdash; Aulas 1 e 2</h1>
-  <p class="subtitle">Formação de Consultores em IA aplicada ao PPPM &middot; Prof. Dr. José Bezerra</p>
+  <span class="brand-eixo">BSBr &middot; Formação de Consultores em IA aplicada ao PPPM</span>
+  <h1>Aulas 1 e 2</h1>
+  <p class="subtitle">Prof. Dr. José Bezerra</p>
 </header>
 
 <main>
@@ -232,7 +244,7 @@
     <div class="progress-label" id="progressLabel">Etapa 1 de 10</div>
   </div>
 
-  <!-- STEP 1: Identificação -->
+<!-- STEP 1: Identificação -->
   <section class="step active" data-step="1">
     <h2>1. Identificação</h2>
     <p class="hint">Preencha seus dados. Nada é enviado — o preenchimento fica no seu navegador.</p>
@@ -257,13 +269,26 @@
       </div>
     </div>
     <div class="alert" id="alertStep1">Nome e e-mail são obrigatórios.</div>
-    <div class="nav-buttons">
-      <div>
-        <button class="btn-ghost" onclick="importJSON()">Carregar progresso</button>
+
+    <div class="exemplos-box">
+      <h3>Exemplos prontos para explorar</h3>
+      <p class="hint">Prefere ver o app funcionando antes de preencher do zero? Carregue um dos 4 cenários pré-preenchidos — depois é só clicar em cada etapa para ver o resultado. Você pode editar tudo.</p>
+      <div class="exemplos-grid" id="exemplosGrid"></div>
+
+      <div class="carregar-progresso-box">
+        <div>
+          <strong>Já começou antes?</strong>
+          <span>Carregue um arquivo <code>.json</code> salvo em outra sessão.</span>
+        </div>
+        <button class="btn-secondary" onclick="importJSON()">📂 Carregar progresso</button>
         <input type="file" id="importFile" accept="application/json" style="display:none" onchange="handleImport(event)">
       </div>
+    </div>
+
+    <div class="nav-buttons">
+      <span></span>
       <div class="nav-right">
-        <button class="btn-primary" onclick="goToStep(2)">Iniciar &rarr;</button>
+        <button class="btn-primary" onclick="goToStep(2)">Iniciar do zero &rarr;</button>
       </div>
     </div>
   </section>
@@ -589,6 +614,11 @@ const GLOSSARIO = {
 };
 
 const TELEMETRIA_URL = ""; // opt-in; deixar vazio = botão oculto
+
+/* ============================================================
+   EXEMPLOS PRONTOS - dados adaptados dos exemplos v1.3 Streamlit
+   ============================================================ */
+const EXEMPLOS_PRONTOS = [{"slug":"pme_industrial","botao":"PME industrial · Nível 1","descricao":"Metalúrgica, 45 funcionários, sem PMO, dados em papel. 3 casos (1 sem dono).","dados":{"identificacao":{"nome":"Rafael Pinto","email":"","turma":"","empresa":"Metalurgica Sao Bento","cargo":"Diretor industrial","porte":"PME","contexto":"Projeto"},"diagnostico":{"estrategia_valor":2,"dados_processos":1,"casos_uso":2,"governanca_hitl":1,"beneficios_roi":3},"mapa":{"contexto":"Fabrica de pecas metalicas com 45 funcionarios em Contagem/MG.","dor":"Producao registra tudo em papel; nao tem indicador confiavel e diretoria toma decisao no achismo.","dados":"Cadernos de OS na fabrica, planilhas Excel do PCP, sistema legado de faturamento.","riscos":"Dados de cliente e preco de venda sao sensiveis; qualquer IA precisa passar por auditoria interna primeiro.","valor":"Ter numero de producao real ate as 8h do dia seguinte para tomar decisao de reprogramacao."},"casos":[{"id":"cd3aae1d","rotulo":"OCR de ordens de servico manuscritas","descricao":"Ler as OS preenchidas no chao de fabrica em papel e digitalizar em planilha.","dor":"Digitacao manual das OS consome 4h/dia do apontador e gera 15% de erros de dados.","dono":"Supervisor de producao","notas":{"impacto":4,"viabilidade":4,"dados":3,"risco":3,"valor":4}},{"id":"33f854a9","rotulo":"Previsao simples de demanda por SKU","descricao":"Modelo simples que projeta vendas dos proximos 3 meses por produto.","dor":"Compras hoje sao no feeling e sobra estoque de item errado.","dono":"Gerente comercial","notas":{"impacto":4,"viabilidade":2,"dados":2,"risco":3,"valor":4}},{"id":"c5d3d319","rotulo":"Chatbot institucional no site","descricao":"Bot que responde perguntas basicas sobre produtos e prazos.","dor":"Time comercial responde WhatsApp genericos e nao foca em fechar vendas.","dono":"","notas":{"impacto":2,"viabilidade":4,"dados":2,"risco":2,"valor":2}}],"governanca":{"cd3aae1d":{"responsavel":"Supervisor de producao","validador":"Supervisor de producao","dadosSensiveis":"Sim","metrica":""},"33f854a9":{"responsavel":"","validador":"","dadosSensiveis":"Não","metrica":""},"c5d3d319":{"responsavel":"","validador":"","dadosSensiveis":"Não","metrica":""}},"selecionados":[],"recomendacao_texto":""}},{"slug":"media_logistica","botao":"Logística · Nível 2","descricao":"Operadora logística com PMO ativo, 12 projetos. 5 casos cobrindo os 4 quadrantes.","dados":{"identificacao":{"nome":"Camila Fernandes","email":"","turma":"","empresa":"LogiSul Transportes","cargo":"Gerente de PMO","porte":"Media","contexto":"Portfólio"},"diagnostico":{"estrategia_valor":3,"dados_processos":3,"casos_uso":4,"governanca_hitl":3,"beneficios_roi":2},"mapa":{"contexto":"PMO de operadora logistica com 12 projetos ativos em transformacao digital.","dor":"Portfolio decidido sem criterio auditavel; comite pede transparencia trimestral.","dados":"Business cases, planilha ROI, matriz de risco, status reports Jira.","riscos":"Recomendacao errada realoca CAPEX; dados de clientes B2B; comite exige rastreabilidade.","valor":"Decisao auditavel de priorizacao trimestral com base em criterios uniformes."},"casos":[{"id":"2a266c5a","rotulo":"Relatorio executivo automatico de portfolio","descricao":"Pipeline que consome Jira + atas + risco e gera resumo executivo semanal.","dor":"Consolidacao do portfolio consome 2 dias e chega atrasada ao comite.","dono":"Diretor de PMO","notas":{"impacto":5,"viabilidade":5,"dados":4,"risco":4,"valor":5}},{"id":"1d74e04c","rotulo":"Priorizacao trimestral de portfolio com IA","descricao":"Score auditavel para ranquear projetos por impacto e risco a cada trimestre.","dor":"Priorizacao hoje e politica; alta gestao exige criterio auditavel.","dono":"Comite executivo","notas":{"impacto":5,"viabilidade":4,"dados":4,"risco":4,"valor":5}},{"id":"c05de842","rotulo":"Analise preditiva de atrasos em dependencias","descricao":"Modelo que aprende do historico para prever atraso critico antes do impacto.","dor":"Atrasos em dependencias so aparecem depois de estourar o cronograma.","dono":"Coordenacao de projetos","notas":{"impacto":5,"viabilidade":2,"dados":3,"risco":3,"valor":4}},{"id":"e7b20c7f","rotulo":"Chatbot interno de metodologia","descricao":"Assistente para PMs iniciantes com base em PMBOK + manual interno.","dor":"PMs iniciantes esperam dias por resposta de metodologia.","dono":"PMO corporativo","notas":{"impacto":2,"viabilidade":5,"dados":3,"risco":3,"valor":2}},{"id":"f7d0297d","rotulo":"Geracao automatica de EAP a partir de contrato","descricao":"Extrai escopo do contrato assinado e propoe EAP inicial em arvore.","dor":"EAP inicial de projeto novo consome 3 dias do PM em copiar-colar.","dono":"","notas":{"impacto":2,"viabilidade":2,"dados":2,"risco":2,"valor":2}}],"governanca":{"2a266c5a":{"responsavel":"Diretor de PMO","validador":"Diretor de PMO","dadosSensiveis":"Sim","metrica":"Publicado no SharePoint corporativo com timestamp"},"1d74e04c":{"responsavel":"Comite executivo","validador":"Comite executivo","dadosSensiveis":"Sim","metrica":"Ranking trimestral"},"c05de842":{"responsavel":"","validador":"","dadosSensiveis":"Sim","metrica":""},"e7b20c7f":{"responsavel":"","validador":"","dadosSensiveis":"Não","metrica":""},"f7d0297d":{"responsavel":"","validador":"","dadosSensiveis":"Não","metrica":""}},"selecionados":[],"recomendacao_texto":""}},{"slug":"grande_financeira","botao":"Banco · Nível 3","descricao":"Banco médio-porte com CoE de IA, 28 pilotos, HITL executivo consolidado.","dados":{"identificacao":{"nome":"Ricardo Almeida","email":"","turma":"","empresa":"Banco Alfa & Beta","cargo":"Head de transformacao digital","porte":"Grande","contexto":"Portfólio"},"diagnostico":{"estrategia_valor":5,"dados_processos":5,"casos_uso":5,"governanca_hitl":5,"beneficios_roi":5},"mapa":{"contexto":"Banco de medio porte com 3.500 funcionarios; area de IA governada por CoE proprio.","dor":"CoE de IA precisa demonstrar ROI dos 28 pilotos em curso e cortar 30% ate o final do ano.","dados":"Data lake proprio (Snowflake), feature store, catalogo de modelos MLflow, governanca de dados formal.","riscos":"BACEN + LGPD exigem rastreabilidade completa; qualquer decisao credito precisa de HITL executivo.","valor":"Reduzir custo/atendimento em 15% ao ano e liberar time senior para negocios de alto valor."},"casos":[{"id":"2cf31c80","rotulo":"Copiloto de analise de credito PME","descricao":"LLM que le balanco + demonstrativo do proponente e sugere rating preliminar.","dor":"Analista senior gasta 40min por proposta; time nao vence a demanda dos gerentes.","dono":"Superintendente de credito","notas":{"impacto":5,"viabilidade":4,"dados":5,"risco":4,"valor":5}},{"id":"b351d0d1","rotulo":"Deteccao de fraude em pagamentos instantaneos","descricao":"Modelo em tempo real que classifica risco de cada Pix acima de R$ 5.000.","dor":"Fraudes em Pix crescem 3% ao mes; hoje so ha regra deterministica.","dono":"Head de riscos","notas":{"impacto":5,"viabilidade":4,"dados":5,"risco":3,"valor":5}},{"id":"806e33bf","rotulo":"Sumarizacao automatica de call de M&A","descricao":"Transcricao + LLM para gerar ata executiva e lista de pendencias em 5min.","dor":"Notas de reuniao demoram 2 dias para virar ata circulada.","dono":"Diretor de M&A","notas":{"impacto":3,"viabilidade":5,"dados":4,"risco":4,"valor":3}},{"id":"0e5f3371","rotulo":"Robo-advisor de investimentos para varejo","descricao":"Recomendacao de carteira automatizada por perfil de risco declarado.","dor":"Assessores nao vencem a demanda do novo canal digital.","dono":"Chief Investment Officer","notas":{"impacto":5,"viabilidade":3,"dados":4,"risco":2,"valor":4}}],"governanca":{"2cf31c80":{"responsavel":"Superintendente de credito","validador":"Superintendente de credito","dadosSensiveis":"Sim","metrica":"Registrado no core bancario com log completo"},"b351d0d1":{"responsavel":"Head de riscos","validador":"Head de riscos","dadosSensiveis":"Sim","metrica":"Registrado no SIEM + relatorio mensal BACEN"},"806e33bf":{"responsavel":"Diretor de M&A","validador":"Diretor de M&A","dadosSensiveis":"Sim","metrica":"Publicado em pasta compartilhada com controle de versao"},"0e5f3371":{"responsavel":"Chief Investment Officer","validador":"Chief Investment Officer","dadosSensiveis":"Sim","metrica":"Carteira sugerida com racional"}},"selecionados":[],"recomendacao_texto":""}},{"slug":"orgao_publico","botao":"Prefeitura · Nível 2","descricao":"Prefeitura de Niterói, LGPD + TCE rigorosos, 4 casos (1 sem dono).","dados":{"identificacao":{"nome":"Marta Oliveira","email":"","turma":"","empresa":"Prefeitura Municipal de Niteroi","cargo":"Coordenadora de inovacao","porte":"Orgao publico","contexto":"Portfólio"},"diagnostico":{"estrategia_valor":3,"dados_processos":2,"casos_uso":2,"governanca_hitl":4,"beneficios_roi":3},"mapa":{"contexto":"Prefeitura de medio porte com secretarias de Administracao, Fazenda, Educacao e Saude conectadas.","dor":"Servidores gastam mais tempo em atividade meio (triagem, sumarizacao, resposta) do que em decisao publica.","dados":"Sistema de protocolo, base de licitacoes, portal do cidadao, indicadores educacionais SIMEC.","riscos":"LGPD do cidadao; Lei de Acesso a Informacao; TCE exige rastreabilidade total de qualquer decisao com IA.","valor":"Liberar 20% do tempo do servidor tecnico para decisao publica com base em evidencia."},"casos":[{"id":"4e2c110e","rotulo":"Triagem inicial de licitacoes recebidas","descricao":"LLM classifica propostas por objeto e sinaliza itens de risco tecnico para o parecerista.","dor":"Comissao de licitacao recebe 200 propostas/mes; triagem inicial demora 5 dias.","dono":"Secretario de administracao","notas":{"impacto":4,"viabilidade":3,"dados":3,"risco":2,"valor":4}},{"id":"2fb4f25a","rotulo":"Sumarizacao de processos administrativos para o gabinete","descricao":"Resumo executivo de processo administrativo com pontos de decisao destacados.","dor":"Prefeito recebe 40 processos/semana; nao consegue ler tudo e decide no achismo.","dono":"Chefe de gabinete","notas":{"impacto":5,"viabilidade":4,"dados":3,"risco":3,"valor":5}},{"id":"53bab3a4","rotulo":"Chatbot de servicos ao cidadao no portal","descricao":"Bot responde duvidas sobre IPTU, alvara, taxa de lixo etc a partir da base de FAQ.","dor":"Ouvidoria recebe 800 chamados/mes com duvidas repetitivas.","dono":"Diretor de comunicacao","notas":{"impacto":3,"viabilidade":5,"dados":4,"risco":3,"valor":3}},{"id":"26346933","rotulo":"Analise preditiva de evasao escolar","descricao":"Modelo identifica alunos com risco alto de evadir para intervencao pedagogica.","dor":"Evasao de 8% no ensino medio; escolas sabem tarde demais.","dono":"","notas":{"impacto":5,"viabilidade":2,"dados":3,"risco":2,"valor":4}}],"governanca":{"4e2c110e":{"responsavel":"Presidente da comissao de licitacao","validador":"Presidente da comissao de licitacao","dadosSensiveis":"Sim","metrica":"Ficha de triagem com pontos de risco"},"2fb4f25a":{"responsavel":"Chefe de gabinete","validador":"Chefe de gabinete","dadosSensiveis":"Sim","metrica":"Registrado no SEI como despacho auxiliar"},"53bab3a4":{"responsavel":"Diretor de comunicacao","validador":"Diretor de comunicacao","dadosSensiveis":"Não","metrica":""},"26346933":{"responsavel":"","validador":"","dadosSensiveis":"Não","metrica":""}},"selecionados":[],"recomendacao_texto":""}}];
 
 /* ============================================================
    ESTADO GLOBAL
@@ -1426,12 +1456,27 @@ function handleImport(evt){
 }
 
 function hidratarState(data){
-  // Aceita schema HTML v1.0 (identificacao/diagnostico/...) OU snapshot v1.3 Streamlit
-  if(data.identificacao) state.identificacao = {...state.identificacao, ...data.identificacao};
-  if(data.diagnostico)   state.diagnostico   = {...state.diagnostico,   ...data.diagnostico};
-  if(data.mapa)          state.mapa          = {...state.mapa,          ...data.mapa};
+  // Desembrulha envelope Streamlit v1.3 { app, versao, dados: {...} }
+  if(data && data.dados && typeof data.dados === "object") data = data.dados;
 
-  // v1.3 Streamlit usa 'casos_uso' e notas dentro do próprio caso
+  // Identificação: aceita 'identificacao' (HTML) OU 'contexto' (Streamlit v1.3)
+  if(data.identificacao){
+    state.identificacao = {...state.identificacao, ...data.identificacao};
+  } else if(data.contexto && typeof data.contexto === "object"){
+    const c = data.contexto;
+    state.identificacao = {
+      ...state.identificacao,
+      nome: c.nome || "",
+      empresa: c.empresa || "",
+      porte: c.porte || "",
+      cargo: c.cargo || "",
+      contexto: c.pmo_ativo ? "Portfólio" : "Projeto"
+    };
+  }
+
+  if(data.diagnostico) state.diagnostico = {...state.diagnostico, ...data.diagnostico};
+  if(data.mapa)        state.mapa        = {...state.mapa,        ...data.mapa};
+
   const casosOrigem = data.casos || data.casos_uso || [];
   if(casosOrigem.length){
     state.casos = casosOrigem.map(c => ({
@@ -1449,11 +1494,32 @@ function hidratarState(data){
       }
     }));
   }
-  if(data.governanca) state.governanca = data.governanca;
+
+  // Governança: aceita schema HTML {responsavel/validador/dadosSensiveis/metrica}
+  // OU schema Streamlit v1.3 {rastreabilidade/seguranca/aprovador/decisao_registrada}
+  if(data.governanca && typeof data.governanca === "object"){
+    const govNorm = {};
+    Object.entries(data.governanca).forEach(([cid, g]) => {
+      if(g && typeof g === "object" && ("rastreabilidade" in g || "seguranca" in g)){
+        const rastr = g.rastreabilidade || {};
+        const seg = g.seguranca || {};
+        const aprov = (g.aprovador||"").trim();
+        govNorm[cid] = {
+          responsavel: aprov,
+          validador: aprov,
+          dadosSensiveis: seg.dados_sensiveis ? "Sim" : "Não",
+          metrica: (rastr.registro || rastr.saida || "").trim()
+        };
+      } else {
+        govNorm[cid] = g;
+      }
+    });
+    state.governanca = govNorm;
+  }
+
   if(data.selecionados) state.selecionados = data.selecionados;
   if(data.recomendacao_texto) state.recomendacao_texto = data.recomendacao_texto;
 
-  // popular UI da etapa 1
   document.getElementById("idNome").value    = state.identificacao.nome    || "";
   document.getElementById("idEmail").value   = state.identificacao.email   || "";
   document.getElementById("idTurma").value   = state.identificacao.turma   || "";
@@ -1489,8 +1555,32 @@ function enviarTelemetria(){
 /* ============================================================
    INIT
    ============================================================ */
+function renderExemplos(){
+  const cont = document.getElementById("exemplosGrid");
+  if(!cont) return;
+  cont.innerHTML = EXEMPLOS_PRONTOS.map(ex => `
+    <button type="button" class="exemplo-card" onclick="carregarExemplo('${ex.slug}')">
+      <div class="exemplo-titulo">${esc(ex.botao)}</div>
+      <div class="exemplo-desc">${esc(ex.descricao)}</div>
+    </button>
+  `).join("");
+}
+
+function carregarExemplo(slug){
+  const ex = EXEMPLOS_PRONTOS.find(e => e.slug === slug);
+  if(!ex){ alert("Exemplo não encontrado."); return; }
+  const nomeAtual = (state.identificacao.nome||"").trim();
+  const casosAtuais = state.casos.length;
+  if(nomeAtual || casosAtuais > 0){
+    if(!confirm(`Isso substitui o que você já preencheu (${nomeAtual||"sem nome"}, ${casosAtuais} caso(s)). Continuar?`)) return;
+  }
+  hidratarState(ex.dados);
+  alert(`Exemplo "${ex.botao}" carregado. Clique em cada etapa (2, 3, 4...) para explorar.`);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   goToStep(1);
+  renderExemplos();
   enriquecerTooltipsPagina();
 });
 </script>
