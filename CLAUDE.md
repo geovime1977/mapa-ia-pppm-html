@@ -8,7 +8,7 @@ Sempre consulte as configurações, comandos e subagentes definidos em `~/.claud
 
 ## Sobre este projeto
 
-- **O que faz:** versão HTML standalone (arquivo único) do app `mapa-ia-pppm`. Cobre Aula 1 (diagnóstico 5D + Mapa 5 Blocos) e Aula 2 (priorização 5 critérios + matriz + governança + recomendação) do Prof. Bezerra. Cada aluno/consultor baixa o `.html` e abre no browser — funciona offline, sem servidor, em qualquer OS. Alternativa portátil à versão Streamlit.
+- **O que faz:** versão HTML standalone (arquivo único) do app `mapa-ia-pppm`. Cobre Aula 1 (diagnóstico 5D + Mapa 5 Blocos), Aula 2 (priorização 5 critérios + matriz + governança + recomendação) e Aula 3 (Business Case por caso com ROI/payback/cenários + 4 prompts executivos) do Prof. Bezerra. Cada aluno/consultor baixa o `.html` e abre no browser — funciona offline, sem servidor, em qualquer OS. Alternativa portátil à versão Streamlit.
 - **Stack:** HTML5 + CSS3 + JS puro (nenhuma dependência externa, nenhum CDN)
 - **Como rodar:** `open ~/projetos/mapa-ia-pppm-html/index.html`
 - **Status:** ativo

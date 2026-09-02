@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BSBr — Formação de Consultores em IA aplicada ao PPPM · Aulas 1 e 2</title>
+<title>BSBr — Formação de Consultores em IA aplicada ao PPPM · Aulas 1, 2 e 3</title>
 <style>
   :root{
     --ink:#101820;
@@ -58,7 +58,9 @@
   .nav-buttons{display:flex;justify-content:space-between;margin-top:26px;gap:10px;flex-wrap:wrap;}
   .nav-right{display:flex;gap:10px;flex-wrap:wrap;}
   .alert{background:var(--red-bg);border:1px solid var(--red-light);color:var(--red);padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;display:none;}
-  .alert.show{display:block;}
+  .alert.show{display:block;animation:shake 0.28s ease;}
+  input.invalid,select.invalid{border-color:var(--red)!important;box-shadow:0 0 0 2px rgba(142,36,48,0.15);}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
   .info-box{background:var(--green-bg);border-left:4px solid var(--green);border-radius:8px;padding:12px 16px;font-size:13px;color:#3f6350;margin-top:12px;}
   .warn-box{background:#fff5eb;border-left:4px solid var(--amber);border-radius:8px;padding:12px 16px;font-size:13px;color:#7a5610;margin-top:12px;}
   .card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
@@ -199,6 +201,49 @@
   .carregar-progresso-box code{background:var(--paper);padding:1px 5px;border-radius:3px;font-size:11px;}
   @media (max-width:700px){.carregar-progresso-box{flex-direction:column;align-items:stretch;}.carregar-progresso-box button{width:100%;}}
 
+  /* Business Case (Aula 3) */
+  .bc-card{border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px;background:#fff;}
+  .bc-card h4{font-size:14px;color:var(--ink);margin-bottom:6px;}
+  .bc-section{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);}
+  .bc-section-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--red);margin-bottom:8px;}
+  .bc-camada-header{font-size:12px;font-weight:700;color:var(--ink);margin:8px 0 4px;}
+  .bc-camada-desc{font-size:11px;color:var(--muted);margin-bottom:6px;}
+  .bc-grid-fin{display:grid;grid-template-columns:repeat(3,1fr) 2fr;gap:10px;}
+  .bc-grid-op{display:grid;grid-template-columns:repeat(3,1fr) 2fr;gap:10px;}
+  .bc-grid-estrat{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .bc-grid-custos{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+  .bc-grid-riscos{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .bc-risco-row{display:grid;grid-template-columns:120px 90px 1fr;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);}
+  .bc-risco-row:last-child{border-bottom:0;}
+  .bc-risco-label{font-size:12px;font-weight:700;color:var(--ink);}
+  .bc-mini-input{font-size:12px;padding:6px 8px;}
+  .bc-mini-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px;}
+  .bc-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px;}
+  .bc-metric{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;}
+  .bc-metric-label{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:4px;}
+  .bc-metric-value{font-size:18px;font-weight:800;color:var(--red);}
+  .bc-cenarios-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12px;}
+  .bc-cenarios-table th,.bc-cenarios-table td{border:1px solid var(--line);padding:6px 8px;text-align:right;}
+  .bc-cenarios-table th{background:var(--ink);color:#fff;font-weight:700;text-align:center;}
+  .bc-cenarios-table td:first-child{text-align:left;font-weight:700;color:var(--ink);}
+  .bc-decisao-alert{padding:10px 14px;border-radius:8px;margin-top:12px;font-size:12px;}
+  .bc-decisao-ok{background:var(--green-bg);color:#3f6350;border-left:4px solid var(--green);}
+  .bc-decisao-bad{background:var(--red-bg);color:var(--red);border-left:4px solid var(--red);}
+  .bc-decisao-info{background:#fff5eb;color:#7a5610;border-left:4px solid var(--amber);}
+  .bc-empty{background:var(--paper-2);border:1px dashed var(--line);border-radius:10px;padding:18px;text-align:center;color:var(--muted);font-size:13px;}
+  .prompt-card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px;}
+  .prompt-card h4{font-size:14px;color:var(--red);margin-bottom:4px;}
+  .prompt-card .prompt-when{font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .prompt-card .prompt-input{font-size:11px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-bottom:8px;}
+  .prompt-card .prompt-input strong{color:var(--red);text-transform:uppercase;font-size:10px;letter-spacing:.3px;}
+  .prompt-textarea{width:100%;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px;line-height:1.5;white-space:pre;overflow-x:auto;min-height:120px;color:var(--ink);}
+  .btn-copy{background:var(--ink);color:var(--paper);font-size:10px;padding:6px 12px;margin-top:8px;}
+  .btn-copy:hover{background:#2a3238;}
+  @media (max-width:700px){
+    .bc-grid-fin,.bc-grid-op,.bc-grid-custos,.bc-grid-riscos,.bc-grid-estrat,.bc-metrics{grid-template-columns:1fr 1fr;}
+    .bc-risco-row{grid-template-columns:1fr;}
+  }
+
   footer{text-align:center;font-size:11px;color:var(--muted);padding:20px 0 0;letter-spacing:.3px;}
 
   @media (max-width: 700px){
@@ -219,7 +264,7 @@
     header,.progress-wrap,.nav-buttons,#exportButtons,footer{display:none !important;}
     main{max-width:100%;padding:0 !important;margin:0 !important;}
     .step{display:none !important;border:none !important;padding:0 !important;margin:0 !important;box-shadow:none !important;}
-    .step[data-step="10"]{display:block !important;}
+    .step[data-step="12"]{display:block !important;}
     .final-report{border:none;padding:0 !important;}
     .final-report h2{font-size:16pt;}
     .final-report h3{font-size:11pt;margin-top:12pt;page-break-after:avoid;}
@@ -234,14 +279,14 @@
 
 <header>
   <span class="brand-eixo">BSBr &middot; Formação de Consultores em IA aplicada ao PPPM</span>
-  <h1>Aulas 1 e 2</h1>
+  <h1>Aulas 1, 2 e 3</h1>
   <p class="subtitle">Prof. Dr. José Bezerra</p>
 </header>
 
 <main>
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-label" id="progressLabel">Etapa 1 de 10</div>
+    <div class="progress-label" id="progressLabel">Etapa 1 de 12</div>
   </div>
 
 <!-- STEP 1: Identificação -->
@@ -288,7 +333,7 @@
     <div class="nav-buttons">
       <span></span>
       <div class="nav-right">
-        <button class="btn-primary" onclick="goToStep(2)">Iniciar do zero &rarr;</button>
+        <button class="btn-primary" onclick="goToStep(2)">Continuar &rarr;</button>
       </div>
     </div>
   </section>
@@ -401,15 +446,38 @@
     <textarea id="recomendacaoTexto" placeholder="Edite livremente o texto sugerido ou escreva sua própria recomendação..."></textarea>
     <div class="nav-buttons">
       <button class="btn-secondary" onclick="goToStep(8)">&larr; Voltar</button>
-      <button class="btn-primary" onclick="goToStep(10)">Gerar relatório &rarr;</button>
+      <button class="btn-primary" onclick="goToStep(10)">Business Case &rarr;</button>
     </div>
   </section>
 
-  <!-- STEP 10: Relatório final -->
+  <!-- STEP 10: Business Case (Aula 3) -->
   <section class="step" data-step="10">
+    <h2>10. Business Case preliminar</h2>
+    <p class="hint">Aula 3 &middot; Prof. Bezerra &mdash; para cada caso da etapa 4, monte a tese de valor que vai ao comitê. Nenhum método de PO entra na conta &mdash; só a matemática direta do slide 14 (ROI).</p>
+    <div class="info-box" id="bcPrincipio"></div>
+    <div id="bcContainer"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(9)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(11)">Prompts executivos &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 11: Prompts Executivos (Aula 3) -->
+  <section class="step" data-step="11">
+    <h2>11. Prompts executivos</h2>
+    <p class="hint">Aula 3 &middot; slides 20-23 &mdash; 4 prompts prontos para colar no ChatGPT/Claude durante a sessão com o cliente.</p>
+    <div id="promptsContainer"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(10)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(12)">Gerar relatório &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 12: Relatório final -->
+  <section class="step" data-step="12">
     <div class="final-report" id="finalReport"></div>
     <div class="nav-buttons" id="exportButtons">
-      <button class="btn-secondary" onclick="goToStep(9)">&larr; Voltar</button>
+      <button class="btn-secondary" onclick="goToStep(11)">&larr; Voltar</button>
       <div class="nav-right">
         <button class="btn-ghost" onclick="exportJSON()">Salvar JSON</button>
         <button class="btn-ghost" onclick="exportCSV()">Exportar CSV</button>
@@ -420,7 +488,7 @@
   </section>
 
   <footer>
-    Eixo Estratégico &middot; v1.0 HTML &middot; baseado na v1.3 Streamlit &middot; Prof. Dr. José Bezerra (BSBr)
+    Eixo Estratégico &middot; v1.1 HTML &middot; baseado na v1.4 Streamlit &middot; Aulas 1, 2 e 3 &middot; Prof. Dr. José Bezerra (BSBr)
   </footer>
 </main>
 
@@ -613,6 +681,80 @@ const GLOSSARIO = {
   }
 };
 
+/* ============================================================
+   AULA 3 - Business Case, ROI e Ferramentas (definições embutidas)
+   Copiado exato de data/business_case.json do projeto Streamlit v1.4
+   ============================================================ */
+const AULA3_CFG = {
+  principio: "O objetivo não é vender entusiasmo. É reduzir incerteza para a decisão.",
+  pergunta_executiva: "Com base nisso, devemos investir, ajustar, testar ou abandonar?",
+  camadas_beneficio: [
+    {id:"financeiro", rotulo:"Financeiro", descricao:"economia, receita adicional, margem, custo evitado, ROI",
+     campos:[
+       {id:"economia_anual", rotulo:"Economia anual estimada (R$)", tipo:"moeda"},
+       {id:"receita_adicional_anual", rotulo:"Receita adicional anual (R$)", tipo:"moeda"},
+       {id:"custo_evitado_anual", rotulo:"Custo evitado anual (R$)", tipo:"moeda"},
+       {id:"premissa", rotulo:"Premissa e fonte", tipo:"texto"}
+     ]},
+    {id:"operacional", rotulo:"Operacional", descricao:"produtividade, velocidade, qualidade, retrabalho, SLA",
+     campos:[
+       {id:"horas_economizadas_mes", rotulo:"Horas economizadas/mês", tipo:"numero"},
+       {id:"pessoas_impactadas", rotulo:"Pessoas impactadas", tipo:"numero"},
+       {id:"custo_hora", rotulo:"Custo por hora (R$)", tipo:"moeda"},
+       {id:"premissa", rotulo:"Premissa e fonte", tipo:"texto"}
+     ]},
+    {id:"estrategico", rotulo:"Estratégico", descricao:"decisão, risco, cliente, governança (qualitativo — não entra no ROI)",
+     campos:[
+       {id:"velocidade_decisao", rotulo:"Ganho de velocidade de decisão", tipo:"texto"},
+       {id:"stakeholders", rotulo:"Efeito em stakeholders", tipo:"texto"}
+     ]}
+  ],
+  camadas_custo: [
+    {id:"tecnologia", rotulo:"Tecnologia", descricao:"licenças, API, infraestrutura"},
+    {id:"dados", rotulo:"Dados", descricao:"limpeza, acesso, qualidade"},
+    {id:"pessoas", rotulo:"Pessoas", descricao:"treinamento, curadoria"},
+    {id:"mudanca", rotulo:"Mudança", descricao:"comunicação, adoção"},
+    {id:"governanca", rotulo:"Governança", descricao:"validação, auditoria"}
+  ],
+  riscos_catalogo: [
+    {id:"dados_sensiveis", rotulo:"Dados sensíveis", controle_padrao:"classificação, anonimização e acesso controlado"},
+    {id:"decisao_indevida", rotulo:"Decisão indevida (IA no lugar do humano)", controle_padrao:"HITL, critérios de validação e escalonamento"},
+    {id:"baixa_adocao", rotulo:"Baixa adoção", controle_padrao:"piloto, treinamento e comunicação com stakeholders"},
+    {id:"vies_erro", rotulo:"Viés ou erro do modelo", controle_padrao:"teste, amostra, auditoria e revisão humana"}
+  ],
+  janelas_analise_meses: [6, 12, 24],
+  cenarios_multiplicador: {pessimista: 0.5, base: 1.0, otimista: 1.3},
+  decisoes_possiveis: [
+    {id:"aprovar_piloto", rotulo:"Aprovar piloto", descricao:"Autorizar execução do piloto com escopo, indicadores e HITL definidos.", exige_bl_positivo:true},
+    {id:"ajustar", rotulo:"Ajustar escopo", descricao:"Solicitar refinamento antes de decidir.", exige_bl_positivo:false},
+    {id:"estudar", rotulo:"Estudar mais", descricao:"Postergar decisão; buscar evidência adicional.", exige_bl_positivo:false},
+    {id:"descartar", rotulo:"Descartar", descricao:"Recusar o caso — sem valor mensurável ou risco desproporcional.", exige_bl_positivo:false}
+  ],
+  cortes_bloqueio: {
+    aprovar_exige_bl_positivo: "Decisão 'Aprovar piloto' exige benefício líquido positivo no cenário base.",
+    aprovar_exige_dono: "Sem dono humano declarado, o caso não é aprovável (corte da Aula 2).",
+    aprovar_exige_controle: "Todo risco marcado como alto exige controle textual preenchido."
+  },
+  prompts_ferramenta: [
+    {id:"diagnostico_executivo", rotulo:"Prompt 1 — Diagnóstico executivo",
+     quando_usar:"Antes de escrever o business case — transforma dados dispersos em diagnóstico estruturado.",
+     entrada_recomendada:"Histórico de projetos, indicadores, entrevistas, atas, riscos e reclamações recorrentes.",
+     texto:"Atue como consultor sênior em PPPM. Com base nas informações abaixo, identifique:\n1) problema central;\n2) causas prováveis;\n3) indicadores afetados;\n4) impacto financeiro ou operacional;\n5) hipótese de caso de uso de IA;\n6) dados necessários para validar a hipótese.\nResponda em formato executivo."},
+    {id:"riscos_governanca", rotulo:"Prompt 2 — Riscos e governança",
+     quando_usar:"Depois de propor a solução de IA — pressiona o caso pela ótica de risco antes de assumir compromisso.",
+     entrada_recomendada:"Descrição do caso de uso, dados envolvidos, decisões afetadas.",
+     texto:"Avalie o caso de uso de IA descrito abaixo sob a ótica de riscos, ética, dados, segurança e governança. Classifique os riscos em baixo, médio e alto. Indique controles mínimos, ponto de intervenção humana, responsáveis, evidências de rastreabilidade e critérios para interromper o piloto."},
+    {id:"priorizacao_roi", rotulo:"Prompt 3 — Priorização e ROI",
+     quando_usar:"Quando houver 2+ casos e for preciso comparar antes de recomendar por onde começar.",
+     entrada_recomendada:"Lista de casos de uso candidatos com dor, solução e dados disponíveis.",
+     texto:"Compare os casos de uso abaixo usando os critérios: impacto, viabilidade, dados, risco e valor. Atribua notas de 1 a 5, explique cada nota, estime benefício, custo, ROI e payback quando houver dados suficientes. Ao final, recomende onde começar e quais premissas precisam ser validadas no piloto."},
+    {id:"plano_executivo", rotulo:"Prompt 4 — Plano executivo",
+     quando_usar:"Depois do business case preliminar — gera a peça de uma página que vai ao comitê.",
+     entrada_recomendada:"Business case preliminar preenchido (problema, solução, benefícios, custos, riscos, ROI).",
+     texto:"Com base neste business case preliminar, produza uma recomendação executiva de até uma página contendo: problema, solução de IA, benefícios esperados, investimento, ROI estimado, riscos, governança, cronograma do piloto, responsáveis, indicadores e decisão solicitada ao comitê."}
+  ]
+};
+
 const TELEMETRIA_URL = ""; // opt-in; deixar vazio = botão oculto
 
 /* ============================================================
@@ -629,11 +771,12 @@ let state = {
   mapa:{contexto:"", dor:"", dados:"", riscos:"", valor:""},
   casos:[],       // {id, rotulo, descricao, dor, dono, notas:{...}}
   governanca:{},  // {caso_id:{responsavel,validador,dados_sensiveis,metrica}}
+  business_cases:{}, // {caso_id: bcEstadoZerado(caso_id)} — Aula 3
   selecionados:[],
   recomendacao_texto:""
 };
 
-const TOTAL_STEPS = 10;
+const TOTAL_STEPS = 12;
 let caseCounter = 0;
 function nextCaseId(){ return "c" + Date.now().toString(36) + Math.floor(Math.random()*1000).toString(36); }
 
@@ -710,6 +853,140 @@ function nivelHitlPorImpacto(impacto){
     if(impacto >= n.min && impacto <= n.max) return n;
   }
   return NIVEIS_HITL[1];
+}
+
+/* ============================================================
+   AULA 3 - Motor Business Case (portado de src/business_case.py v1.4)
+   Zero dependência de PO — só a matemática direta do slide 14.
+   ============================================================ */
+function bcEstadoZerado(caseId){
+  const beneficios = {};
+  AULA3_CFG.camadas_beneficio.forEach(c => {
+    beneficios[c.id] = {};
+    c.campos.forEach(f => { beneficios[c.id][f.id] = (f.tipo === "texto" ? "" : 0); });
+  });
+  const custos = {};
+  AULA3_CFG.camadas_custo.forEach(c => { custos[c.id] = {valor:0, premissa:""}; });
+  const riscos = {};
+  AULA3_CFG.riscos_catalogo.forEach(r => { riscos[r.id] = {nivel:"baixo", controle:""}; });
+  return {
+    caso_id: caseId,
+    contexto: "", caso_uso: "", dados: "",
+    beneficios, custos, riscos,
+    janela_meses: 12, cenario: "base",
+    decisao: "", decisao_justificativa: ""
+  };
+}
+
+function _bcNum(v){ const n = Number(v); return isFinite(n) ? n : 0; }
+
+function bcBeneficioBrutoAnual(bc){
+  const fin = (bc.beneficios && bc.beneficios.financeiro) || {};
+  const finTotal = _bcNum(fin.economia_anual) + _bcNum(fin.receita_adicional_anual) + _bcNum(fin.custo_evitado_anual);
+  const op = (bc.beneficios && bc.beneficios.operacional) || {};
+  const horasAno = _bcNum(op.horas_economizadas_mes) * 12;
+  const opTotal = horasAno * _bcNum(op.pessoas_impactadas) * _bcNum(op.custo_hora);
+  return Math.round((finTotal + opTotal) * 100) / 100;
+}
+
+function bcInvestimentoTotal(bc){
+  let total = 0;
+  Object.values(bc.custos || {}).forEach(c => { total += _bcNum(c.valor); });
+  return Math.round(total * 100) / 100;
+}
+
+function bcBeneficioAjustado(bc, janelaMeses, cenario){
+  const jan = Number(janelaMeses != null ? janelaMeses : bc.janela_meses || 12);
+  const cen = String(cenario != null ? cenario : bc.cenario || "base");
+  const mult = Number(AULA3_CFG.cenarios_multiplicador[cen] || 1.0);
+  return Math.round(bcBeneficioBrutoAnual(bc) * (jan / 12) * mult * 100) / 100;
+}
+
+function bcBeneficioLiquido(bc, janelaMeses, cenario){
+  return Math.round((bcBeneficioAjustado(bc, janelaMeses, cenario) - bcInvestimentoTotal(bc)) * 100) / 100;
+}
+
+function bcROI(bc, janelaMeses, cenario){
+  const inv = bcInvestimentoTotal(bc);
+  if(inv <= 0) return null;
+  return Math.round(((bcBeneficioLiquido(bc, janelaMeses, cenario) / inv) * 100) * 10) / 10;
+}
+
+function bcPayback(bc, cenario){
+  const cen = String(cenario != null ? cenario : bc.cenario || "base");
+  const mult = Number(AULA3_CFG.cenarios_multiplicador[cen] || 1.0);
+  const brutoMensal = (bcBeneficioBrutoAnual(bc) / 12) * mult;
+  const inv = bcInvestimentoTotal(bc);
+  if(brutoMensal <= 0 || inv <= 0) return null;
+  return Math.round((inv / brutoMensal) * 10) / 10;
+}
+
+function bcCenariosCompletos(bc){
+  const out = {};
+  const janela = Number(bc.janela_meses || 12);
+  Object.keys(AULA3_CFG.cenarios_multiplicador).forEach(cen => {
+    out[cen] = {
+      beneficio_ajustado: bcBeneficioAjustado(bc, janela, cen),
+      beneficio_liquido: bcBeneficioLiquido(bc, janela, cen),
+      roi_percentual: bcROI(bc, janela, cen),
+      payback_meses: bcPayback(bc, cen)
+    };
+  });
+  return out;
+}
+
+function bcRiscosAltosSemControle(bc){
+  const catalogo = {};
+  AULA3_CFG.riscos_catalogo.forEach(r => { catalogo[r.id] = r.rotulo; });
+  const faltando = [];
+  Object.entries(bc.riscos || {}).forEach(([rid, r]) => {
+    if(String(r.nivel||"").toLowerCase() === "alto" && !String(r.controle||"").trim()){
+      faltando.push(catalogo[rid] || rid);
+    }
+  });
+  return faltando;
+}
+
+function bcPodeAprovar(bc, caso){
+  const pendencias = [];
+  if(bcBeneficioLiquido(bc, undefined, "base") <= 0){
+    pendencias.push(AULA3_CFG.cortes_bloqueio.aprovar_exige_bl_positivo);
+  }
+  if(!caso || !(caso.dono||"").trim()){
+    pendencias.push(AULA3_CFG.cortes_bloqueio.aprovar_exige_dono);
+  }
+  const faltando = bcRiscosAltosSemControle(bc);
+  if(faltando.length){
+    pendencias.push(AULA3_CFG.cortes_bloqueio.aprovar_exige_controle + " Sem controle: " + faltando.join(", ") + ".");
+  }
+  return {ok: pendencias.length === 0, pendencias};
+}
+
+function bcDecisaoPorId(did){
+  return AULA3_CFG.decisoes_possiveis.find(d => d.id === did) || null;
+}
+
+function bcResumo(bc, caso){
+  const podeAprov = bcPodeAprovar(bc, caso);
+  return {
+    caso_id: bc.caso_id,
+    rotulo: (caso && caso.rotulo) || "(sem rótulo)",
+    beneficio_bruto_anual: bcBeneficioBrutoAnual(bc),
+    investimento: bcInvestimentoTotal(bc),
+    beneficio_liquido_base: bcBeneficioLiquido(bc, undefined, "base"),
+    roi_base: bcROI(bc, undefined, "base"),
+    payback_base: bcPayback(bc, "base"),
+    cenarios: bcCenariosCompletos(bc),
+    decisao: bc.decisao || "",
+    decisao_rotulo: (bcDecisaoPorId(bc.decisao || "") || {}).rotulo || "",
+    pode_aprovar: podeAprov.ok,
+    pendencias_aprovacao: podeAprov.pendencias
+  };
+}
+
+function _bcFmtMoeda(v){
+  const n = Number(v || 0);
+  return "R$ " + n.toLocaleString("pt-BR", {minimumFractionDigits:0, maximumFractionDigits:0});
 }
 
 /* Escapa HTML mínimo */
@@ -827,8 +1104,18 @@ function gerarSugestaoRecomendacao(){
 function goToStep(n){
   if(n === 2){
     saveIdentificacao();
+    const inpNome = document.getElementById("idNome");
+    const inpEmail = document.getElementById("idEmail");
+    inpNome.classList.remove("invalid");
+    inpEmail.classList.remove("invalid");
     if(!state.identificacao.nome || !state.identificacao.email){
-      document.getElementById("alertStep1").classList.add("show");
+      const alerta = document.getElementById("alertStep1");
+      alerta.classList.add("show");
+      if(!state.identificacao.nome) inpNome.classList.add("invalid");
+      if(!state.identificacao.email) inpEmail.classList.add("invalid");
+      alerta.scrollIntoView({behavior:"smooth", block:"center"});
+      const faltante = !state.identificacao.nome ? inpNome : inpEmail;
+      setTimeout(() => faltante.focus({preventScroll:true}), 320);
       return;
     }
     document.getElementById("alertStep1").classList.remove("show");
@@ -869,7 +1156,15 @@ function goToStep(n){
     document.getElementById("recomendacaoTexto").value = state.recomendacao_texto;
   }
   if(n === 10){
-    state.recomendacao_texto = document.getElementById("recomendacaoTexto").value;
+    state.recomendacao_texto = document.getElementById("recomendacaoTexto") ? document.getElementById("recomendacaoTexto").value : state.recomendacao_texto;
+    renderBusinessCase();
+  }
+  if(n === 11){
+    saveBusinessCases();
+    renderPrompts();
+  }
+  if(n === 12){
+    saveBusinessCases();
     renderRelatorio();
     if(TELEMETRIA_URL){ document.getElementById("btnTelemetria").style.display = "inline-block"; }
   }
@@ -1304,6 +1599,250 @@ function updateSelCounter(){
   document.getElementById("selCounter").textContent = `${n} de 3 selecionados. Ordenação por score decrescente.`;
 }
 
+/* ============================================================
+   AULA 3 - Renderer + save do Business Case
+   ============================================================ */
+function renderBusinessCase(){
+  document.getElementById("bcPrincipio").innerHTML =
+    `<strong>Princípio:</strong> ${esc(AULA3_CFG.principio)}<br>` +
+    `<strong>Pergunta executiva:</strong> ${esc(AULA3_CFG.pergunta_executiva)}`;
+  const cont = document.getElementById("bcContainer");
+  if(!state.casos.length){
+    cont.innerHTML = `<div class="bc-empty">Cadastre casos na etapa 4 antes de montar o business case.</div>`;
+    return;
+  }
+  cont.innerHTML = state.casos.map((c, i) => renderBCCard(c, i)).join("");
+  state.casos.forEach(c => updateBCMetrics(c.id));
+}
+
+function _bcGet(cid){
+  if(!state.business_cases[cid]) state.business_cases[cid] = bcEstadoZerado(cid);
+  return state.business_cases[cid];
+}
+
+function renderBCCard(c, i){
+  const bc = _bcGet(c.id);
+  const opcoesJanela = AULA3_CFG.janelas_analise_meses
+    .map(m => `<option value="${m}" ${bc.janela_meses == m ? "selected":""}>${m} meses</option>`).join("");
+  const opcoesCen = ["pessimista","base","otimista"]
+    .map(cen => `<option value="${cen}" ${bc.cenario === cen ? "selected":""}>${cen}</option>`).join("");
+  const opcoesDec = [`<option value="">— selecionar —</option>`]
+    .concat(AULA3_CFG.decisoes_possiveis.map(d =>
+      `<option value="${d.id}" ${bc.decisao === d.id ? "selected":""}>${esc(d.rotulo)}</option>`
+    )).join("");
+
+  return `
+    <div class="bc-card" data-caseid="${c.id}">
+      <h4>Caso ${i+1}: ${esc(c.rotulo||"(sem nome)")}</h4>
+      <div class="hint" style="margin-bottom:10px">${esc(c.descricao||"")}</div>
+
+      <div class="bc-section">
+        <div class="bc-section-title">1-3 · Contexto, caso de uso, dados</div>
+        <label>Contexto e dor (com métrica)</label>
+        <textarea class="bc-contexto" placeholder='Ex: "32% dos projetos atrasaram 20+ dias, custo estimado R$ 480k"'>${esc(bc.contexto)}</textarea>
+        <label>Como a IA atuará (entrada → processamento → saída)</label>
+        <textarea class="bc-caso-uso" placeholder="Descreva sem cair no fascínio técnico">${esc(bc.caso_uso)}</textarea>
+        <label>Dados necessários e como serão validados</label>
+        <textarea class="bc-dados">${esc(bc.dados)}</textarea>
+      </div>
+
+      <div class="bc-section">
+        <div class="bc-section-title">4 · Benefícios em 3 camadas (slide 11)</div>
+        ${AULA3_CFG.camadas_beneficio.map(camada => `
+          <div class="bc-camada-header">${esc(camada.rotulo)}</div>
+          <div class="bc-camada-desc">${esc(camada.descricao)}</div>
+          <div class="bc-grid-${camada.id === "financeiro" ? "fin" : camada.id === "operacional" ? "op" : "estrat"}">
+            ${camada.campos.map(f => {
+              const val = bc.beneficios[camada.id][f.id];
+              const isText = f.tipo === "texto";
+              return `
+                <div>
+                  <div class="bc-mini-label">${esc(f.rotulo)}</div>
+                  <input type="${isText ? "text" : "number"}" ${isText ? "" : 'min="0" step="100"'}
+                         class="bc-mini-input bc-ben" data-camada="${camada.id}" data-campo="${f.id}"
+                         value="${esc(isText ? val : val || 0)}"
+                         onchange="onBCFieldChange('${c.id}')">
+                </div>`;
+            }).join("")}
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="bc-section">
+        <div class="bc-section-title">5 · Custos em 5 camadas (slide 12) — custo real quase nunca é só licença</div>
+        <div class="bc-grid-custos">
+          ${AULA3_CFG.camadas_custo.map(camada => `
+            <div>
+              <div class="bc-mini-label" title="${esc(camada.descricao)}">${esc(camada.rotulo)} (R$)</div>
+              <input type="number" min="0" step="100" class="bc-mini-input bc-custo-val" data-camada="${camada.id}"
+                     value="${bc.custos[camada.id].valor || 0}" onchange="onBCFieldChange('${c.id}')">
+              <input type="text" class="bc-mini-input bc-custo-prem" data-camada="${camada.id}"
+                     value="${esc(bc.custos[camada.id].premissa)}" placeholder="Premissa"
+                     style="margin-top:4px" onchange="onBCFieldChange('${c.id}')">
+            </div>
+          `).join("")}
+        </div>
+      </div>
+
+      <div class="bc-section">
+        <div class="bc-section-title">6 · Riscos e controles (slide 13) — valor sem controle não escala</div>
+        ${AULA3_CFG.riscos_catalogo.map(r => `
+          <div class="bc-risco-row">
+            <div class="bc-risco-label">${esc(r.rotulo)}</div>
+            <select class="bc-mini-input bc-risco-nivel" data-risco="${r.id}" onchange="onBCFieldChange('${c.id}')">
+              <option value="baixo" ${bc.riscos[r.id].nivel === "baixo" ? "selected":""}>Baixo</option>
+              <option value="medio" ${bc.riscos[r.id].nivel === "medio" ? "selected":""}>Médio</option>
+              <option value="alto"  ${bc.riscos[r.id].nivel === "alto"  ? "selected":""}>Alto</option>
+            </select>
+            <input type="text" class="bc-mini-input bc-risco-ctrl" data-risco="${r.id}"
+                   value="${esc(bc.riscos[r.id].controle)}" placeholder="Padrão: ${esc(r.controle_padrao)}"
+                   onchange="onBCFieldChange('${c.id}')">
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="bc-section">
+        <div class="bc-section-title">7 · ROI e cenários (slides 14-15)</div>
+        <div class="grid2">
+          <div><label>Janela de análise</label>
+            <select class="bc-janela" onchange="onBCFieldChange('${c.id}')">${opcoesJanela}</select>
+          </div>
+          <div><label>Cenário-alvo para a decisão</label>
+            <select class="bc-cenario" onchange="onBCFieldChange('${c.id}')">${opcoesCen}</select>
+          </div>
+        </div>
+
+        <div class="bc-metrics" id="bcmetrics_${c.id}"></div>
+
+        <table class="bc-cenarios-table" id="bccentab_${c.id}"></table>
+      </div>
+
+      <div class="bc-section">
+        <div class="bc-section-title">8 · Decisão solicitada ao comitê</div>
+        <label>Decisão</label>
+        <select class="bc-decisao" onchange="onBCFieldChange('${c.id}')">${opcoesDec}</select>
+        <label>Justificativa curta (vai para o PDF)</label>
+        <textarea class="bc-decisao-just">${esc(bc.decisao_justificativa)}</textarea>
+        <div id="bcstatus_${c.id}"></div>
+      </div>
+    </div>`;
+}
+
+function _bcSaveFromCard(caseId){
+  const card = document.querySelector(`.bc-card[data-caseid="${caseId}"]`);
+  if(!card) return null;
+  const bc = _bcGet(caseId);
+  bc.contexto = card.querySelector(".bc-contexto").value;
+  bc.caso_uso = card.querySelector(".bc-caso-uso").value;
+  bc.dados = card.querySelector(".bc-dados").value;
+  card.querySelectorAll(".bc-ben").forEach(el => {
+    const cam = el.dataset.camada, campo = el.dataset.campo;
+    bc.beneficios[cam][campo] = el.type === "number" ? Number(el.value || 0) : el.value;
+  });
+  card.querySelectorAll(".bc-custo-val").forEach(el => {
+    bc.custos[el.dataset.camada].valor = Number(el.value || 0);
+  });
+  card.querySelectorAll(".bc-custo-prem").forEach(el => {
+    bc.custos[el.dataset.camada].premissa = el.value;
+  });
+  card.querySelectorAll(".bc-risco-nivel").forEach(el => {
+    bc.riscos[el.dataset.risco].nivel = el.value;
+  });
+  card.querySelectorAll(".bc-risco-ctrl").forEach(el => {
+    bc.riscos[el.dataset.risco].controle = el.value;
+  });
+  bc.janela_meses = Number(card.querySelector(".bc-janela").value);
+  bc.cenario = card.querySelector(".bc-cenario").value;
+  bc.decisao = card.querySelector(".bc-decisao").value;
+  bc.decisao_justificativa = card.querySelector(".bc-decisao-just").value;
+  return bc;
+}
+
+function onBCFieldChange(caseId){
+  _bcSaveFromCard(caseId);
+  updateBCMetrics(caseId);
+}
+
+function updateBCMetrics(caseId){
+  const caso = state.casos.find(c => c.id === caseId);
+  const bc = state.business_cases[caseId];
+  if(!caso || !bc) return;
+  const r = bcResumo(bc, caso);
+  const box = document.getElementById(`bcmetrics_${caseId}`);
+  if(box){
+    box.innerHTML = `
+      <div class="bc-metric"><div class="bc-metric-label">Investimento</div><div class="bc-metric-value">${_bcFmtMoeda(r.investimento)}</div></div>
+      <div class="bc-metric"><div class="bc-metric-label">Benefício bruto/ano</div><div class="bc-metric-value">${_bcFmtMoeda(r.beneficio_bruto_anual)}</div></div>
+      <div class="bc-metric"><div class="bc-metric-label">ROI base (${bc.janela_meses}m)</div><div class="bc-metric-value">${r.roi_base != null ? r.roi_base + "%" : "—"}</div></div>
+      <div class="bc-metric"><div class="bc-metric-label">Payback</div><div class="bc-metric-value">${r.payback_base != null ? r.payback_base + " m" : "—"}</div></div>`;
+  }
+  const tab = document.getElementById(`bccentab_${caseId}`);
+  if(tab){
+    tab.innerHTML = `
+      <thead><tr><th>Cenário</th><th>Benefício líquido</th><th>ROI %</th><th>Payback</th></tr></thead>
+      <tbody>
+        ${["pessimista","base","otimista"].map(cen => {
+          const info = r.cenarios[cen] || {};
+          return `<tr>
+            <td>${cen.charAt(0).toUpperCase()+cen.slice(1)}</td>
+            <td>${_bcFmtMoeda(info.beneficio_liquido || 0)}</td>
+            <td>${info.roi_percentual != null ? info.roi_percentual + "%" : "—"}</td>
+            <td>${info.payback_meses != null ? info.payback_meses + " m" : "—"}</td>
+          </tr>`;
+        }).join("")}
+      </tbody>`;
+  }
+  const status = document.getElementById(`bcstatus_${caseId}`);
+  if(status){
+    if(bc.decisao === "aprovar_piloto" && !r.pode_aprovar){
+      status.innerHTML = `<div class="bc-decisao-alert bc-decisao-bad">
+        <strong>Decisão bloqueada.</strong> Pendências:<br>&bull; ${r.pendencias_aprovacao.map(esc).join("<br>&bull; ")}
+      </div>`;
+    } else if(bc.decisao && bc.decisao !== "aprovar_piloto"){
+      const d = bcDecisaoPorId(bc.decisao);
+      status.innerHTML = `<div class="bc-decisao-alert bc-decisao-info"><strong>Decisão:</strong> ${esc(d ? d.descricao : "")}</div>`;
+    } else if(r.pode_aprovar){
+      status.innerHTML = `<div class="bc-decisao-alert bc-decisao-ok"><strong>Passa nos 3 cortes.</strong> Decisão "Aprovar piloto" está liberada.</div>`;
+    } else {
+      status.innerHTML = "";
+    }
+  }
+}
+
+function saveBusinessCases(){
+  document.querySelectorAll("#bcContainer .bc-card").forEach(card => {
+    _bcSaveFromCard(card.dataset.caseid);
+  });
+}
+
+/* ============================================================
+   AULA 3 - Prompts Executivos
+   ============================================================ */
+function renderPrompts(){
+  const cont = document.getElementById("promptsContainer");
+  cont.innerHTML = AULA3_CFG.prompts_ferramenta.map((p, i) => `
+    <div class="prompt-card">
+      <h4>${esc(p.rotulo)}</h4>
+      <div class="prompt-when">${esc(p.quando_usar)}</div>
+      <div class="prompt-input"><strong>Entrada recomendada:</strong> ${esc(p.entrada_recomendada)}</div>
+      <textarea class="prompt-textarea" id="prompt_${i}" readonly>${esc(p.texto)}</textarea>
+      <button class="btn-copy" onclick="copiarPrompt(${i}, this)">Copiar prompt</button>
+    </div>
+  `).join("");
+}
+
+function copiarPrompt(i, btn){
+  const ta = document.getElementById(`prompt_${i}`);
+  if(!ta) return;
+  ta.select();
+  try {
+    navigator.clipboard ? navigator.clipboard.writeText(ta.value) : document.execCommand("copy");
+    const original = btn.textContent;
+    btn.textContent = "✓ Copiado";
+    setTimeout(() => { btn.textContent = original; }, 1500);
+  } catch(e){ alert("Falha ao copiar. Selecione o texto manualmente."); }
+}
+
 function useSuggestion(){
   const sug = gerarSugestaoRecomendacao();
   document.getElementById("recomendacaoTexto").value = sug;
@@ -1385,10 +1924,55 @@ function renderRelatorio(){
     <h3>Recomendação executiva</h3>
     <div class="report-recomendacao">${aplicarTooltips(rec)}</div>
 
+    ${renderRelatorioBCs()}
+
     <div class="meta-line" style="margin-top:18px;font-size:11px;color:#87939b">
-      Eixo Estratégico · Mapa IA-PPPM v1.0 HTML · baseado na v1.3 Streamlit · Aulas 1 e 2 (Prof. Dr. José Bezerra, BSBr).
+      Eixo Estratégico · Mapa IA-PPPM v1.1 HTML · baseado na v1.4 Streamlit · Aulas 1, 2 e 3 (Prof. Dr. José Bezerra, BSBr).
     </div>
   `;
+}
+
+function renderRelatorioBCs(){
+  const casosComBC = state.casos.filter(c => {
+    const bc = state.business_cases[c.id];
+    if(!bc) return false;
+    return bcInvestimentoTotal(bc) > 0 || bcBeneficioBrutoAnual(bc) > 0 || (bc.contexto||"").trim() || (bc.decisao||"").trim();
+  });
+  if(casosComBC.length === 0) return "";
+  const secoes = casosComBC.map(c => {
+    const bc = state.business_cases[c.id];
+    const r = bcResumo(bc, c);
+    const alerta = (bc.decisao === "aprovar_piloto" && !r.pode_aprovar)
+      ? `<div class="bc-decisao-alert bc-decisao-bad" style="margin-top:6px"><strong>Atenção:</strong> decisão "Aprovar piloto" marcada mas não passa nos cortes: ${r.pendencias_aprovacao.map(esc).join(" · ")}</div>`
+      : "";
+    return `
+      <div style="margin-top:12px;padding:12px;background:var(--paper-2);border:1px solid var(--line);border-radius:8px">
+        <strong style="color:var(--red);text-transform:uppercase;font-size:11px;letter-spacing:.4px">${esc(r.rotulo)}</strong>
+        <table class="report-table" style="margin-top:8px">
+          <tbody>
+            <tr><th style="width:180px">Contexto e dor</th><td>${esc((bc.contexto||"—").slice(0,400))}</td></tr>
+            <tr><th>Caso de uso de IA</th><td>${esc((bc.caso_uso||"—").slice(0,400))}</td></tr>
+            <tr><th>Dados necessários</th><td>${esc((bc.dados||"—").slice(0,400))}</td></tr>
+            <tr><th>Investimento total</th><td>${_bcFmtMoeda(r.investimento)}</td></tr>
+            <tr><th>Benefício bruto/ano</th><td>${_bcFmtMoeda(r.beneficio_bruto_anual)}</td></tr>
+            <tr><th>Cenário base (${bc.janela_meses||12} m)</th><td>BL: ${_bcFmtMoeda(r.beneficio_liquido_base)} · ROI: ${r.roi_base != null ? r.roi_base + "%" : "—"}</td></tr>
+            <tr><th>Payback</th><td>${r.payback_base != null ? r.payback_base + " meses" : "—"}</td></tr>
+            <tr><th>Decisão solicitada</th><td>${esc(r.decisao_rotulo || "— não preenchida")}</td></tr>
+          </tbody>
+        </table>
+        <table class="report-table" style="margin-top:6px">
+          <thead><tr><th>Cenário</th><th>Benefício líquido</th><th>ROI %</th><th>Payback</th></tr></thead>
+          <tbody>
+            ${["pessimista","base","otimista"].map(cen => {
+              const info = r.cenarios[cen] || {};
+              return `<tr><td>${cen.charAt(0).toUpperCase()+cen.slice(1)}</td><td>${_bcFmtMoeda(info.beneficio_liquido||0)}</td><td>${info.roi_percentual != null ? info.roi_percentual+"%" : "—"}</td><td>${info.payback_meses != null ? info.payback_meses+" m" : "—"}</td></tr>`;
+            }).join("")}
+          </tbody>
+        </table>
+        ${alerta}
+      </div>`;
+  }).join("");
+  return `<h3>Business Cases preliminares (Aula 3)</h3>${secoes}`;
 }
 
 /* ============================================================
@@ -1396,6 +1980,7 @@ function renderRelatorio(){
    ============================================================ */
 function exportJSON(){
   saveIdentificacao(); saveDiagnostico(); saveMapa(); saveCases(); saveNotas(); saveGovernanca(); saveSelecionados();
+  saveBusinessCases();
   state.recomendacao_texto = document.getElementById("recomendacaoTexto") ? document.getElementById("recomendacaoTexto").value : state.recomendacao_texto;
   const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
   const url = URL.createObjectURL(blob);
@@ -1519,6 +2104,31 @@ function hidratarState(data){
 
   if(data.selecionados) state.selecionados = data.selecionados;
   if(data.recomendacao_texto) state.recomendacao_texto = data.recomendacao_texto;
+
+  // Business cases (Aula 3) — compatível com Streamlit v1.4 e HTML v1.1
+  if(data.business_cases && typeof data.business_cases === "object"){
+    const bcNorm = {};
+    Object.entries(data.business_cases).forEach(([cid, bc]) => {
+      const zerado = bcEstadoZerado(cid);
+      // merge campos escalares
+      ["contexto","caso_uso","dados","cenario","decisao","decisao_justificativa"].forEach(k => {
+        if(bc[k] != null) zerado[k] = bc[k];
+      });
+      if(bc.janela_meses != null) zerado.janela_meses = Number(bc.janela_meses);
+      // beneficios / custos / riscos — respeita estrutura já zerada
+      if(bc.beneficios) Object.entries(bc.beneficios).forEach(([cam, campos]) => {
+        if(zerado.beneficios[cam]) Object.assign(zerado.beneficios[cam], campos);
+      });
+      if(bc.custos) Object.entries(bc.custos).forEach(([cam, dados]) => {
+        if(zerado.custos[cam]) Object.assign(zerado.custos[cam], dados);
+      });
+      if(bc.riscos) Object.entries(bc.riscos).forEach(([rid, dados]) => {
+        if(zerado.riscos[rid]) Object.assign(zerado.riscos[rid], dados);
+      });
+      bcNorm[cid] = zerado;
+    });
+    state.business_cases = bcNorm;
+  }
 
   document.getElementById("idNome").value    = state.identificacao.nome    || "";
   document.getElementById("idEmail").value   = state.identificacao.email   || "";
