@@ -502,7 +502,10 @@
       <strong>Impacto:</strong> avalie prazo, custo e escopo separadamente e registre a <strong>maior</strong> nota.
       Um risco de prazo 2 mas custo 5 é um risco 5.<br>
       A severidade <strong>não escolhe a resposta por você</strong> — ela indica urgência, não estratégia.
-      O app apenas aponta combinações que o comitê costuma questionar.
+      O app apenas aponta combinações que o comitê costuma questionar.<br>
+      <strong>Para escolher a resposta:</strong> pode acontecer? (se não pode, <em>evitar</em>) ·
+      eu controlo a causa? (se sim, <em>mitigar</em>; se não, <em>transferir</em>) ·
+      agir custa mais que o dano? (se sim, <em>aceitar</em> com monitoramento).
     </div>
     <p class="hint" style="margin-top:-8px">Escalas e faixas seguem o método da ferramenta <a href="https://filipetb.github.io/riscos-pppm/" target="_blank" rel="noopener">riscos-pppm</a>, de Filipe TB, publicada sob licença MIT e apresentada na turma.</p>
     <div id="riscoContainer"></div>
@@ -2408,11 +2411,17 @@ const RISCO_CFG = {
   exige_gatilho_a_partir_de: 15
 };
 
+// A escolha da resposta nao vem da severidade, e sim de duas perguntas: quem
+// controla a causa, e quanto custa agir diante do dano esperado.
 const RISCO_RESPOSTAS = [
-  {id:"evitar",     rotulo:"Evitar — mudar o plano para eliminar a causa"},
-  {id:"mitigar",    rotulo:"Mitigar — reduzir probabilidade ou impacto"},
-  {id:"transferir", rotulo:"Transferir — contrato, seguro ou terceiro"},
-  {id:"aceitar",    rotulo:"Aceitar — assumir e monitorar"}
+  {id:"evitar",     rotulo:"Evitar — mudar o plano para eliminar a causa",
+   ancora:"Use quando o risco e inaceitavel: nao pode acontecer em hipotese alguma. Muda-se o plano ate a causa desaparecer."},
+  {id:"mitigar",    rotulo:"Mitigar — reduzir probabilidade ou impacto",
+   ancora:"Use quando voce controla a causa e agir custa menos que o dano esperado. E o caso mais comum."},
+  {id:"transferir", rotulo:"Transferir — contrato, seguro ou terceiro",
+   ancora:"O risco continua existindo; muda quem paga. Use quando um terceiro absorve melhor que voce."},
+  {id:"aceitar",    rotulo:"Aceitar — assumir e monitorar",
+   ancora:"Use quando o custo de agir supera o dano esperado. E decisao economica, nao omissao: exige justificativa e monitoramento."}
 ];
 const RISCO_CATEGORIAS = ["Dados", "Tecnologia", "Pessoas e adoção", "Governança e compliance", "Fornecedor", "Orçamento", "Prazo"];
 
@@ -2433,7 +2442,9 @@ function setRisco(id, campo, valor, numerico){
   const r = state.riscos.find(function(x){ return x.id === id; });
   if(!r) return;
   r[campo] = numerico ? (parseInt(valor, 10) || 0) : valor;
-  renderMatrizRiscos();
+  // campos que mudam a ancora exibida exigem redesenhar o card
+  if(campo === "resposta" || campo === "probabilidade" || campo === "impacto") renderRiscos();
+  else renderMatrizRiscos();
   salvarLocal();
 }
 function severidade(r){ return (r.probabilidade || 0) * (r.impacto || 0); }
@@ -2472,6 +2483,8 @@ function renderRiscos(){
     const s = severidade(r); const f = faixaRisco(s);
     const cats = RISCO_CATEGORIAS.map(function(k){ return '<option'+(r.categoria===k?' selected':'')+'>'+k+'</option>'; }).join("");
     const resp = RISCO_RESPOSTAS.map(function(x){ return '<option value="'+x.id+'"'+(r.resposta===x.id?' selected':'')+'>'+x.rotulo+'</option>'; }).join("");
+    const respAtual = RISCO_RESPOSTAS.find(function(x){ return x.id === r.resposta; });
+    const respDica = respAtual ? '<div class="hint" style="margin-top:4px">' + escapeHtmlLocal(respAtual.ancora) + '</div>' : "";
     return '<div class="case-card">' +
       '<div class="case-head"><span class="badge-sev '+f.classe+'">'+f.rotulo+' · '+s+'</span>' +
       '<button class="btn-remove-case" onclick="removeRisco(\''+r.id+'\')">remover</button></div>' +
@@ -2479,7 +2492,7 @@ function renderRiscos(){
       '<label>Categoria</label><select onchange="setRisco(\''+r.id+'\',\'categoria\',this.value,false)">'+cats+'</select>' +
       '<label>Probabilidade (1–5)</label>'+selNum(r.id,"probabilidade",r.probabilidade) +
       '<label>Impacto (1–5)</label>'+selNum(r.id,"impacto",r.impacto) +
-      '<label>Resposta</label><select onchange="setRisco(\''+r.id+'\',\'resposta\',this.value,false)">'+resp+'</select>' +
+      '<label>Resposta</label><select onchange="setRisco(\''+r.id+'\',\'resposta\',this.value,false)">'+resp+'</select>' + respDica +
       '<label>Dono</label><input type="text" value="'+escapeAttr(r.dono)+'" oninput="setRisco(\''+r.id+'\',\'dono\',this.value,false)">' +
       '<label>Gatilho — o que indica que o risco se materializou</label><input type="text" value="'+escapeAttr(r.gatilho)+'" oninput="setRisco(\''+r.id+'\',\'gatilho\',this.value,false)">' +
       '<label>Ação acordada</label><input type="text" value="'+escapeAttr(r.acao)+'" oninput="setRisco(\''+r.id+'\',\'acao\',this.value,false)">' +

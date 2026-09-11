@@ -695,14 +695,43 @@ Fazer média mental é o erro que mais subestima risco concentrado.
 risco sem gatilho não é monitorado — ninguém sabe dizer se ele se materializou.
 O app alerta quando há risco de severidade 5 ou mais sem dono definido.
 
-### Respostas possíveis
+### Respostas possíveis — e como escolher
 
-| Resposta | Quando usar |
-|---|---|
-| **Evitar** | Mudar o plano para eliminar a causa. Use quando o risco é inaceitável |
-| **Mitigar** | Reduzir probabilidade ou impacto. O caso mais comum |
-| **Transferir** | Contrato, seguro ou terceiro assume. Não elimina, realoca |
-| **Aceitar** | Assumir e monitorar. Exige justificativa em severidade média ou alta |
+A resposta **não vem da severidade**. Ela vem de duas perguntas: *quem controla a
+causa* e *quanto custa agir diante do dano esperado*.
+
+| Resposta | O que faz | Quando cabe |
+|---|---|---|
+| **Evitar** | elimina a causa, mudando o plano | o risco é inaceitável — não pode acontecer de jeito nenhum |
+| **Mitigar** | reduz a probabilidade ou o impacto | você controla a causa e agir custa menos que o dano |
+| **Transferir** | o risco continua; muda quem paga | contrato, seguro, fornecedor — um terceiro absorve melhor |
+| **Aceitar** | monitora e segue | o custo de agir supera o dano esperado |
+
+Três perguntas resolvem na prática:
+
+1. **Pode acontecer?** Se a resposta for "não pode, em hipótese alguma" — dado de
+   saúde vazando, perda de licença — é **evitar**.
+2. **Eu controlo a causa?** Se sim, **mitigar**. Se depende de fornecedor,
+   regulador ou câmbio, mitigar não funciona: sobra **transferir** ou **evitar**.
+3. **Agir custa mais que o dano?** Se sim, **aceitar** é a resposta racional, não
+   preguiça. Gastar R$ 100 mil para evitar dano esperado de R$ 10 mil destrói valor.
+
+Cada opção do seletor mostra a âncora correspondente na tela.
+
+**Exemplo prático** (construtora, no `exemplos/`): base de medição sem padrão é
+**mitigar** — você controla, padroniza antes. Contestação de subempreiteiro é
+**transferir** — cláusula contratual. Reajuste de licença acima do previsto é
+**aceitar** — fora do seu controle, dano pequeno, revisa na renovação.
+
+### Por que a severidade não escolhe a resposta
+
+A severidade responde **quanto urge**; as três perguntas respondem **o que fazer**.
+Um risco alto sobre algo que você não controla vira transferir; o mesmo risco alto
+sobre processo próprio vira mitigar.
+
+Onde as duas coisas se encontram é na exigência de rigor: quanto maior a
+severidade, mais a escolha precisa estar justificada, com dono e gatilho — e é
+disso que tratam os alertas da seção anterior.
 
 ### A severidade escolhe a resposta?
 
