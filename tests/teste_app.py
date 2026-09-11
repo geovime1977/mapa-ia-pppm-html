@@ -56,9 +56,9 @@ async def main():
         sev = await pg.evaluate("severidade(state.riscos[0])")
         print("severidade (5x4):", sev)
         if sev != 20: falhas.append(f"severidade={sev}, esperado 20")
-        crit = await pg.evaluate("document.getElementById('riscoMatriz').innerText.includes('crítico')")
-        print("alerta de critico:", crit)
-        if not crit: falhas.append("nao alertou risco critico")
+        crit = await pg.evaluate("document.getElementById('riscoMatriz').innerText.includes('severidade alta')")
+        print("alerta de severidade alta:", crit)
+        if not crit: falhas.append("nao alertou risco de severidade alta")
 
         # relatorio final
         await pg.evaluate("goToStep(13)")

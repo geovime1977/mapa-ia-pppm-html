@@ -512,10 +512,11 @@
     <h2>12. Sessão de riscos</h2>
     <p class="hint">Registre o que pode impedir o piloto de entregar o valor projetado na etapa anterior. A ferramenta organiza a evidência e calcula a severidade de forma consistente &mdash; a decisão continua sendo sua.</p>
     <div class="info-box">
-      Severidade = probabilidade &times; impacto, ambos de 1 a 5.
-      <strong>15 ou mais</strong> exige resposta antes do piloto;
-      <strong>8 a 14</strong> exige dono e gatilho definidos;
-      <strong>até 7</strong> pode ser aceito com monitoramento.
+      Severidade = probabilidade &times; impacto, ambos de 1 a 5 (faixa de 1 a 25).<br>
+      <strong>Alto (15–25)</strong>: resposta obrigatória, com dono e gatilho.
+      <strong>Médio (5–14)</strong>: resposta planejada; aceitar exige justificativa.
+      <strong>Baixo (1–4)</strong>: lista de observação.<br>
+      <em>Régua alinhada à análise qualitativa de riscos do PMBOK, como no método do riscos-pppm.</em>
     </div>
     <p class="hint" style="margin-top:-8px">Estrutura inspirada na ferramenta <a href="https://filipetb.github.io/riscos-pppm/" target="_blank" rel="noopener">riscos-pppm</a>, de Filipe TB, apresentada na turma. Implementação própria.</p>
     <div id="riscoContainer"></div>
@@ -2352,6 +2353,22 @@ function renderComparativo(){
    Ferramenta de referencia do colega Filipe TB:
    https://filipetb.github.io/riscos-pppm/
    ============================================================ */
+const RISCO_CFG = {
+  // Faixas de severidade alinhadas ao metodo do riscos-pppm (Filipe TB, MIT),
+  // que deriva da analise qualitativa de riscos do PMBOK. A faixa media vai ate
+  // 14 para fechar o vao de 13-14, que ficava sem classificacao na tabela original.
+  faixas: [
+    {id:"alto",  rotulo:"Alto",  min:15, max:25, classe:"sev-alto",
+     tratamento:"Resposta obrigatoria, com dono e gatilho definidos."},
+    {id:"medio", rotulo:"Medio", min:5,  max:14, classe:"sev-medio",
+     tratamento:"Resposta planejada; aceitar ativamente exige justificativa."},
+    {id:"baixo", rotulo:"Baixo", min:1,  max:4,  classe:"sev-baixo",
+     tratamento:"Lista de observacao; revisao periodica."}
+  ],
+  limite_resposta_obrigatoria: 15,
+  limite_exige_dono: 5
+};
+
 const RISCO_RESPOSTAS = [
   {id:"evitar",     rotulo:"Evitar — mudar o plano para eliminar a causa"},
   {id:"mitigar",    rotulo:"Mitigar — reduzir probabilidade ou impacto"},
@@ -2382,9 +2399,8 @@ function setRisco(id, campo, valor, numerico){
 }
 function severidade(r){ return (r.probabilidade || 0) * (r.impacto || 0); }
 function faixaRisco(s){
-  if(s >= 15) return {rotulo:"Crítico", classe:"sev-alto"};
-  if(s >= 8)  return {rotulo:"Atenção", classe:"sev-medio"};
-  return {rotulo:"Tolerável", classe:"sev-baixo"};
+  const f = RISCO_CFG.faixas.find(function(x){ return s >= x.min && s <= x.max; });
+  return f || RISCO_CFG.faixas[RISCO_CFG.faixas.length - 1];
 }
 
 function selNum(id, campo, valor){
@@ -2437,16 +2453,16 @@ function renderMatrizRiscos(){
   });
   html += '</tbody></table>';
 
-  const criticos = ord.filter(function(r){ return severidade(r) >= 15; });
-  const semDono  = ord.filter(function(r){ return severidade(r) >= 8 && !String(r.dono).trim(); });
+  const criticos = ord.filter(function(r){ return severidade(r) >= RISCO_CFG.limite_resposta_obrigatoria; });
+  const semDono  = ord.filter(function(r){ return severidade(r) >= RISCO_CFG.limite_exige_dono && !String(r.dono).trim(); });
   if(criticos.length){
-    html += '<div class="alert show"><strong>'+criticos.length+' risco(s) crítico(s)</strong> (severidade 15+). Exigem resposta definida antes de iniciar o piloto.</div>';
+    html += '<div class="alert show"><strong>'+criticos.length+' risco(s) de severidade alta</strong> ('+RISCO_CFG.limite_resposta_obrigatoria+'+). Exigem resposta com dono e gatilho antes de iniciar o piloto.</div>';
   }
   if(semDono.length){
-    html += '<div class="alert show">'+semDono.length+' risco(s) de severidade 8+ sem dono. Risco sem dono não é gerenciado.</div>';
+    html += '<div class="alert show">'+semDono.length+' risco(s) de severidade '+RISCO_CFG.limite_exige_dono+'+ sem dono. Risco sem dono não é gerenciado.</div>';
   }
   if(!criticos.length && !semDono.length){
-    html += '<div class="info-box">Nenhum risco crítico sem tratamento. Mantenha os gatilhos sob monitoramento durante o piloto.</div>';
+    html += '<div class="info-box">Nenhum risco de severidade alta sem tratamento. Mantenha os gatilhos sob monitoramento durante o piloto.</div>';
   }
   alvo.innerHTML = html;
 }
@@ -2513,7 +2529,7 @@ function relatorioRiscos(){
          '</td><td>' + escapeHtmlLocal(r.dono || "—") + '</td><td>' + escapeHtmlLocal(r.gatilho || "—") + '</td></tr>';
   });
   h += '</tbody></table>';
-  const crit = ord.filter(function(r){ return severidade(r) >= 15; });
+  const crit = ord.filter(function(r){ return severidade(r) >= RISCO_CFG.limite_resposta_obrigatoria; });
   if(crit.length) h += '<div class="meta-line"><strong>' + crit.length + ' risco(s) crítico(s)</strong> exigem resposta antes do piloto.</div>';
   return h;
 }
