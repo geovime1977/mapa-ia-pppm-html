@@ -270,6 +270,35 @@
     .report-table thead{display:table-header-group;}
     .report-table th,.report-table td{padding:4pt 5pt;}
   }
+
+    /* --- etapas 11 e 12 --- */
+    .comp-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;}
+    .comp-table th{background:var(--ink);color:var(--paper);text-align:left;padding:9px 10px;font-size:11px;
+      letter-spacing:.5px;text-transform:uppercase;}
+    .comp-table td{padding:9px 10px;border-bottom:1px solid var(--line);}
+    .comp-table tr:last-child td{border-bottom:none;}
+    .comp-table td.neg{color:var(--red);font-weight:700;}
+    .rank-list{margin:10px 0 4px 20px;font-size:14px;}
+    .rank-list li{margin-bottom:6px;}
+    .case-head{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px;}
+    .case-head input[type=text]{flex:1;margin:0;}
+    .badge-sev{display:inline-block;padding:4px 11px;border-radius:20px;font-size:12px;font-weight:700;color:#fff;}
+    .sev-alto{background:var(--red);}
+    .sev-medio{background:var(--amber);}
+    .sev-baixo{background:var(--green);}
+    @media(max-width:640px){
+      .comp-table{display:block;overflow-x:auto;white-space:nowrap;}
+      .case-head{flex-direction:column;align-items:stretch;}
+    }
+
+    /* tabelas nunca estouram a largura no celular: rolam dentro do proprio bloco */
+    .comp-table, .report-table{max-width:100%;}
+    @media(max-width:640px){
+      .report-table{display:block;overflow-x:auto;}
+      .final-report table{display:block;overflow-x:auto;}
+      main{padding-left:16px;padding-right:16px;}
+      body{overflow-x:hidden;}
+    }
 </style>
 </head>
 <body>
@@ -449,15 +478,55 @@
     <div id="bcContainer"></div>
     <div class="nav-buttons">
       <button class="btn-secondary" onclick="goToStep(9)">&larr; Voltar</button>
-      <button class="btn-primary" onclick="goToStep(11)">Gerar relatório &rarr;</button>
+      <button class="btn-primary" onclick="goToStep(11)">Avançar &rarr;</button>
     </div>
   </section>
 
-  <!-- STEP 11: Relatório final -->
+
+  <!-- STEP 11: Business Case comparativo -->
   <section class="step" data-step="11">
+    <h2>11. Business Case comparativo</h2>
+    <p class="hint">Aula 3 &middot; quando há mais de um projeto disputando o mesmo orçamento, a pergunta deixa de ser &ldquo;vale a pena?&rdquo; e passa a ser &ldquo;qual primeiro?&rdquo;. Cadastre os concorrentes e compare ROI, payback e benefício líquido na mesma janela.</p>
+    <div class="info-box">
+      Benefício do período = (economia + receita adicional + custos evitados) &times; janela/12.<br>
+      Custo total = investimento (tecnologia, dados, pessoas, mudança, governança) + custeio mensal &times; janela.<br>
+      ROI = benefício líquido &divide; custo total. Payback = investimento &divide; benefício líquido mensal.
+    </div>
+    <p class="hint" style="margin-top:-8px">A comparação entre projetos concorrentes segue a ideia do aplicativo de business case do Daniel, apresentado na turma. Cálculo idêntico ao da etapa 10, conforme a Aula 3.</p>
+    <div id="projContainer"></div>
+    <button class="btn-add-case" onclick="addProjeto()">+ Adicionar projeto</button>
+    <div id="projComparativo"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(10)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(12)">Avançar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 12: Sessao de riscos -->
+  <section class="step" data-step="12">
+    <h2>12. Sessão de riscos</h2>
+    <p class="hint">Registre o que pode impedir o piloto de entregar o valor projetado na etapa anterior. A ferramenta organiza a evidência e calcula a severidade de forma consistente &mdash; a decisão continua sendo sua.</p>
+    <div class="info-box">
+      Severidade = probabilidade &times; impacto, ambos de 1 a 5.
+      <strong>15 ou mais</strong> exige resposta antes do piloto;
+      <strong>8 a 14</strong> exige dono e gatilho definidos;
+      <strong>até 7</strong> pode ser aceito com monitoramento.
+    </div>
+    <p class="hint" style="margin-top:-8px">Estrutura inspirada na ferramenta <a href="https://filipetb.github.io/riscos-pppm/" target="_blank" rel="noopener">riscos-pppm</a>, de Filipe TB, apresentada na turma. Implementação própria.</p>
+    <div id="riscoContainer"></div>
+    <button class="btn-add-case" onclick="addRisco()">+ Adicionar risco</button>
+    <div id="riscoMatriz"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(11)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(13)">Gerar relatório &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 13: Relatório final -->
+  <section class="step" data-step="13">
     <div class="final-report" id="finalReport"></div>
     <div class="nav-buttons" id="exportButtons">
-      <button class="btn-secondary" onclick="goToStep(10)">&larr; Voltar</button>
+      <button class="btn-secondary" onclick="goToStep(12)">&larr; Voltar</button>
       <div class="nav-right">
         <button class="btn-ghost" onclick="exportJSON()">Salvar JSON</button>
         <button class="btn-ghost" onclick="exportCSV()">Exportar CSV</button>
@@ -468,7 +537,8 @@
   </section>
 
   <footer>
-    Mapa IA-PPPM &middot; v1.2 HTML &middot; Aulas 1, 2 e 3 &middot; Prof. Dr. José Bezerra (BSBr)
+    Mapa IA-PPPM &middot; v2.0 HTML &middot; Aulas 1, 2 e 3 + comparativo e riscos &middot; Prof. Dr. José Bezerra (BSBr)<br>
+    <span style="font-size:10px;opacity:.75">Créditos: comparativo de projetos inspirado no app do Daniel &middot; sessão de riscos inspirada no <a href="https://filipetb.github.io/riscos-pppm/" target="_blank" rel="noopener" style="color:inherit">riscos-pppm</a> de Filipe TB</span>
   </footer>
 </main>
 
@@ -817,10 +887,12 @@ let state = {
   governanca:{},  // {caso_id:{responsavel,validador,dados_sensiveis,metrica}}
   business_cases:{}, // {caso_id: bcEstadoZerado(caso_id)} — Aula 3
   selecionados:[],
-  recomendacao_texto:""
+  recomendacao_texto:"",
+  projetos:[],   // Aula 3 — business case comparativo
+  riscos:[]      // Sessao de riscos (probabilidade x impacto)
 };
 
-const TOTAL_STEPS = 11;
+const TOTAL_STEPS = 13;
 let caseCounter = 0;
 function nextCaseId(){ return "c" + Date.now().toString(36) + Math.floor(Math.random()*1000).toString(36); }
 
@@ -1183,6 +1255,9 @@ function goToStep(n){
   if(!destino){ console.error("Etapa não encontrada:", n); return; }
   destino.classList.add("active");
 
+  salvarLocal();
+  if(n === 11){ renderProjetos(); }
+  if(n === 12){ renderRiscos(); }
   document.getElementById("progressFill").style.width = ((n/TOTAL_STEPS)*100) + "%";
   document.getElementById("progressLabel").textContent = `Etapa ${n} de ${TOTAL_STEPS}`;
   window.scrollTo({top:0, behavior:"smooth"});
@@ -1210,7 +1285,7 @@ function goToStep(n){
     state.recomendacao_texto = document.getElementById("recomendacaoTexto") ? document.getElementById("recomendacaoTexto").value : state.recomendacao_texto;
     renderBusinessCase();
   }
-  if(n === 11){
+  if(n === 13){
     saveBusinessCases();
     renderRelatorio();
     if(TELEMETRIA_URL){ document.getElementById("btnTelemetria").style.display = "inline-block"; }
@@ -1966,8 +2041,11 @@ function renderRelatorio(){
     ${renderRelatorioBCs()}
 
     <div class="meta-line" style="margin-top:18px;font-size:11px;color:#87939b">
-      Mapa IA-PPPM v1.1 HTML · Aulas 1, 2 e 3 (Prof. Dr. José Bezerra, BSBr).
+      Mapa IA-PPPM v2.0 HTML · Aulas 1, 2 e 3 (Prof. Dr. José Bezerra, BSBr).
     </div>
+
+    ${relatorioComparativo()}
+    ${relatorioRiscos()}
   `;
 }
 
@@ -2057,6 +2135,322 @@ function exportJSON(){
   a.download = `mapa-ia-pppm_${nome}_${stamp}.json`;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+
+/* ============================================================
+   ETAPA 11 — BUSINESS CASE COMPARATIVO
+   Matematica de ROI, payback e beneficio liquido conforme a Aula 3
+   do Prof. Bezerra (BSBr). Implementacao propria; a ideia de comparar
+   projetos concorrentes na mesma janela veio do aplicativo do Daniel,
+   apresentado na turma.
+   ============================================================ */
+function nextProjId(){ return "p" + Date.now().toString(36) + Math.floor(Math.random()*1000).toString(36); }
+
+function addProjeto(){
+  state.projetos.push({
+    id: nextProjId(), rotulo: "Projeto " + (state.projetos.length + 1),
+    economia_anual: 0, receita_adicional: 0, custos_evitados: 0,
+    custo_tecnologia: 0, custo_dados: 0, custo_pessoas: 0,
+    custo_mudanca: 0, custo_governanca: 0,
+    janela_meses: 12, cenario: "provavel"
+  });
+  renderProjetos();
+  salvarLocal();
+}
+function removeProjeto(id){
+  state.projetos = state.projetos.filter(function(p){ return p.id !== id; });
+  renderProjetos();
+  salvarLocal();
+}
+function setProj(id, campo, valor, numerico){
+  const p = state.projetos.find(function(x){ return x.id === id; });
+  if(!p) return;
+  p[campo] = numerico ? (parseFloat(String(valor).replace(",", ".")) || 0) : valor;
+  renderComparativo();
+  salvarLocal();
+}
+
+function calcProjeto(p){
+  // Mesma matematica da etapa 10 (Aula 3, Prof. Bezerra): investimento e a soma
+  // das camadas de custo, beneficio ajustado por janela e cenario, ROI medido
+  // sobre o investimento. Manter identico evita que o mesmo projeto apareca com
+  // dois ROIs diferentes dentro do app.
+  const janela = p.janela_meses > 0 ? p.janela_meses : 12;
+  const mult = Number(AULA3_CFG.cenarios_multiplicador[p.cenario] || 1.0);
+  const beneficioAnual = p.economia_anual + p.receita_adicional + p.custos_evitados;
+  const investimento = p.custo_tecnologia + p.custo_dados + p.custo_pessoas + p.custo_mudanca + p.custo_governanca;
+  const beneficioAjustado = beneficioAnual * (janela / 12) * mult;
+  const beneficioLiquido = beneficioAjustado - investimento;
+  const roi = investimento > 0 ? (beneficioLiquido / investimento) * 100 : null;
+  const mensalAjustado = (beneficioAnual / 12) * mult;
+  const payback = (mensalAjustado > 0 && investimento > 0) ? investimento / mensalAjustado : Infinity;
+  return { beneficioAnual, beneficioAjustado, investimento, beneficioLiquido, roi, payback, janela, mult };
+}
+
+function selCenario(pid, atual){
+  const op = Object.keys(AULA3_CFG.cenarios_multiplicador).map(function(k){
+    return '<option value="'+k+'"'+(atual===k?' selected':'')+'>'+(AULA3_CFG.cenarios_rotulo[k]||k)+
+           ' (x'+AULA3_CFG.cenarios_multiplicador[k]+')</option>';
+  }).join("");
+  return '<select onchange="setProj(\''+pid+'\',\'cenario\',this.value,false)">'+op+'</select>';
+}
+
+function fmtMoeda(v){
+  if(!isFinite(v)) return "—";
+  return "R$ " + v.toLocaleString("pt-BR", {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+function fmtPayback(m){
+  if(!isFinite(m)) return "não se paga na janela";
+  if(m < 1) return "menos de 1 mês";
+  return m.toFixed(1).replace(".", ",") + " meses";
+}
+
+function campoNum(pid, campo, rotulo, valor){
+  return '<label>' + rotulo + '</label><input type="text" inputmode="decimal" value="' + valor +
+         '" oninput="setProj(\'' + pid + '\',\'' + campo + '\',this.value,true)">';
+}
+
+function renderProjetos(){
+  const c = document.getElementById("projContainer");
+  if(!c) return;
+  if(state.projetos.length === 0){
+    c.innerHTML = '<p class="hint">Nenhum projeto cadastrado. Use o botão abaixo para incluir os candidatos que disputam o mesmo orçamento.</p>';
+    renderComparativo(); return;
+  }
+  c.innerHTML = state.projetos.map(function(p){
+    return '<div class="case-card">' +
+      '<div class="case-head">' +
+        '<input type="text" value="' + escapeAttr(p.rotulo) + '" oninput="setProj(\'' + p.id + '\',\'rotulo\',this.value,false)">' +
+        '<button class="btn-remove-case" onclick="removeProjeto(\'' + p.id + '\')">remover</button>' +
+      '</div>' +
+      '<h3>Benefícios anuais</h3>' +
+      campoNum(p.id,"economia_anual","Economia anual (R$)",p.economia_anual) +
+      campoNum(p.id,"receita_adicional","Receita adicional (R$)",p.receita_adicional) +
+      campoNum(p.id,"custos_evitados","Custos evitados (R$)",p.custos_evitados) +
+      '<h3>Investimento</h3>' +
+      campoNum(p.id,"custo_tecnologia","Tecnologia (R$)",p.custo_tecnologia) +
+      campoNum(p.id,"custo_dados","Dados (R$)",p.custo_dados) +
+      campoNum(p.id,"custo_pessoas","Pessoas (R$)",p.custo_pessoas) +
+      campoNum(p.id,"custo_mudanca","Gestão da mudança (R$)",p.custo_mudanca) +
+      campoNum(p.id,"custo_governanca","Governança (R$)",p.custo_governanca) +
+      '<h3>Janela e cenário</h3>' +
+      campoNum(p.id,"janela_meses","Janela de análise (meses)",p.janela_meses) +
+      '<label>Cenário</label>' + selCenario(p.id, p.cenario) +
+    '</div>';
+  }).join("");
+  renderComparativo();
+}
+
+function renderComparativo(){
+  const alvo = document.getElementById("projComparativo");
+  if(!alvo) return;
+  if(state.projetos.length === 0){ alvo.innerHTML = ""; return; }
+  const linhas = state.projetos.map(function(p){
+    const r = calcProjeto(p);
+    return { rotulo: p.rotulo, r: r };
+  });
+  const ranking = linhas.slice().sort(function(a,b){ return b.r.beneficioLiquido - a.r.beneficioLiquido; });
+
+  let html = '<h3>Matriz comparativa</h3><table class="comp-table"><thead><tr>' +
+    '<th>Projeto</th><th>Benefício ajustado</th><th>Investimento</th>' +
+    '<th>Benefício líquido</th><th>ROI</th><th>Payback</th></tr></thead><tbody>';
+  linhas.forEach(function(l){
+    const neg = l.r.beneficioLiquido < 0 ? ' class="neg"' : '';
+    html += '<tr><td>' + escapeHtmlLocal(l.rotulo) + '</td><td>' + fmtMoeda(l.r.beneficioAjustado) +
+            '</td><td>' + fmtMoeda(l.r.investimento) + '</td><td' + neg + '>' + fmtMoeda(l.r.beneficioLiquido) +
+            '</td><td' + neg + '>' + (l.r.roi == null ? '—' : l.r.roi.toFixed(1).replace(".", ",") + '%') + '</td><td>' + fmtPayback(l.r.payback) + '</td></tr>';
+  });
+  html += '</tbody></table>';
+
+  html += '<h3>Ranking por benefício líquido</h3><ol class="rank-list">';
+  ranking.forEach(function(l){
+    html += '<li><strong>' + escapeHtmlLocal(l.rotulo) + '</strong> — ' + fmtMoeda(l.r.beneficioLiquido) +
+            ' na janela de ' + l.r.janela + ' meses (ROI ' + (l.r.roi == null ? '—' : l.r.roi.toFixed(1).replace(".", ",") + '%') + ')</li>';
+  });
+  html += '</ol>';
+
+  const viaveis = ranking.filter(function(l){ return l.r.beneficioLiquido > 0; });
+  if(viaveis.length === 0){
+    html += '<div class="alert show">Nenhum projeto apresenta benefício líquido positivo na janela informada. Reveja premissas ou amplie a janela antes de levar ao comitê.</div>';
+  } else {
+    html += '<div class="info-box"><strong>Leitura:</strong> ' + escapeHtmlLocal(viaveis[0].rotulo) +
+            ' lidera em benefício líquido. Ranking não é decisão: confronte com a sessão de riscos da próxima etapa antes de recomendar.</div>';
+  }
+  alvo.innerHTML = html;
+}
+
+/* ============================================================
+   ETAPA 12 — SESSAO DE RISCOS
+   Severidade = probabilidade x impacto (1..5), conforme pratica
+   corrente de gerenciamento de riscos em projetos.
+   Ferramenta de referencia do colega Filipe TB:
+   https://filipetb.github.io/riscos-pppm/
+   ============================================================ */
+const RISCO_RESPOSTAS = [
+  {id:"evitar",     rotulo:"Evitar — mudar o plano para eliminar a causa"},
+  {id:"mitigar",    rotulo:"Mitigar — reduzir probabilidade ou impacto"},
+  {id:"transferir", rotulo:"Transferir — contrato, seguro ou terceiro"},
+  {id:"aceitar",    rotulo:"Aceitar — assumir e monitorar"}
+];
+const RISCO_CATEGORIAS = ["Dados", "Tecnologia", "Pessoas e adoção", "Governança e compliance", "Fornecedor", "Orçamento", "Prazo"];
+
+function nextRiscoId(){ return "r" + Date.now().toString(36) + Math.floor(Math.random()*1000).toString(36); }
+
+function addRisco(){
+  state.riscos.push({ id: nextRiscoId(), descricao: "", categoria: "Dados",
+    probabilidade: 3, impacto: 3, resposta: "mitigar", dono: "", gatilho: "", acao: "" });
+  renderRiscos();
+  salvarLocal();
+}
+function removeRisco(id){
+  state.riscos = state.riscos.filter(function(r){ return r.id !== id; });
+  renderRiscos();
+  salvarLocal();
+}
+function setRisco(id, campo, valor, numerico){
+  const r = state.riscos.find(function(x){ return x.id === id; });
+  if(!r) return;
+  r[campo] = numerico ? (parseInt(valor, 10) || 0) : valor;
+  renderMatrizRiscos();
+  salvarLocal();
+}
+function severidade(r){ return (r.probabilidade || 0) * (r.impacto || 0); }
+function faixaRisco(s){
+  if(s >= 15) return {rotulo:"Crítico", classe:"sev-alto"};
+  if(s >= 8)  return {rotulo:"Atenção", classe:"sev-medio"};
+  return {rotulo:"Tolerável", classe:"sev-baixo"};
+}
+
+function selNum(id, campo, valor){
+  let o = "";
+  for(let i=1;i<=5;i++) o += '<option value="'+i+'"'+(valor===i?' selected':'')+'>'+i+'</option>';
+  return '<select onchange="setRisco(\''+id+'\',\''+campo+'\',this.value,true)">'+o+'</select>';
+}
+
+function renderRiscos(){
+  const c = document.getElementById("riscoContainer");
+  if(!c) return;
+  if(state.riscos.length === 0){
+    c.innerHTML = '<p class="hint">Nenhum risco registrado. Um business case sem riscos declarados costuma significar que ainda não foram procurados.</p>';
+    renderMatrizRiscos(); return;
+  }
+  c.innerHTML = state.riscos.map(function(r){
+    const s = severidade(r); const f = faixaRisco(s);
+    const cats = RISCO_CATEGORIAS.map(function(k){ return '<option'+(r.categoria===k?' selected':'')+'>'+k+'</option>'; }).join("");
+    const resp = RISCO_RESPOSTAS.map(function(x){ return '<option value="'+x.id+'"'+(r.resposta===x.id?' selected':'')+'>'+x.rotulo+'</option>'; }).join("");
+    return '<div class="case-card">' +
+      '<div class="case-head"><span class="badge-sev '+f.classe+'">'+f.rotulo+' · '+s+'</span>' +
+      '<button class="btn-remove-case" onclick="removeRisco(\''+r.id+'\')">remover</button></div>' +
+      '<label>Descrição do risco</label><input type="text" value="'+escapeAttr(r.descricao)+'" placeholder="Se ... então ..." oninput="setRisco(\''+r.id+'\',\'descricao\',this.value,false)">' +
+      '<label>Categoria</label><select onchange="setRisco(\''+r.id+'\',\'categoria\',this.value,false)">'+cats+'</select>' +
+      '<label>Probabilidade (1–5)</label>'+selNum(r.id,"probabilidade",r.probabilidade) +
+      '<label>Impacto (1–5)</label>'+selNum(r.id,"impacto",r.impacto) +
+      '<label>Resposta</label><select onchange="setRisco(\''+r.id+'\',\'resposta\',this.value,false)">'+resp+'</select>' +
+      '<label>Dono</label><input type="text" value="'+escapeAttr(r.dono)+'" oninput="setRisco(\''+r.id+'\',\'dono\',this.value,false)">' +
+      '<label>Gatilho — o que indica que o risco se materializou</label><input type="text" value="'+escapeAttr(r.gatilho)+'" oninput="setRisco(\''+r.id+'\',\'gatilho\',this.value,false)">' +
+      '<label>Ação acordada</label><input type="text" value="'+escapeAttr(r.acao)+'" oninput="setRisco(\''+r.id+'\',\'acao\',this.value,false)">' +
+    '</div>';
+  }).join("");
+  renderMatrizRiscos();
+}
+
+function renderMatrizRiscos(){
+  const alvo = document.getElementById("riscoMatriz");
+  if(!alvo) return;
+  if(state.riscos.length === 0){ alvo.innerHTML = ""; return; }
+  const ord = state.riscos.slice().sort(function(a,b){ return severidade(b) - severidade(a); });
+  let html = '<h3>Riscos por severidade</h3><table class="comp-table"><thead><tr>' +
+    '<th>Risco</th><th>Categoria</th><th>P</th><th>I</th><th>Severidade</th><th>Resposta</th><th>Dono</th></tr></thead><tbody>';
+  ord.forEach(function(r){
+    const s = severidade(r); const f = faixaRisco(s);
+    const resp = (RISCO_RESPOSTAS.find(function(x){return x.id===r.resposta;}) || {rotulo:r.resposta}).rotulo.split(" — ")[0];
+    html += '<tr><td>'+escapeHtmlLocal(r.descricao || "(sem descrição)")+'</td><td>'+escapeHtmlLocal(r.categoria)+
+            '</td><td>'+r.probabilidade+'</td><td>'+r.impacto+'</td>' +
+            '<td><span class="badge-sev '+f.classe+'">'+s+'</span></td><td>'+escapeHtmlLocal(resp)+
+            '</td><td>'+escapeHtmlLocal(r.dono || "—")+'</td></tr>';
+  });
+  html += '</tbody></table>';
+
+  const criticos = ord.filter(function(r){ return severidade(r) >= 15; });
+  const semDono  = ord.filter(function(r){ return severidade(r) >= 8 && !String(r.dono).trim(); });
+  if(criticos.length){
+    html += '<div class="alert show"><strong>'+criticos.length+' risco(s) crítico(s)</strong> (severidade 15+). Exigem resposta definida antes de iniciar o piloto.</div>';
+  }
+  if(semDono.length){
+    html += '<div class="alert show">'+semDono.length+' risco(s) de severidade 8+ sem dono. Risco sem dono não é gerenciado.</div>';
+  }
+  if(!criticos.length && !semDono.length){
+    html += '<div class="info-box">Nenhum risco crítico sem tratamento. Mantenha os gatilhos sob monitoramento durante o piloto.</div>';
+  }
+  alvo.innerHTML = html;
+}
+
+function escapeAttr(s){ return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function escapeHtmlLocal(s){ return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+
+
+/* ============================================================
+   PERSISTENCIA LOCAL
+   O aluno usa o arquivo no proprio computador ou celular. Sem isto,
+   fechar a aba ou girar a tela perde tudo o que foi preenchido.
+   ============================================================ */
+const LS_CHAVE = "mapa-ia-pppm-v2";
+function salvarLocal(){
+  try { localStorage.setItem(LS_CHAVE, JSON.stringify(state)); } catch(e) {}
+}
+function restaurarLocal(){
+  try {
+    const bruto = localStorage.getItem(LS_CHAVE);
+    if(!bruto) return false;
+    const salvo = JSON.parse(bruto);
+    Object.keys(salvo).forEach(function(k){ state[k] = salvo[k]; });
+    if(!Array.isArray(state.projetos)) state.projetos = [];
+    if(!Array.isArray(state.riscos)) state.riscos = [];
+    return true;
+  } catch(e) { return false; }
+}
+function limparLocal(){
+  if(!confirm("Apagar todo o preenchimento salvo neste navegador?")) return;
+  try { localStorage.removeItem(LS_CHAVE); } catch(e) {}
+  location.reload();
+}
+document.addEventListener("input", function(){ salvarLocal(); });
+
+
+function relatorioComparativo(){
+  if(!state.projetos || state.projetos.length === 0) return "";
+  const linhas = state.projetos.map(function(p){ return {rotulo:p.rotulo, r:calcProjeto(p)}; })
+                              .sort(function(a,b){ return b.r.beneficioLiquido - a.r.beneficioLiquido; });
+  let h = '<h3>Business case comparativo</h3><table class="comp-table"><thead><tr>' +
+          '<th>Projeto</th><th>Benefício ajustado</th><th>Investimento</th><th>Benefício líquido</th><th>ROI</th><th>Payback</th>' +
+          '</tr></thead><tbody>';
+  linhas.forEach(function(l){
+    h += '<tr><td>' + escapeHtmlLocal(l.rotulo) + '</td><td>' + fmtMoeda(l.r.beneficioAjustado) +
+         '</td><td>' + fmtMoeda(l.r.investimento) + '</td><td>' + fmtMoeda(l.r.beneficioLiquido) +
+         '</td><td>' + (l.r.roi == null ? "—" : l.r.roi.toFixed(1).replace(".", ",") + "%") +
+         '</td><td>' + fmtPayback(l.r.payback) + '</td></tr>';
+  });
+  return h + '</tbody></table>';
+}
+
+function relatorioRiscos(){
+  if(!state.riscos || state.riscos.length === 0) return "";
+  const ord = state.riscos.slice().sort(function(a,b){ return severidade(b) - severidade(a); });
+  let h = '<h3>Riscos priorizados</h3><table class="comp-table"><thead><tr>' +
+          '<th>Risco</th><th>Categoria</th><th>Severidade</th><th>Resposta</th><th>Dono</th><th>Gatilho</th>' +
+          '</tr></thead><tbody>';
+  ord.forEach(function(r){
+    const resp = (RISCO_RESPOSTAS.find(function(x){ return x.id === r.resposta; }) || {rotulo:r.resposta}).rotulo.split(" — ")[0];
+    h += '<tr><td>' + escapeHtmlLocal(r.descricao || "(sem descrição)") + '</td><td>' + escapeHtmlLocal(r.categoria) +
+         '</td><td>' + severidade(r) + '</td><td>' + escapeHtmlLocal(resp) +
+         '</td><td>' + escapeHtmlLocal(r.dono || "—") + '</td><td>' + escapeHtmlLocal(r.gatilho || "—") + '</td></tr>';
+  });
+  h += '</tbody></table>';
+  const crit = ord.filter(function(r){ return severidade(r) >= 15; });
+  if(crit.length) h += '<div class="meta-line"><strong>' + crit.length + ' risco(s) crítico(s)</strong> exigem resposta antes do piloto.</div>';
+  return h;
 }
 
 function exportCSV(){
@@ -2237,7 +2631,15 @@ function enviarTelemetria(){
    INIT
    ============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
+  const restaurado = restaurarLocal();
   goToStep(1);
+  if(restaurado){
+    const aviso = document.createElement("div");
+    aviso.className = "info-box";
+    aviso.innerHTML = 'Preenchimento anterior restaurado deste navegador. <a href="#" onclick="limparLocal();return false;">Comecar do zero</a>.';
+    const main = document.querySelector("main");
+    if(main) main.insertBefore(aviso, main.firstChild);
+  }
   enriquecerTooltipsPagina();
 });
 </script>
