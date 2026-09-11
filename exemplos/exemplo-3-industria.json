@@ -141,7 +141,7 @@
       "janela_meses": 12,
       "cenario": "provavel",
       "decisao": "aprovar_piloto",
-      "justificativa": "Concentra o retorno e tem a melhor base de dados. Aprovar piloto com calibracao de 8 semanas."
+      "decisao_justificativa": "Concentra o retorno e tem a melhor base de dados. Aprovar piloto com calibracao de 8 semanas."
     },
     "c_os": {
       "caso_id": "c_os",
@@ -194,7 +194,7 @@
       "janela_meses": 12,
       "cenario": "provavel",
       "decisao": "aprovar_piloto",
-      "justificativa": "Implantacao com equipe propria e retorno rapido. Aprovar piloto em paralelo."
+      "decisao_justificativa": "Implantacao com equipe propria e retorno rapido. Aprovar piloto em paralelo."
     },
     "c_pec": {
       "caso_id": "c_pec",
@@ -247,7 +247,7 @@
       "janela_meses": 12,
       "cenario": "provavel",
       "decisao": "aprovar_piloto",
-      "justificativa": "Depende de acordo de nivel de servico com suprimentos. Estudar melhor."
+      "decisao_justificativa": "Depende de acordo de nivel de servico com suprimentos. Estudar melhor."
     }
   },
   "selecionados": [

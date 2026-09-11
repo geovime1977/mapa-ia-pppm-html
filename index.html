@@ -2120,6 +2120,7 @@ function renderRelatorioBCs(){
             <tr><th>Cenário provável (${bc.janela_meses||12} m)</th><td>BL: ${_bcFmtMoeda(r.beneficio_liquido_base)} · ROI: ${r.roi_base != null ? r.roi_base + "%" : "—"}</td></tr>
             <tr><th>Payback</th><td>${r.payback_base != null ? r.payback_base + " meses" : "—"}</td></tr>
             <tr><th>Decisão solicitada</th><td>${esc(r.decisao_rotulo || "— não preenchida")}</td></tr>
+            <tr><th>Justificativa</th><td>${esc(bc.decisao_justificativa || "— não preenchida")}</td></tr>
           </tbody>
         </table>
         <table class="report-table" style="margin-top:6px">

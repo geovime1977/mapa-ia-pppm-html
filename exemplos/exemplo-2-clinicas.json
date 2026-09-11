@@ -141,7 +141,7 @@
       "janela_meses": 12,
       "cenario": "provavel",
       "decisao": "aprovar_piloto",
-      "justificativa": "Maior retorno, mas exige parecer de privacidade por envolver dado de saude. Aprovar piloto condicionado ao parecer."
+      "decisao_justificativa": "Maior retorno, mas exige parecer de privacidade por envolver dado de saude. Aprovar piloto condicionado ao parecer."
     },
     "c_con": {
       "caso_id": "c_con",
@@ -194,7 +194,7 @@
       "janela_meses": 12,
       "cenario": "provavel",
       "decisao": "aprovar_piloto",
-      "justificativa": "Implantacao simples e risco controlado. Aprovar piloto imediato."
+      "decisao_justificativa": "Implantacao simples e risco controlado. Aprovar piloto imediato."
     },
     "c_enc": {
       "caso_id": "c_enc",
@@ -247,7 +247,7 @@
       "janela_meses": 12,
       "cenario": "conservador",
       "decisao": "estudar",
-      "justificativa": "Beneficio liquido negativo na janela de 12 meses. Estudar melhor antes de comprometer orcamento."
+      "decisao_justificativa": "Beneficio liquido negativo na janela de 12 meses. Estudar melhor antes de comprometer orcamento."
     }
   },
   "selecionados": [

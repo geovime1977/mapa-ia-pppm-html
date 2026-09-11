@@ -141,7 +141,7 @@
       "janela_meses": 12,
       "cenario": "provavel",
       "decisao": "aprovar_piloto",
-      "justificativa": "Maior retorno do portfolio, dado ja disponivel e dono definido. Aprovar piloto em 3 obras antes de ampliar."
+      "decisao_justificativa": "Maior retorno do portfolio, dado ja disponivel e dono definido. Aprovar piloto em 3 obras antes de ampliar."
     },
     "c_con": {
       "caso_id": "c_con",
@@ -194,7 +194,7 @@
       "janela_meses": 12,
       "cenario": "provavel",
       "decisao": "aprovar_piloto",
-      "justificativa": "Retorno menor, porem com base contratual pronta. Aprovar piloto apos anonimizacao da base."
+      "decisao_justificativa": "Retorno menor, porem com base contratual pronta. Aprovar piloto apos anonimizacao da base."
     },
     "c_dia": {
       "caso_id": "c_dia",
@@ -247,7 +247,7 @@
       "janela_meses": 12,
       "cenario": "conservador",
       "decisao": "ajustar",
-      "justificativa": "Depende de padronizacao previa do diario. Ajustar escopo antes de decidir."
+      "decisao_justificativa": "Depende de padronizacao previa do diario. Ajustar escopo antes de decidir."
     }
   },
   "selecionados": [
