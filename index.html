@@ -1299,9 +1299,15 @@ function goToStep(n){
     }
     document.getElementById("recomendacaoTexto").value = state.recomendacao_texto;
   }
+  if(n === 9){
+    // renderiza os cards de business case ao ENTRAR na etapa 9.
+    // Antes da renumeracao este render vinha acoplado ao salvamento da
+    // recomendacao (que era a etapa anterior); separar evita que a etapa 9
+    // apareca vazia.
+    renderBusinessCase();
+  }
   if(n === 13){
     state.recomendacao_texto = document.getElementById("recomendacaoTexto") ? document.getElementById("recomendacaoTexto").value : state.recomendacao_texto;
-    renderBusinessCase();
   }
   if(n === 13){
     saveBusinessCases();
@@ -1998,11 +2004,13 @@ function renderRelatorio(){
     return `<tr>
       <td>${i+1}</td>
       <td><strong>${esc(c.rotulo||"(sem nome)")}</strong><br><span style="color:#87939b;font-size:11px">${esc(c.descricao||"")}</span></td>
-      <td>${notasStr}</td>
+      <td style="font-size:11px">${esc((c.dor||"—").slice(0,90))}</td>
+        <td>${notasStr}</td>
       <td><strong>${s.toFixed(2)}</strong></td>
       <td>${f.rotulo}</td>
       <td>${esc(c.dono||"—")}</td>
-      <td>${esc(gov.metrica||"—")}</td>
+      <td>${esc(gov.validador||"—")}</td>
+        <td>${esc(gov.metrica||"—")}</td>
       <td>${ok.pronto ? "OK" : "Bloqueado"}</td>
     </tr>`;
   }).join("");
@@ -2047,7 +2055,7 @@ function renderRelatorio(){
 
     <h3>Casos avaliados</h3>
     <table class="report-table">
-      <thead><tr><th>#</th><th>Caso</th><th>Notas</th><th>Score</th><th>Faixa</th><th>Dono</th><th>Métrica</th><th>Status</th></tr></thead>
+      <thead><tr><th>#</th><th>Caso</th><th>Dor</th><th>Notas</th><th>Score</th><th>Faixa</th><th>Dono</th><th>Validador</th><th>Métrica</th><th>Status</th></tr></thead>
       <tbody>${casosTable}</tbody>
     </table>
 
@@ -2132,6 +2140,10 @@ function renderRelatorioBCs(){
             <tr><th style="width:180px">Problema descrito</th><td>${esc((bc.contexto||"—").slice(0,400))}</td></tr>
             <tr><th>Linha de base (KPI hoje)</th><td>${esc((bc.linha_de_base||"—").slice(0,400))}</td></tr>
             <tr><th>Caso de uso de IA</th><td>${esc((bc.caso_uso||"—").slice(0,400))}</td></tr>
+            <tr><th>Premissa do benefício financeiro</th><td>${esc((((bc.beneficios||{}).financeiro||{}).premissa)||"— não declarada")}</td></tr>
+            <tr><th>Premissa do ganho operacional</th><td>${esc((((bc.beneficios||{}).operacional||{}).premissa)||"— não declarada")}</td></tr>
+            <tr><th>Ganho estratégico</th><td>${esc((((bc.beneficios||{}).estrategico||{}).velocidade_decisao)||"—")}</td></tr>
+            <tr><th>Efeito em stakeholders</th><td>${esc((((bc.beneficios||{}).estrategico||{}).stakeholders)||"—")}</td></tr>
             <tr><th>Dados necessários</th><td>${esc((bc.dados||"—").slice(0,400))}</td></tr>
             <tr><th>Investimento total</th><td>${_bcFmtMoeda(r.investimento)}</td></tr>
             <tr><th>Benefício bruto/ano</th><td>${_bcFmtMoeda(r.beneficio_bruto_anual)}</td></tr>
@@ -2628,13 +2640,14 @@ function relatorioRiscos(){
   if(!state.riscos || state.riscos.length === 0) return "";
   const ord = state.riscos.slice().sort(function(a,b){ return severidade(b) - severidade(a); });
   let h = '<h3>Riscos priorizados</h3><table class="comp-table"><thead><tr>' +
-          '<th>Risco</th><th>Categoria</th><th>Severidade</th><th>Resposta</th><th>Dono</th><th>Gatilho</th>' +
+          '<th>Risco</th><th>Categoria</th><th>Severidade</th><th>Resposta</th><th>Dono</th><th>Gatilho</th><th>Ação acordada</th>' +
           '</tr></thead><tbody>';
   ord.forEach(function(r){
     const resp = (RISCO_RESPOSTAS.find(function(x){ return x.id === r.resposta; }) || {rotulo:r.resposta}).rotulo.split(" — ")[0];
     h += '<tr><td>' + escapeHtmlLocal(r.descricao || "(sem descrição)") + '</td><td>' + escapeHtmlLocal(r.categoria) +
          '</td><td>' + severidade(r) + '</td><td>' + escapeHtmlLocal(resp) +
-         '</td><td>' + escapeHtmlLocal(r.dono || "—") + '</td><td>' + escapeHtmlLocal(r.gatilho || "—") + '</td></tr>';
+         '</td><td>' + escapeHtmlLocal(r.dono || "—") + '</td><td>' + escapeHtmlLocal(r.gatilho || "—") +
+         '</td><td>' + escapeHtmlLocal(r.acao || "—") + '</td></tr>';
   });
   h += '</tbody></table>';
   const crit = ord.filter(function(r){ return severidade(r) >= RISCO_CFG.limite_resposta_obrigatoria; });
