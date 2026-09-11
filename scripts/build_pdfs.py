@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gera MANUAL-DO-CONSULTOR.pdf e ANEXO-CONSULTOR.pdf a partir dos .md em docs/.
+"""Gera os PDFs de docs/ a partir dos .md correspondentes.
 
 Pipeline: markdown → HTML estilizado → PDF via Chrome headless.
 Requer: markdown (pip) + Google Chrome instalado no macOS.
@@ -10,6 +10,7 @@ Uso:
 Saída:
     docs/MANUAL-DO-CONSULTOR.pdf
     docs/ANEXO-CONSULTOR.pdf
+    docs/TERMO-DE-RESPONSABILIDADE.pdf
 """
 from __future__ import annotations
 import subprocess
@@ -96,13 +97,28 @@ def md_to_pdf(md_file: Path, pdf_file: Path) -> None:
     print(f"PDF gerado: {pdf_file} ({pdf_file.stat().st_size // 1024} KB)")
 
 def main() -> None:
-    for name in ("MANUAL-DO-CONSULTOR", "ANEXO-CONSULTOR"):
+    for name in ("MANUAL-DO-CONSULTOR", "ANEXO-CONSULTOR", "TERMO-DE-RESPONSABILIDADE"):
         md = DOCS / f"{name}.md"
         pdf = DOCS / f"{name}.pdf"
         if not md.exists():
             print(f"AVISO: {md} não existe, pulando.")
             continue
         md_to_pdf(md, pdf)
+
+    # o termo tambem sai em .docx: e documento para o consultor editar
+    # (preencher identificacao, ajustar clausulas com advogado), nao so imprimir
+    termo_md = DOCS / "TERMO-DE-RESPONSABILIDADE.md"
+    if termo_md.exists():
+        conv = Path.home() / ".claude" / "scripts" / "md_to_docx.py"
+        if conv.exists():
+            docx = DOCS / "TERMO-DE-RESPONSABILIDADE.docx"
+            r = subprocess.run([sys.executable, str(conv), str(termo_md), str(docx)],
+                               capture_output=True, text=True)
+            if r.returncode == 0:
+                print(f"DOCX gerado: {docx} ({docx.stat().st_size // 1024} KB)")
+            else:
+                print(f"aviso: docx do termo falhou — {r.stderr.strip().splitlines()[-1:]}")
+
 
 if __name__ == "__main__":
     main()

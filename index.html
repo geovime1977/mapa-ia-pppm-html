@@ -2068,6 +2068,17 @@ function renderRelatorio(){
     <h3>Recomendação executiva</h3>
     <div class="report-recomendacao">${aplicarTooltips(rec)}</div>
 
+    <h3>Origem dos dados e responsabilidades</h3>
+    <div class="meta-line"><strong>Informações fornecidas por</strong> ${esc(id.nome || "—")}${id.cargo ? " · " + esc(id.cargo) : ""}${id.empresa ? " · " + esc(id.empresa) : ""}</div>
+    <div class="meta-line"><strong>Data do relatório</strong> ${new Date().toLocaleDateString("pt-BR")}</div>
+    <div class="meta-line" style="margin-top:8px">
+      Este relatório organiza evidência e calcula indicadores a partir <strong>exclusivamente</strong>
+      dos dados informados. Não audita, não valida e não corrige a informação recebida —
+      dado incorreto produz indicador incorreto sem que haja sinalização.
+      Percentuais de redução e ganhos projetados são premissas de trabalho, não garantias de resultado.
+      A recomendação apoia a decisão; <strong>aprovar, ajustar, postergar ou descartar cabe a quem tem alçada</strong>.
+    </div>
+
     <div class="meta-line" style="margin-top:18px;font-size:11px;color:#87939b">
       Mapa IA-PPPM v2.0 HTML · Aulas 1, 2 e 3 (Prof. Dr. José Bezerra, BSBr).
     </div>

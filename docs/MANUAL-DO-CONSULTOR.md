@@ -310,6 +310,16 @@ do comparativo e dos riscos — acompanhando a mudança de ordem das etapas. Ass
 leitor percorre a evidência antes de chegar à recomendação, em vez de lê-la antes
 de saber ROI e risco.
 
+### Declaração de origem dos dados
+
+O relatório fecha com a seção **Origem dos dados e responsabilidades**, que registra
+quem forneceu as informações (nome, cargo e empresa da etapa 1), a data, e três
+avisos: o instrumento não audita o que recebe, percentuais projetados são premissas,
+e a decisão cabe a quem tem alçada.
+
+Isso protege os dois lados na reunião de comitê — e evita que o relatório seja lido
+como auditoria, que ele não é.
+
 ### Estrutura do PDF
 
 | Seção | Conteúdo | Vem de |
@@ -910,6 +920,71 @@ Não. Ele calcula e aponta incoerências; a decisão é sempre sua. Os cortes ob
 (sem dono não vai; aprovar piloto exige benefício líquido positivo) e os alertas de
 risco existem para impedir que uma decisão passe sem que a contradição fique visível —
 não para escolher no seu lugar.
+
+---
+
+## 8F. Quem preenche o quê — e quem assume o número
+
+O consultor **conduz** o preenchimento, mas não inventa número. Cada campo tem um
+dono natural do dado, e a reunião de coleta funciona melhor quando isso está claro
+antes de começar.
+
+### Tabela de responsabilidades
+
+| Campo | Quem tem o dado | Observação |
+|---|---|---|
+| Perda ou custo atual anual | Controladoria / financeiro / dono do processo | pedir o número com a fonte, não de cabeça |
+| % de redução esperado | **Consultor propõe, cliente valida** | é premissa de trabalho, não medição |
+| Receita adicional / custo evitado | Comercial e financeiro | costuma ser o campo mais otimista; cobrar base |
+| Horas economizadas, pessoas, custo/hora | Gestor da área + RH | horas são **por pessoa**; custo/hora inclui encargos |
+| Custos de tecnologia e dados | TI | pedir proposta ou cotação, não estimativa verbal |
+| Custos de pessoas | RH | treinamento, curadoria, realocação |
+| Custos de mudança e governança | **Consultor** | é a parte que o cliente mais esquece de orçar |
+| Dono de cada caso e de cada risco | **Somente o cliente** | consultor não nomeia dono; quem tem alçada nomeia |
+| Gatilho de risco | Cliente, com apoio do consultor | precisa ser observável por quem opera |
+| Decisão final | **Somente o cliente** | o relatório recomenda; a decisão tem dono |
+
+O campo **premissa e fonte** de cada linha existe para isso: registrar de onde veio
+o número. Número sem origem não sobrevive ao comitê.
+
+### Quem escolhe o cenário
+
+Aqui há duas coisas diferentes, e confundi-las causa problema:
+
+**O multiplicador (0,5 / 1,0 / 1,3) não é escolha de ninguém.** É parâmetro fixo do
+método, vindo da Aula 3. Ajustá-lo caso a caso destrói a comparabilidade entre
+projetos e abre porta para calibrar a régua até o número ficar bonito.
+
+**O cenário-alvo é escolha do cliente**, não do consultor — é ele quem assume o
+risco da decisão. O consultor apresenta os três e explica o que cada um significa.
+
+> **Regra de honestidade:** se o caso só fica positivo no otimista, a recomendação
+> é "Estudar melhor", não "Aprovar piloto" com o otimista selecionado. Escolher
+> cenário para justificar decisão já tomada é o uso errado do instrumento — e o app
+> não impede, porque não tem como conhecer a intenção.
+
+### Termo de responsabilidade
+
+Para diagnósticos com cliente externo, use o modelo em `docs/`:
+
+| Formato | Para quê |
+|---|---|
+| `TERMO-DE-RESPONSABILIDADE.docx` | **editar** — preencher identificação, ajustar cláusulas com advogado |
+| `TERMO-DE-RESPONSABILIDADE.pdf` | imprimir e assinar |
+| `TERMO-DE-RESPONSABILIDADE.md` | fonte versionada; ao alterar, rode `scripts/build_pdfs.py` para regerar os dois |
+
+Ele registra que:
+
+- os dados são fornecidos pela organização e ela responde pela veracidade
+- o instrumento **não audita** o que recebe — dado errado gera indicador errado sem
+  aviso
+- percentuais de redução e ganhos projetados são premissas, não garantias
+- a decisão é de quem tem alçada, não do relatório
+- há cláusula de confidencialidade e de LGPD, com cuidado extra para dado sensível
+
+**O termo é modelo de trabalho, não peça jurídica validada.** Antes de usar em
+contrato, submeta à revisão de advogado — principalmente as cláusulas de limitação
+de responsabilidade e de proteção de dados.
 
 ---
 
