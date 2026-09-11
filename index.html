@@ -2597,6 +2597,43 @@ function hidratarState(data){
     state.business_cases = bcNorm;
   }
 
+  // Etapa 11 — projetos comparados
+  if(Array.isArray(data.projetos)){
+    state.projetos = data.projetos.map(function(p){
+      return {
+        id: p.id || nextProjId(),
+        rotulo: p.rotulo || "Projeto",
+        economia_anual: Number(p.economia_anual) || 0,
+        receita_adicional: Number(p.receita_adicional) || 0,
+        custos_evitados: Number(p.custos_evitados) || 0,
+        custo_tecnologia: Number(p.custo_tecnologia) || 0,
+        custo_dados: Number(p.custo_dados) || 0,
+        custo_pessoas: Number(p.custo_pessoas) || 0,
+        custo_mudanca: Number(p.custo_mudanca) || 0,
+        custo_governanca: Number(p.custo_governanca) || 0,
+        janela_meses: Number(p.janela_meses) || 12,
+        cenario: p.cenario || "provavel"
+      };
+    });
+  }
+
+  // Etapa 12 — riscos
+  if(Array.isArray(data.riscos)){
+    state.riscos = data.riscos.map(function(r){
+      return {
+        id: r.id || nextRiscoId(),
+        descricao: r.descricao || "",
+        categoria: r.categoria || "Dados",
+        probabilidade: Number(r.probabilidade) || 3,
+        impacto: Number(r.impacto) || 3,
+        resposta: r.resposta || "mitigar",
+        dono: r.dono || "",
+        gatilho: r.gatilho || "",
+        acao: r.acao || ""
+      };
+    });
+  }
+
   document.getElementById("idNome").value    = state.identificacao.nome    || "";
   document.getElementById("idEmail").value   = state.identificacao.email   || "";
   document.getElementById("idTurma").value   = state.identificacao.turma   || "";

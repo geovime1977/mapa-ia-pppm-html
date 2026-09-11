@@ -1,0 +1,265 @@
+{
+  "app": "mapa-ia-pppm",
+  "versao": "2.0",
+  "exemplo": true,
+  "identificacao": {
+    "nome": "Exemplo — Rede Vitale",
+    "email": "exemplo@bsbr.com.br",
+    "turma": "Formação de Consultores em IA-PPPM",
+    "empresa": "Rede Vitale de Clínicas",
+    "cargo": "Diretora de Operações",
+    "porte": "Média (8 unidades)",
+    "contexto": "Portfólio"
+  },
+  "diagnostico": {
+    "estrategia_valor": 4,
+    "dados_processos": 3,
+    "casos_uso": 3,
+    "governanca_hitl": 2,
+    "beneficios_roi": 3
+  },
+  "mapa": {
+    "contexto": "Agendamento e absenteísmo em 8 unidades de clínica de especialidades.",
+    "dor": "22% de faltas em consultas agendadas; agenda ociosa convive com fila de espera de 40 dias.",
+    "dados": "Sistema de agendamento com 3 anos de histórico, registros de confirmação por WhatsApp, dados demográficos do paciente.",
+    "riscos": "Dado de saúde é sensível e regulado pela LGPD. Nenhuma priorização clínica pode ser automatizada sem médico responsável.",
+    "valor": "Reduzir absenteísmo e encurtar a fila sem ampliar quadro."
+  },
+  "casos": [
+    {
+      "id": "c_abs",
+      "rotulo": "Previsão de absenteísmo",
+      "descricao": "Estima a probabilidade de falta por agendamento e sugere overbooking calibrado.",
+      "dor": "22% de faltas com fila de 40 dias",
+      "dono": "Coordenação de agendamento",
+      "notas": {
+        "impacto": 5,
+        "viabilidade": 3,
+        "dados": 4,
+        "risco": 2,
+        "valor": 5
+      }
+    },
+    {
+      "id": "c_con",
+      "rotulo": "Confirmação ativa personalizada",
+      "descricao": "Define canal e horário de contato por perfil de paciente.",
+      "dor": "Confirmação genérica com baixa resposta",
+      "dono": "Central de relacionamento",
+      "notas": {
+        "impacto": 4,
+        "viabilidade": 5,
+        "dados": 4,
+        "risco": 3,
+        "valor": 4
+      }
+    },
+    {
+      "id": "c_enc",
+      "rotulo": "Triagem de encaminhamentos",
+      "descricao": "Organiza encaminhamentos recebidos por especialidade e urgência declarada.",
+      "dor": "Encaminhamentos chegam sem padrão",
+      "dono": "Direção clínica",
+      "notas": {
+        "impacto": 4,
+        "viabilidade": 3,
+        "dados": 2,
+        "risco": 1,
+        "valor": 4
+      }
+    }
+  ],
+  "governanca": {
+    "c_abs": {
+      "responsavel": "Coordenação de agendamento",
+      "validador": "Diretoria de operações",
+      "dados_sensiveis": "sim",
+      "metrica": "Taxa de absenteísmo e ociosidade por unidade"
+    },
+    "c_con": {
+      "responsavel": "Central de relacionamento",
+      "validador": "Coordenação de agendamento",
+      "dados_sensiveis": "sim",
+      "metrica": "Taxa de confirmação por canal"
+    },
+    "c_enc": {
+      "responsavel": "Direção clínica",
+      "validador": "Médico responsável",
+      "dados_sensiveis": "sim",
+      "metrica": "Tempo entre encaminhamento e marcação"
+    }
+  },
+  "business_cases": {
+    "c_abs": {
+      "caso_id": "c_abs",
+      "linha_de_base": "22% de absenteísmo equivale a R$ 1,4 milhão/ano em capacidade ociosa.",
+      "contexto": "8 unidades, 14 mil consultas/mês.",
+      "caso_uso": "Previsão de falta com overbooking calibrado.",
+      "dados": "3 anos de histórico de agendamento.",
+      "beneficios": {
+        "financeiro": {
+          "perda_atual_anual": 1400000,
+          "percentual_reducao": 25,
+          "economia_anual": 350000,
+          "receita_adicional_anual": 0,
+          "custo_evitado_anual": 0
+        }
+      },
+      "custos": {
+        "tecnologia": {
+          "valor": 90000,
+          "premissa": "licencas e API no primeiro ano"
+        },
+        "dados": {
+          "valor": 60000,
+          "premissa": "limpeza e integracao da base"
+        },
+        "pessoas": {
+          "valor": 40000,
+          "premissa": "treinamento e curadoria"
+        },
+        "mudanca": {
+          "valor": 30000,
+          "premissa": "comunicacao e adocao"
+        },
+        "governanca": {
+          "valor": 45000,
+          "premissa": "validacao e auditoria"
+        }
+      },
+      "janela_meses": 12,
+      "cenario": "provavel",
+      "decisao": "aprovar_piloto"
+    },
+    "c_con": {
+      "caso_id": "c_con",
+      "linha_de_base": "Confirmação genérica obtém resposta de 38% dos pacientes.",
+      "contexto": "Central com 12 atendentes.",
+      "caso_uso": "Confirmação personalizada por perfil.",
+      "dados": "Histórico de contato e resposta.",
+      "beneficios": {
+        "financeiro": {
+          "perda_atual_anual": 420000,
+          "percentual_reducao": 30,
+          "economia_anual": 126000,
+          "receita_adicional_anual": 0,
+          "custo_evitado_anual": 0
+        }
+      },
+      "custos": {
+        "tecnologia": {
+          "valor": 35000,
+          "premissa": "licencas e API no primeiro ano"
+        },
+        "dados": {
+          "valor": 25000,
+          "premissa": "limpeza e integracao da base"
+        },
+        "pessoas": {
+          "valor": 20000,
+          "premissa": "treinamento e curadoria"
+        },
+        "mudanca": {
+          "valor": 18000,
+          "premissa": "comunicacao e adocao"
+        },
+        "governanca": {
+          "valor": 15000,
+          "premissa": "validacao e auditoria"
+        }
+      },
+      "janela_meses": 12,
+      "cenario": "provavel",
+      "decisao": "aprovar_piloto"
+    }
+  },
+  "selecionados": [
+    "c_abs",
+    "c_con",
+    "c_enc"
+  ],
+  "recomendacao_texto": "A previsão de absenteísmo é o caso de maior retorno, mas depende de parecer da área de privacidade antes do piloto, por envolver dado de saúde. A confirmação ativa pode começar imediatamente, com impacto menor e risco controlado. A triagem de encaminhamentos exige padronização prévia do formulário de entrada.",
+  "projetos": [
+    {
+      "rotulo": "Previsão de absenteísmo",
+      "economia_anual": 350000,
+      "receita_adicional": 0,
+      "custos_evitados": 0,
+      "custo_tecnologia": 90000,
+      "custo_dados": 60000,
+      "custo_pessoas": 40000,
+      "custo_mudanca": 30000,
+      "custo_governanca": 45000,
+      "janela_meses": 12,
+      "cenario": "provavel"
+    },
+    {
+      "rotulo": "Confirmação ativa personalizada",
+      "economia_anual": 126000,
+      "receita_adicional": 0,
+      "custos_evitados": 0,
+      "custo_tecnologia": 35000,
+      "custo_dados": 25000,
+      "custo_pessoas": 20000,
+      "custo_mudanca": 18000,
+      "custo_governanca": 15000,
+      "janela_meses": 12,
+      "cenario": "provavel"
+    },
+    {
+      "rotulo": "Triagem de encaminhamentos",
+      "economia_anual": 84000,
+      "receita_adicional": 0,
+      "custos_evitados": 0,
+      "custo_tecnologia": 28000,
+      "custo_dados": 30000,
+      "custo_pessoas": 15000,
+      "custo_mudanca": 10000,
+      "custo_governanca": 20000,
+      "janela_meses": 12,
+      "cenario": "conservador"
+    }
+  ],
+  "riscos": [
+    {
+      "descricao": "Uso de dado de saúde sem base legal adequada",
+      "categoria": "Governança e compliance",
+      "probabilidade": 3,
+      "impacto": 5,
+      "resposta": "evitar",
+      "dono": "Encarregado de dados (DPO)",
+      "gatilho": "Parecer de privacidade pendente na data de início do piloto",
+      "acao": "Não iniciar sem parecer formal e consentimento revisado"
+    },
+    {
+      "descricao": "Overbooking mal calibrado gera espera excessiva na recepção",
+      "categoria": "Tecnologia",
+      "probabilidade": 4,
+      "impacto": 4,
+      "resposta": "mitigar",
+      "dono": "Coordenação de agendamento",
+      "gatilho": "Tempo médio de espera acima de 25 minutos por 3 dias seguidos",
+      "acao": "Começar com overbooking de 5% e revisar semanalmente"
+    },
+    {
+      "descricao": "Pacientes reagem mal à confirmação automatizada",
+      "categoria": "Pessoas e adoção",
+      "probabilidade": 3,
+      "impacto": 3,
+      "resposta": "mitigar",
+      "dono": "Central de relacionamento",
+      "gatilho": "Aumento de reclamações sobre contato no canal de ouvidoria",
+      "acao": "Manter opção de contato humano em todos os fluxos"
+    },
+    {
+      "descricao": "Histórico de agendamento tem unidade com registro inconsistente",
+      "categoria": "Dados",
+      "probabilidade": 4,
+      "impacto": 3,
+      "resposta": "mitigar",
+      "dono": "TI",
+      "gatilho": "Divergência acima de 10% na conciliação por unidade",
+      "acao": "Excluir a unidade do piloto até regularizar a base"
+    }
+  ]
+}

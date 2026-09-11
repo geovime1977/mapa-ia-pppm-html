@@ -1,0 +1,265 @@
+{
+  "app": "mapa-ia-pppm",
+  "versao": "2.0",
+  "exemplo": true,
+  "identificacao": {
+    "nome": "Exemplo — Construtora Meridiano",
+    "email": "exemplo@bsbr.com.br",
+    "turma": "Formação de Consultores em IA-PPPM",
+    "empresa": "Construtora Meridiano",
+    "cargo": "Gerente de PMO",
+    "porte": "Média (150 colaboradores)",
+    "contexto": "Programa"
+  },
+  "diagnostico": {
+    "estrategia_valor": 3,
+    "dados_processos": 2,
+    "casos_uso": 3,
+    "governanca_hitl": 2,
+    "beneficios_roi": 2
+  },
+  "mapa": {
+    "contexto": "Gestão de contratos e medições de 11 obras simultâneas no Rio de Janeiro.",
+    "dor": "Medições chegam em planilhas divergentes; o fechamento mensal leva 9 dias e gera glosas recorrentes com subempreiteiros.",
+    "dados": "Contratos em PDF, medições em Excel por obra, diário de obra em papel digitalizado, ERP com histórico de 4 anos.",
+    "riscos": "Cláusulas contratuais mal interpretadas geram passivo trabalhista; medição errada vira disputa jurídica. Toda glosa precisa de aval humano.",
+    "valor": "Reduzir o ciclo de fechamento e as glosas por erro de medição."
+  },
+  "casos": [
+    {
+      "id": "c_med",
+      "rotulo": "Conferência automática de medições",
+      "descricao": "Compara a medição enviada pela obra com o contrato e o histórico, apontando divergências antes do aceite.",
+      "dor": "9 dias de fechamento e glosas recorrentes",
+      "dono": "Coordenação de contratos",
+      "notas": {
+        "impacto": 5,
+        "viabilidade": 4,
+        "dados": 3,
+        "risco": 3,
+        "valor": 5
+      }
+    },
+    {
+      "id": "c_con",
+      "rotulo": "Extração de cláusulas contratuais",
+      "descricao": "Lê o contrato em PDF e devolve prazos, multas, reajustes e condições de medição em formato estruturado.",
+      "dor": "Cláusulas relidas manualmente a cada aditivo",
+      "dono": "Jurídico de obras",
+      "notas": {
+        "impacto": 4,
+        "viabilidade": 4,
+        "dados": 4,
+        "risco": 2,
+        "valor": 4
+      }
+    },
+    {
+      "id": "c_dia",
+      "rotulo": "Resumo de diário de obra",
+      "descricao": "Consolida os diários digitalizados em um relatório semanal de ocorrências e atrasos.",
+      "dor": "Diários raramente são lidos; atrasos aparecem tarde",
+      "dono": "Engenharia de campo",
+      "notas": {
+        "impacto": 3,
+        "viabilidade": 5,
+        "dados": 2,
+        "risco": 4,
+        "valor": 3
+      }
+    }
+  ],
+  "governanca": {
+    "c_med": {
+      "responsavel": "Coordenação de contratos",
+      "validador": "Gerente de contratos",
+      "dados_sensiveis": "nao",
+      "metrica": "Dias de fechamento e valor glosado por erro"
+    },
+    "c_con": {
+      "responsavel": "Jurídico de obras",
+      "validador": "Advogado responsável",
+      "dados_sensiveis": "sim",
+      "metrica": "Horas de releitura contratual por aditivo"
+    },
+    "c_dia": {
+      "responsavel": "Engenharia de campo",
+      "validador": "Engenheiro residente",
+      "dados_sensiveis": "nao",
+      "metrica": "Dias entre a ocorrência e o registro no relatório"
+    }
+  },
+  "business_cases": {
+    "c_med": {
+      "caso_id": "c_med",
+      "linha_de_base": "Fechamento em 9 dias, R$ 520 mil/ano em glosas por erro de medição.",
+      "contexto": "11 obras, 60 medições por mês.",
+      "caso_uso": "Conferência automática antes do aceite.",
+      "dados": "Medições em Excel e contratos em PDF.",
+      "beneficios": {
+        "financeiro": {
+          "perda_atual_anual": 520000,
+          "percentual_reducao": 35,
+          "economia_anual": 182000,
+          "receita_adicional_anual": 0,
+          "custo_evitado_anual": 40000
+        }
+      },
+      "custos": {
+        "tecnologia": {
+          "valor": 60000,
+          "premissa": "licencas e API no primeiro ano"
+        },
+        "dados": {
+          "valor": 35000,
+          "premissa": "limpeza e integracao da base"
+        },
+        "pessoas": {
+          "valor": 25000,
+          "premissa": "treinamento e curadoria"
+        },
+        "mudanca": {
+          "valor": 15000,
+          "premissa": "comunicacao e adocao"
+        },
+        "governanca": {
+          "valor": 20000,
+          "premissa": "validacao e auditoria"
+        }
+      },
+      "janela_meses": 12,
+      "cenario": "provavel",
+      "decisao": "aprovar_piloto"
+    },
+    "c_con": {
+      "caso_id": "c_con",
+      "linha_de_base": "Cada aditivo consome 6 horas de releitura; 80 aditivos por ano.",
+      "contexto": "Contratos longos e repetitivos.",
+      "caso_uso": "Extração estruturada de cláusulas.",
+      "dados": "Base de contratos assinados.",
+      "beneficios": {
+        "financeiro": {
+          "perda_atual_anual": 190000,
+          "percentual_reducao": 40,
+          "economia_anual": 76000,
+          "receita_adicional_anual": 0,
+          "custo_evitado_anual": 0
+        }
+      },
+      "custos": {
+        "tecnologia": {
+          "valor": 30000,
+          "premissa": "licencas e API no primeiro ano"
+        },
+        "dados": {
+          "valor": 20000,
+          "premissa": "limpeza e integracao da base"
+        },
+        "pessoas": {
+          "valor": 15000,
+          "premissa": "treinamento e curadoria"
+        },
+        "mudanca": {
+          "valor": 8000,
+          "premissa": "comunicacao e adocao"
+        },
+        "governanca": {
+          "valor": 12000,
+          "premissa": "validacao e auditoria"
+        }
+      },
+      "janela_meses": 12,
+      "cenario": "provavel",
+      "decisao": "aprovar_piloto"
+    }
+  },
+  "selecionados": [
+    "c_med",
+    "c_con",
+    "c_dia"
+  ],
+  "recomendacao_texto": "Recomendo iniciar pela conferência automática de medições: é o caso com maior impacto financeiro e com dado já disponível. A extração de cláusulas entra na sequência, dependente da anonimização da base contratual. O resumo de diário fica para uma terceira onda, por depender da digitalização consistente dos diários.",
+  "projetos": [
+    {
+      "rotulo": "Conferência de medições",
+      "economia_anual": 182000,
+      "receita_adicional": 0,
+      "custos_evitados": 0,
+      "custo_tecnologia": 60000,
+      "custo_dados": 35000,
+      "custo_pessoas": 25000,
+      "custo_mudanca": 15000,
+      "custo_governanca": 20000,
+      "janela_meses": 12,
+      "cenario": "provavel"
+    },
+    {
+      "rotulo": "Extração de cláusulas",
+      "economia_anual": 76000,
+      "receita_adicional": 0,
+      "custos_evitados": 0,
+      "custo_tecnologia": 30000,
+      "custo_dados": 20000,
+      "custo_pessoas": 15000,
+      "custo_mudanca": 8000,
+      "custo_governanca": 12000,
+      "janela_meses": 12,
+      "cenario": "provavel"
+    },
+    {
+      "rotulo": "Resumo de diário de obra",
+      "economia_anual": 48000,
+      "receita_adicional": 0,
+      "custos_evitados": 0,
+      "custo_tecnologia": 18000,
+      "custo_dados": 12000,
+      "custo_pessoas": 10000,
+      "custo_mudanca": 6000,
+      "custo_governanca": 8000,
+      "janela_meses": 12,
+      "cenario": "conservador"
+    }
+  ],
+  "riscos": [
+    {
+      "descricao": "Medições históricas sem padronização entre obras impedem comparação confiável",
+      "categoria": "Dados",
+      "probabilidade": 5,
+      "impacto": 4,
+      "resposta": "mitigar",
+      "dono": "Coordenação de contratos",
+      "gatilho": "Divergência acima de 15% entre conferência automática e manual na amostra piloto",
+      "acao": "Padronizar o template de medição em 3 obras antes de ampliar"
+    },
+    {
+      "descricao": "Subempreiteiros contestam glosa apontada por sistema",
+      "categoria": "Governança e compliance",
+      "probabilidade": 3,
+      "impacto": 5,
+      "resposta": "transferir",
+      "dono": "Jurídico de obras",
+      "gatilho": "Primeira contestação formal registrada",
+      "acao": "Manter aval humano obrigatório antes de comunicar glosa"
+    },
+    {
+      "descricao": "Equipe de campo não adota o novo fluxo de envio",
+      "categoria": "Pessoas e adoção",
+      "probabilidade": 4,
+      "impacto": 3,
+      "resposta": "mitigar",
+      "dono": "Engenharia de campo",
+      "gatilho": "Menos de 60% das medições no novo formato em 45 dias",
+      "acao": "Treinamento presencial por obra e acompanhamento semanal"
+    },
+    {
+      "descricao": "Licença da ferramenta reajusta acima do previsto",
+      "categoria": "Fornecedor",
+      "probabilidade": 2,
+      "impacto": 3,
+      "resposta": "aceitar",
+      "dono": "PMO",
+      "gatilho": "Reajuste anunciado acima de 15%",
+      "acao": "Reavaliar na renovação; manter alternativa mapeada"
+    }
+  ]
+}

@@ -1,0 +1,265 @@
+{
+  "app": "mapa-ia-pppm",
+  "versao": "2.0",
+  "exemplo": true,
+  "identificacao": {
+    "nome": "Exemplo — Metalúrgica Aurora",
+    "email": "exemplo@bsbr.com.br",
+    "turma": "Formação de Consultores em IA-PPPM",
+    "empresa": "Metalúrgica Aurora",
+    "cargo": "Gerente de Manutenção",
+    "porte": "Grande (600 colaboradores)",
+    "contexto": "Projeto"
+  },
+  "diagnostico": {
+    "estrategia_valor": 3,
+    "dados_processos": 4,
+    "casos_uso": 2,
+    "governanca_hitl": 3,
+    "beneficios_roi": 3
+  },
+  "mapa": {
+    "contexto": "Manutenção de 34 equipamentos críticos em duas linhas de usinagem.",
+    "dor": "Paradas não programadas somam 180 horas por ano; cada hora parada custa cerca de R$ 12 mil.",
+    "dados": "Sensores de vibração e temperatura desde 2023, ordens de serviço no sistema de manutenção, histórico de troca de peças.",
+    "riscos": "Alarme falso gera parada desnecessária; alarme perdido gera quebra. A decisão de parar a linha é sempre do supervisor.",
+    "valor": "Antecipar falha e reduzir parada não programada."
+  },
+  "casos": [
+    {
+      "id": "c_pred",
+      "rotulo": "Alerta preditivo de falha",
+      "descricao": "Cruza vibração, temperatura e histórico de OS para sinalizar equipamento em risco.",
+      "dor": "180 horas de parada não programada por ano",
+      "dono": "Engenharia de manutenção",
+      "notas": {
+        "impacto": 5,
+        "viabilidade": 4,
+        "dados": 5,
+        "risco": 3,
+        "valor": 5
+      }
+    },
+    {
+      "id": "c_os",
+      "rotulo": "Priorização de ordens de serviço",
+      "descricao": "Ordena a fila de OS por criticidade do equipamento e janela de produção.",
+      "dor": "Fila de OS priorizada por antiguidade",
+      "dono": "PCM",
+      "notas": {
+        "impacto": 4,
+        "viabilidade": 5,
+        "dados": 4,
+        "risco": 4,
+        "valor": 4
+      }
+    },
+    {
+      "id": "c_pec",
+      "rotulo": "Previsão de consumo de peças",
+      "descricao": "Projeta demanda de peças críticas para dimensionar estoque.",
+      "dor": "Ruptura de peça crítica em 6 ocasiões no último ano",
+      "dono": "Suprimentos",
+      "notas": {
+        "impacto": 4,
+        "viabilidade": 4,
+        "dados": 4,
+        "risco": 4,
+        "valor": 4
+      }
+    }
+  ],
+  "governanca": {
+    "c_pred": {
+      "responsavel": "Engenharia de manutenção",
+      "validador": "Supervisor de produção",
+      "dados_sensiveis": "nao",
+      "metrica": "Horas de parada não programada e taxa de alarme falso"
+    },
+    "c_os": {
+      "responsavel": "PCM",
+      "validador": "Gerente de manutenção",
+      "dados_sensiveis": "nao",
+      "metrica": "Aderência da OS à janela de produção"
+    },
+    "c_pec": {
+      "responsavel": "Suprimentos",
+      "validador": "Gerente de manutenção",
+      "dados_sensiveis": "nao",
+      "metrica": "Rupturas de peça crítica por trimestre"
+    }
+  },
+  "business_cases": {
+    "c_pred": {
+      "caso_id": "c_pred",
+      "linha_de_base": "180 horas de parada por ano a R$ 12 mil/hora = R$ 2,16 milhões.",
+      "contexto": "34 equipamentos críticos monitorados.",
+      "caso_uso": "Alerta preditivo com validação do supervisor.",
+      "dados": "Série de sensores desde 2023 e histórico de OS.",
+      "beneficios": {
+        "financeiro": {
+          "perda_atual_anual": 2160000,
+          "percentual_reducao": 30,
+          "economia_anual": 648000,
+          "receita_adicional_anual": 0,
+          "custo_evitado_anual": 0
+        }
+      },
+      "custos": {
+        "tecnologia": {
+          "valor": 140000,
+          "premissa": "licencas e API no primeiro ano"
+        },
+        "dados": {
+          "valor": 80000,
+          "premissa": "limpeza e integracao da base"
+        },
+        "pessoas": {
+          "valor": 60000,
+          "premissa": "treinamento e curadoria"
+        },
+        "mudanca": {
+          "valor": 40000,
+          "premissa": "comunicacao e adocao"
+        },
+        "governanca": {
+          "valor": 50000,
+          "premissa": "validacao e auditoria"
+        }
+      },
+      "janela_meses": 12,
+      "cenario": "provavel",
+      "decisao": "aprovar_piloto"
+    },
+    "c_os": {
+      "caso_id": "c_os",
+      "linha_de_base": "Retrabalho de agenda consome 25 horas/mês do PCM.",
+      "contexto": "Fila média de 90 OS abertas.",
+      "caso_uso": "Priorização por criticidade e janela.",
+      "dados": "Sistema de manutenção com 5 anos de base.",
+      "beneficios": {
+        "financeiro": {
+          "perda_atual_anual": 360000,
+          "percentual_reducao": 35,
+          "economia_anual": 126000,
+          "receita_adicional_anual": 0,
+          "custo_evitado_anual": 0
+        }
+      },
+      "custos": {
+        "tecnologia": {
+          "valor": 40000,
+          "premissa": "licencas e API no primeiro ano"
+        },
+        "dados": {
+          "valor": 25000,
+          "premissa": "limpeza e integracao da base"
+        },
+        "pessoas": {
+          "valor": 30000,
+          "premissa": "treinamento e curadoria"
+        },
+        "mudanca": {
+          "valor": 20000,
+          "premissa": "comunicacao e adocao"
+        },
+        "governanca": {
+          "valor": 15000,
+          "premissa": "validacao e auditoria"
+        }
+      },
+      "janela_meses": 12,
+      "cenario": "provavel",
+      "decisao": "aprovar_piloto"
+    }
+  },
+  "selecionados": [
+    "c_pred",
+    "c_os",
+    "c_pec"
+  ],
+  "recomendacao_texto": "O alerta preditivo concentra o retorno e tem a melhor base de dados disponível — é o piloto recomendado. A priorização de OS tem implantação mais simples e pode correr em paralelo com equipe própria. A previsão de consumo de peças depende de acordo prévio com suprimentos sobre nível de serviço, e fica para a segunda onda.",
+  "projetos": [
+    {
+      "rotulo": "Alerta preditivo de falha",
+      "economia_anual": 648000,
+      "receita_adicional": 0,
+      "custos_evitados": 0,
+      "custo_tecnologia": 140000,
+      "custo_dados": 80000,
+      "custo_pessoas": 60000,
+      "custo_mudanca": 40000,
+      "custo_governanca": 50000,
+      "janela_meses": 12,
+      "cenario": "provavel"
+    },
+    {
+      "rotulo": "Priorização de ordens de serviço",
+      "economia_anual": 126000,
+      "receita_adicional": 0,
+      "custos_evitados": 0,
+      "custo_tecnologia": 40000,
+      "custo_dados": 25000,
+      "custo_pessoas": 30000,
+      "custo_mudanca": 20000,
+      "custo_governanca": 15000,
+      "janela_meses": 12,
+      "cenario": "provavel"
+    },
+    {
+      "rotulo": "Previsão de consumo de peças",
+      "economia_anual": 210000,
+      "receita_adicional": 0,
+      "custos_evitados": 0,
+      "custo_tecnologia": 55000,
+      "custo_dados": 45000,
+      "custo_pessoas": 25000,
+      "custo_mudanca": 15000,
+      "custo_governanca": 20000,
+      "janela_meses": 18,
+      "cenario": "provavel"
+    }
+  ],
+  "riscos": [
+    {
+      "descricao": "Alarme falso recorrente leva a equipe a ignorar o alerta",
+      "categoria": "Tecnologia",
+      "probabilidade": 4,
+      "impacto": 5,
+      "resposta": "mitigar",
+      "dono": "Engenharia de manutenção",
+      "gatilho": "Mais de 3 alarmes falsos por semana no piloto",
+      "acao": "Calibrar limiar com 8 semanas de dados antes de acionar a produção"
+    },
+    {
+      "descricao": "Sensor descalibrado em equipamento crítico contamina a previsão",
+      "categoria": "Dados",
+      "probabilidade": 3,
+      "impacto": 4,
+      "resposta": "mitigar",
+      "dono": "Engenharia de manutenção",
+      "gatilho": "Leitura fora da faixa esperada por 48h",
+      "acao": "Rotina de aferição mensal dos sensores do piloto"
+    },
+    {
+      "descricao": "Supervisor não tem autonomia para parar a linha no turno da noite",
+      "categoria": "Governança e compliance",
+      "probabilidade": 3,
+      "impacto": 4,
+      "resposta": "evitar",
+      "dono": "Gerente de manutenção",
+      "gatilho": "Alerta crítico emitido sem ação no turno noturno",
+      "acao": "Formalizar alçada de parada por turno antes do piloto"
+    },
+    {
+      "descricao": "Integração com o sistema de manutenção depende de fornecedor externo",
+      "categoria": "Fornecedor",
+      "probabilidade": 3,
+      "impacto": 3,
+      "resposta": "transferir",
+      "dono": "TI",
+      "gatilho": "Prazo de integração estourado em 15 dias",
+      "acao": "Cláusula de prazo no contrato e plano B por exportação manual"
+    }
+  ]
+}
