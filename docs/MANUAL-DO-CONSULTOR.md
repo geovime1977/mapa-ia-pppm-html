@@ -343,6 +343,36 @@ Duas consequências práticas:
 - Ao demonstrar para um cliente novo em um computador já usado, clique em
   **Começar do zero** antes. Caso contrário o preenchimento anterior aparece.
 
+### O app usa IA?
+
+Não. O app é **sobre** IA, mas não **usa** IA.
+
+Tudo o que ele faz é determinístico: cópia de campos entre etapas, aritmética
+com fórmulas fixas e textos de template preenchidos com o que você digitou. Não
+há chamada de rede — o arquivo roda inteiro no navegador, sem internet.
+
+Três consequências que valem numa reunião de cliente:
+
+- **O mesmo preenchimento produz sempre o mesmo resultado.** Não há variação entre
+  execuções, nem "o app respondeu diferente hoje".
+- **Todo número é auditável.** Qualquer valor da tela pode ser refeito na mão a
+  partir dos campos de entrada.
+- **Nada sai da máquina.** Relevante quando o caso envolve dado sensível — saúde,
+  contrato, folha.
+
+A "sugestão" da recomendação executiva (etapa 9) é um **template**: monta o texto
+encaixando o que você preencheu nas etapas anteriores. Ele mesmo declara isso na
+tela.
+
+### Os projetos da etapa 11 aparecem mesmo preenchendo tudo à mão?
+
+Sim. A herança não depende de carregar exemplo — ela lê o que estiver em business
+case e na seleção dos prioritários, tenha vindo de arquivo ou de digitação.
+
+Preenchendo do zero um caso com economia de R$ 60 mil, ganho operacional de
+5h × 4 pessoas × R$ 50 e investimento de R$ 40 mil, a etapa 11 monta sozinha o
+projeto com benefício líquido de R$ 32 mil e ROI de 80%. Sem clique, sem exemplo.
+
 ### O app funciona em qualquer computador?
 
 Sim. A URL `https://mapa-ia-pppm.streamlit.app/` é pública, sem login. Qualquer
