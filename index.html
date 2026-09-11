@@ -488,9 +488,11 @@
     <h2>11. Business Case comparativo</h2>
     <p class="hint">Aula 3 &middot; quando há mais de um projeto disputando o mesmo orçamento, a pergunta deixa de ser &ldquo;vale a pena?&rdquo; e passa a ser &ldquo;qual primeiro?&rdquo;. Cadastre os concorrentes e compare ROI, payback e benefício líquido na mesma janela.</p>
     <div class="info-box">
-      Benefício do período = (economia + receita adicional + custos evitados) &times; janela/12.<br>
-      Custo total = investimento (tecnologia, dados, pessoas, mudança, governança) + custeio mensal &times; janela.<br>
-      ROI = benefício líquido &divide; custo total. Payback = investimento &divide; benefício líquido mensal.
+      Investimento = tecnologia + dados + pessoas + mudança + governança.<br>
+      Benefício ajustado = (economia + receita adicional + custos evitados) &times; janela/12 &times; multiplicador do cenário.<br>
+      Benefício líquido = benefício ajustado &minus; investimento. ROI = benefício líquido &divide; investimento.<br>
+      Payback = investimento &divide; benefício mensal ajustado.<br>
+      <em>Mesma conta da etapa 10, para que o projeto não apareça com dois ROIs diferentes no app.</em>
     </div>
     <p class="hint" style="margin-top:-8px">A comparação entre projetos concorrentes segue a ideia do aplicativo de business case do Daniel, apresentado na turma. Cálculo idêntico ao da etapa 10, conforme a Aula 3.</p>
     <div id="projContainer"></div>
