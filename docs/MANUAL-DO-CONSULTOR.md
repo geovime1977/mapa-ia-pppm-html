@@ -844,6 +844,75 @@ senão o preenchimento anterior se mistura.
 
 ---
 
+## 8E. Perguntas frequentes sobre o cálculo
+
+Consolidação das dúvidas que mais aparecem no uso real.
+
+### O que é o fator multiplicador dos cenários?
+
+É o **ajuste de incerteza sobre o benefício**. A economia projetada é estimativa; em
+vez de fingir certeza, o método pede o mesmo caso sob três hipóteses:
+
+| Cenário | Multiplicador | Leitura |
+|---|---|---|
+| Conservador | × 0,5 | metade do benefício se realiza |
+| Provável | × 1,0 | realiza como projetado |
+| Otimista | × 1,3 | supera em 30% |
+
+Duas propriedades importantes:
+
+**Só afeta o benefício, nunca o investimento.** Por isso o investimento é idêntico
+nos três cenários. Faz sentido: o que você vai gastar é decisão sua, conhecida; o
+que vai economizar é aposta.
+
+**A escala é assimétrica de propósito** — cai 50%, sobe 30%. Projetos erram mais
+para baixo do que para cima, e a assimetria embute essa correção. Escala simétrica
+daria falsa sensação de equilíbrio.
+
+**Uso prático:** um caso que só fica positivo no otimista é candidato natural a
+"Estudar melhor". No exemplo das clínicas, a Triagem de encaminhamentos dá 6% no
+otimista, −18% no provável e −59% no conservador — exatamente o perfil que a decisão
+de postergar existe para capturar.
+
+### Por que o investimento não muda entre cenários?
+
+Porque o cenário trata da incerteza do **retorno**, não do custo. Se o custo também
+for incerto, isso se declara na premissa da camada correspondente — não se ajusta
+pelo multiplicador.
+
+### ROI e payback dizem a mesma coisa?
+
+Não. **ROI mede quanto rende; payback mede em quanto tempo volta.** Um projeto pode
+ter ROI alto e payback longo, se o benefício chegar devagar. O comitê costuma olhar
+os dois: o ROI justifica o investimento, o payback diz quanto tempo a organização
+fica exposta.
+
+### Qual janela de análise escolher?
+
+As opções são 6, 12 e 24 meses. A regra prática: **use a mesma janela em todos os
+casos que vão ser comparados**. Comparar um caso em 24 meses com outro em 12 favorece
+o mais longo por construção, já que o benefício é proporcional à janela e o
+investimento não.
+
+### Por que meu ROI ficou tão alto?
+
+A causa mais comum é **camada de custo esquecida**. Como o ROI divide pelo
+investimento, um custo não lançado não deixa buraco visível — produz um número maior
+e aparentemente saudável. Confira as cinco camadas antes de comemorar.
+
+A segunda causa é a **camada operacional mal preenchida**: os três campos se
+multiplicam, e as horas são por pessoa. Lançar o total da equipe e ainda multiplicar
+por pessoas impactadas infla o benefício várias vezes.
+
+### O app decide por mim?
+
+Não. Ele calcula e aponta incoerências; a decisão é sempre sua. Os cortes obrigatórios
+(sem dono não vai; aprovar piloto exige benefício líquido positivo) e os alertas de
+risco existem para impedir que uma decisão passe sem que a contradição fique visível —
+não para escolher no seu lugar.
+
+---
+
 ## 9. Prompts do consultor — 9 prompts SMART para as 3 aulas
 
 Os prompts foram retirados do app (não são mais uma aba/etapa) por 3 razões:
