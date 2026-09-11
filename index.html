@@ -494,10 +494,10 @@
       Payback = investimento &divide; benefício mensal ajustado.<br>
       <em>Mesma conta da etapa 10, para que o projeto não apareça com dois ROIs diferentes no app.</em>
     </div>
-    <p class="hint" style="margin-top:-8px">A comparação entre projetos concorrentes segue a ideia do aplicativo de business case do Daniel, apresentado na turma. Cálculo idêntico ao da etapa 10, conforme a Aula 3.</p>
+    <p class="hint" style="margin-top:-8px">Os projetos abaixo vêm dos casos da etapa 10 &mdash; os mesmos que nasceram das dores na etapa 4. Se você alterar a etapa 10 depois, use <em>Re-sincronizar</em>. A comparação segue a ideia do aplicativo de business case do Daniel, apresentado na turma; o cálculo é idêntico ao da etapa 10, conforme a Aula 3.</p>
     <div id="projContainer"></div>
     <div class="nav-buttons" style="margin-top:4px">
-      <button type="button" class="btn-use-suggestion" onclick="trazerDaEtapa10()">Trazer os casos da etapa 10</button>
+      <button type="button" class="btn-use-suggestion" onclick="trazerDaEtapa10(false)">Re-sincronizar com a etapa 10</button>
     </div>
     <button class="btn-add-case" onclick="addProjeto()">+ Adicionar projeto (alternativa externa)</button>
     <div id="projComparativo"></div>
@@ -1261,7 +1261,12 @@ function goToStep(n){
   destino.classList.add("active");
 
   salvarLocal();
-  if(n === 11){ renderProjetos(); }
+  if(n === 11){
+    // Primeira visita sem projetos: herda os casos da etapa 10 sem pedir clique.
+    // Depois disso o usuario manda no conteudo, e a re-sincronizacao e manual.
+    if(!state.projetos || state.projetos.length === 0) trazerDaEtapa10(true);
+    renderProjetos();
+  }
   if(n === 12){ renderRiscos(); }
   document.getElementById("progressFill").style.width = ((n/TOTAL_STEPS)*100) + "%";
   document.getElementById("progressLabel").textContent = `Etapa ${n} de ${TOTAL_STEPS}`;
@@ -2156,7 +2161,7 @@ function exportJSON(){
    apresentado na turma.
    ============================================================ */
 
-function trazerDaEtapa10(){
+function trazerDaEtapa10(silencioso){
   // Os projetos comparados aqui sao os casos que vieram das dores (etapa 4),
   // foram pontuados (5), selecionados (8) e ganharam business case (10).
   // Redigitar abriria espaco para divergencia entre as etapas.
@@ -2164,8 +2169,8 @@ function trazerDaEtapa10(){
     ? state.selecionados
     : Object.keys(state.business_cases || {});
   if(!ids.length){
-    alert("Nenhum caso com business case na etapa 10. Preencha a etapa 10 antes de comparar.");
-    return;
+    if(!silencioso) alert("Nenhum caso com business case na etapa 10. Preencha a etapa 10 antes de comparar.");
+    return 0;
   }
   const novos = [];
   ids.forEach(function(cid){
@@ -2190,12 +2195,18 @@ function trazerDaEtapa10(){
       cenario: bc.cenario || "provavel"
     });
   });
-  if(!novos.length){ alert("Os casos selecionados ainda nao tem business case na etapa 10."); return; }
+  if(!novos.length){
+    if(!silencioso) alert("Os casos selecionados ainda nao tem business case na etapa 10.");
+    return 0;
+  }
   const manuais = (state.projetos || []).filter(function(p){ return !p.origem_caso; });
   state.projetos = novos.concat(manuais);
   renderProjetos();
   salvarLocal();
-  alert(novos.length + " caso(s) trazido(s) da etapa 10. Os numeros vieram do business case; ajuste aqui se quiser simular variacoes.");
+  if(!silencioso){
+    alert(novos.length + " caso(s) re-sincronizado(s) com a etapa 10. Os numeros vieram do business case; ajuste aqui se quiser simular variacoes.");
+  }
+  return novos.length;
 }
 
 function nextProjId(){ return "p" + Date.now().toString(36) + Math.floor(Math.random()*1000).toString(36); }
