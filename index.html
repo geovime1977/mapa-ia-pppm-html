@@ -496,7 +496,10 @@
     </div>
     <p class="hint" style="margin-top:-8px">A comparação entre projetos concorrentes segue a ideia do aplicativo de business case do Daniel, apresentado na turma. Cálculo idêntico ao da etapa 10, conforme a Aula 3.</p>
     <div id="projContainer"></div>
-    <button class="btn-add-case" onclick="addProjeto()">+ Adicionar projeto</button>
+    <div class="nav-buttons" style="margin-top:4px">
+      <button type="button" class="btn-use-suggestion" onclick="trazerDaEtapa10()">Trazer os casos da etapa 10</button>
+    </div>
+    <button class="btn-add-case" onclick="addProjeto()">+ Adicionar projeto (alternativa externa)</button>
     <div id="projComparativo"></div>
     <div class="nav-buttons">
       <button class="btn-secondary" onclick="goToStep(10)">&larr; Voltar</button>
@@ -1324,6 +1327,11 @@ function saveMapa(){
 
 function saveCases(){
   const cards = document.querySelectorAll("#caseInputsContainer .case-input-card");
+  // Guarda: sem cards no DOM, nao ha o que ler. Isso acontece ao carregar um
+  // JSON e pular direto para uma etapa >= 5, sem passar pela etapa 4. Sem esta
+  // checagem, state.casos era sobrescrito por uma lista vazia e os casos de uso
+  // desapareciam em silencio, levando junto notas, governanca e business cases.
+  if(cards.length === 0 && state.casos && state.casos.length > 0) return;
   const casos = [];
   cards.forEach(card => {
     const id = card.dataset.caseid;
@@ -2147,6 +2155,49 @@ function exportJSON(){
    projetos concorrentes na mesma janela veio do aplicativo do Daniel,
    apresentado na turma.
    ============================================================ */
+
+function trazerDaEtapa10(){
+  // Os projetos comparados aqui sao os casos que vieram das dores (etapa 4),
+  // foram pontuados (5), selecionados (8) e ganharam business case (10).
+  // Redigitar abriria espaco para divergencia entre as etapas.
+  const ids = (state.selecionados && state.selecionados.length)
+    ? state.selecionados
+    : Object.keys(state.business_cases || {});
+  if(!ids.length){
+    alert("Nenhum caso com business case na etapa 10. Preencha a etapa 10 antes de comparar.");
+    return;
+  }
+  const novos = [];
+  ids.forEach(function(cid){
+    const bc = (state.business_cases || {})[cid];
+    if(!bc) return;
+    const caso = (state.casos || []).find(function(c){ return c.id === cid; });
+    const b = (bc.beneficios && bc.beneficios.financeiro) || {};
+    const custo = function(k){ return Number(((bc.custos||{})[k]||{}).valor) || 0; };
+    novos.push({
+      id: nextProjId(),
+      origem_caso: cid,
+      rotulo: (caso && caso.rotulo) ? caso.rotulo : cid,
+      economia_anual: Number(b.economia_anual) || 0,
+      receita_adicional: Number(b.receita_adicional_anual) || 0,
+      custos_evitados: Number(b.custo_evitado_anual) || 0,
+      custo_tecnologia: custo("tecnologia"),
+      custo_dados: custo("dados"),
+      custo_pessoas: custo("pessoas"),
+      custo_mudanca: custo("mudanca"),
+      custo_governanca: custo("governanca"),
+      janela_meses: Number(bc.janela_meses) || 12,
+      cenario: bc.cenario || "provavel"
+    });
+  });
+  if(!novos.length){ alert("Os casos selecionados ainda nao tem business case na etapa 10."); return; }
+  const manuais = (state.projetos || []).filter(function(p){ return !p.origem_caso; });
+  state.projetos = novos.concat(manuais);
+  renderProjetos();
+  salvarLocal();
+  alert(novos.length + " caso(s) trazido(s) da etapa 10. Os numeros vieram do business case; ajuste aqui se quiser simular variacoes.");
+}
+
 function nextProjId(){ return "p" + Date.now().toString(36) + Math.floor(Math.random()*1000).toString(36); }
 
 function addProjeto(){
@@ -2224,6 +2275,7 @@ function renderProjetos(){
     return '<div class="case-card">' +
       '<div class="case-head">' +
         '<input type="text" value="' + escapeAttr(p.rotulo) + '" oninput="setProj(\'' + p.id + '\',\'rotulo\',this.value,false)">' +
+        (p.origem_caso ? '<span class="badge-sev sev-baixo" style="white-space:nowrap">etapa 10</span>' : '') +
         '<button class="btn-remove-case" onclick="removeProjeto(\'' + p.id + '\')">remover</button>' +
       '</div>' +
       '<h3>Benefícios anuais</h3>' +
