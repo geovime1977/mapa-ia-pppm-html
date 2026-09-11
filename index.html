@@ -516,9 +516,11 @@
       <strong>Alto (15–25)</strong>: resposta obrigatória, com dono e gatilho.
       <strong>Médio (5–14)</strong>: resposta planejada; aceitar exige justificativa.
       <strong>Baixo (1–4)</strong>: lista de observação.<br>
-      <em>Régua alinhada à análise qualitativa de riscos do PMBOK, como no método do riscos-pppm.</em>
+      <em>Régua alinhada à análise qualitativa de riscos do PMBOK, como no método do riscos-pppm.</em><br>
+      <strong>Impacto:</strong> avalie prazo, custo e escopo separadamente e registre a <strong>maior</strong> nota.
+      Um risco de prazo 2 mas custo 5 é um risco 5.
     </div>
-    <p class="hint" style="margin-top:-8px">Estrutura inspirada na ferramenta <a href="https://filipetb.github.io/riscos-pppm/" target="_blank" rel="noopener">riscos-pppm</a>, de Filipe TB, apresentada na turma. Implementação própria.</p>
+    <p class="hint" style="margin-top:-8px">Escalas e faixas seguem o método da ferramenta <a href="https://filipetb.github.io/riscos-pppm/" target="_blank" rel="noopener">riscos-pppm</a>, de Filipe TB, publicada sob licença MIT e apresentada na turma.</p>
     <div id="riscoContainer"></div>
     <button class="btn-add-case" onclick="addRisco()">+ Adicionar risco</button>
     <div id="riscoMatriz"></div>
@@ -2354,6 +2356,25 @@ function renderComparativo(){
    https://filipetb.github.io/riscos-pppm/
    ============================================================ */
 const RISCO_CFG = {
+  // Ancoras de pontuacao. A estrutura (escala 1-5 ancorada, impacto avaliado por
+  // dimensao com a maior nota prevalecendo) segue o metodo do riscos-pppm de
+  // Filipe TB, disponivel sob licenca MIT; os descritores abaixo foram redigidos
+  // para este app. Sem ancora, cada pessoa pontua numa regua diferente.
+  probabilidade: [
+    {nota:1, rotulo:"Muito baixa", ancora:"Sem registro de ocorrencia neste contexto."},
+    {nota:2, rotulo:"Baixa",       ancora:"Ha relato isolado; acontece raramente."},
+    {nota:3, rotulo:"Media",       ancora:"Ocorre de tempos em tempos; ninguem se surpreenderia."},
+    {nota:4, rotulo:"Alta",        ancora:"Ja ocorreu em iniciativa recente da casa."},
+    {nota:5, rotulo:"Muito alta",  ancora:"Esta ocorrendo agora ou e praticamente certo."}
+  ],
+  impacto: [
+    {nota:1, rotulo:"Muito baixo", prazo:"Absorvido pela folga", custo:"Irrelevante",                 escopo:"Imperceptivel"},
+    {nota:2, rotulo:"Baixo",       prazo:"Atraso interno, marco mantido", custo:"Cabe no orcamento",  escopo:"Ajuste menor"},
+    {nota:3, rotulo:"Medio",       prazo:"Marco desliza", custo:"Estouro visivel, gerenciavel",       escopo:"Entrega degradada"},
+    {nota:4, rotulo:"Alto",        prazo:"Marco critico perdido", custo:"Exige aprovacao adicional",  escopo:"Requisito comprometido"},
+    {nota:5, rotulo:"Muito alto",  prazo:"Prazo contratual perdido", custo:"Inviabiliza o business case", escopo:"Entrega nao serve"}
+  ],
+  regra_impacto: "Avalie prazo, custo e escopo separadamente e use a MAIOR nota. Um risco de prazo 2 mas custo 5 e um risco 5.",
   // Faixas de severidade alinhadas ao metodo do riscos-pppm (Filipe TB, MIT),
   // que deriva da analise qualitativa de riscos do PMBOK. A faixa media vai ate
   // 14 para fechar o vao de 13-14, que ficava sem classificacao na tabela original.
@@ -2404,9 +2425,22 @@ function faixaRisco(s){
 }
 
 function selNum(id, campo, valor){
+  const escala = RISCO_CFG[campo] || [];
   let o = "";
-  for(let i=1;i<=5;i++) o += '<option value="'+i+'"'+(valor===i?' selected':'')+'>'+i+'</option>';
-  return '<select onchange="setRisco(\''+id+'\',\''+campo+'\',this.value,true)">'+o+'</select>';
+  for(let i=1;i<=5;i++){
+    const e = escala.find(function(x){ return x.nota === i; }) || {};
+    const legenda = e.rotulo ? (" — " + e.rotulo) : "";
+    o += '<option value="'+i+'"'+(valor===i?' selected':'')+'>'+i+legenda+'</option>';
+  }
+  const sel = '<select onchange="setRisco(\''+id+'\',\''+campo+'\',this.value,true)">'+o+'</select>';
+  const atual = escala.find(function(x){ return x.nota === valor; });
+  let dica = "";
+  if(atual){
+    dica = campo === "probabilidade"
+      ? atual.ancora
+      : "Prazo: " + atual.prazo + " · Custo: " + atual.custo + " · Escopo: " + atual.escopo;
+  }
+  return sel + (dica ? '<div class="hint" style="margin-top:4px">' + escapeHtmlLocal(dica) + '</div>' : "");
 }
 
 function renderRiscos(){
