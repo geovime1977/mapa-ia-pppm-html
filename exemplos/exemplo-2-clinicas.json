@@ -171,6 +171,47 @@
       "janela_meses": 12,
       "cenario": "provavel",
       "decisao": "aprovar_piloto"
+    },
+    "c_enc": {
+      "caso_id": "c_enc",
+      "linha_de_base": "Encaminhamentos levam 9 dias entre a chegada e a marcacao.",
+      "contexto": "Cerca de 900 encaminhamentos recebidos por mes.",
+      "caso_uso": "Organizacao por especialidade e urgencia declarada, com validacao medica.",
+      "dados": "Encaminhamentos em formatos livres, sem padronizacao.",
+      "beneficios": {
+        "financeiro": {
+          "perda_atual_anual": 280000,
+          "percentual_reducao": 30,
+          "economia_anual": 84000,
+          "receita_adicional_anual": 0,
+          "custo_evitado_anual": 0
+        }
+      },
+      "custos": {
+        "tecnologia": {
+          "valor": 28000,
+          "premissa": "licencas e API no primeiro ano"
+        },
+        "dados": {
+          "valor": 30000,
+          "premissa": "padronizacao e integracao da base"
+        },
+        "pessoas": {
+          "valor": 15000,
+          "premissa": "treinamento e curadoria"
+        },
+        "mudanca": {
+          "valor": 10000,
+          "premissa": "comunicacao e adocao"
+        },
+        "governanca": {
+          "valor": 20000,
+          "premissa": "validacao e auditoria"
+        }
+      },
+      "janela_meses": 12,
+      "cenario": "conservador",
+      "decisao": "estudar"
     }
   },
   "selecionados": [

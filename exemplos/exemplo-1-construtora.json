@@ -171,6 +171,47 @@
       "janela_meses": 12,
       "cenario": "provavel",
       "decisao": "aprovar_piloto"
+    },
+    "c_dia": {
+      "caso_id": "c_dia",
+      "linha_de_base": "Ocorrencias de campo levam em media 11 dias para chegar ao relatorio gerencial.",
+      "contexto": "11 obras produzindo diario de obra digitalizado.",
+      "caso_uso": "Consolidacao semanal de ocorrencias e atrasos a partir dos diarios.",
+      "dados": "Diarios digitalizados em PDF, sem padrao de preenchimento.",
+      "beneficios": {
+        "financeiro": {
+          "perda_atual_anual": 150000,
+          "percentual_reducao": 25,
+          "economia_anual": 37500,
+          "receita_adicional_anual": 0,
+          "custo_evitado_anual": 0
+        }
+      },
+      "custos": {
+        "tecnologia": {
+          "valor": 18000,
+          "premissa": "licencas e API no primeiro ano"
+        },
+        "dados": {
+          "valor": 12000,
+          "premissa": "padronizacao e integracao da base"
+        },
+        "pessoas": {
+          "valor": 10000,
+          "premissa": "treinamento e curadoria"
+        },
+        "mudanca": {
+          "valor": 6000,
+          "premissa": "comunicacao e adocao"
+        },
+        "governanca": {
+          "valor": 8000,
+          "premissa": "validacao e auditoria"
+        }
+      },
+      "janela_meses": 12,
+      "cenario": "conservador",
+      "decisao": "ajustar"
     }
   },
   "selecionados": [

@@ -171,6 +171,47 @@
       "janela_meses": 12,
       "cenario": "provavel",
       "decisao": "aprovar_piloto"
+    },
+    "c_pec": {
+      "caso_id": "c_pec",
+      "linha_de_base": "6 rupturas de peca critica no ultimo ano, com parada media de 7 horas cada.",
+      "contexto": "34 equipamentos criticos e 210 itens de peca em estoque.",
+      "caso_uso": "Projecao de demanda de pecas criticas para dimensionar estoque minimo.",
+      "dados": "Historico de troca de pecas e ordens de servico dos ultimos 5 anos.",
+      "beneficios": {
+        "financeiro": {
+          "perda_atual_anual": 500000,
+          "percentual_reducao": 42,
+          "economia_anual": 210000,
+          "receita_adicional_anual": 0,
+          "custo_evitado_anual": 0
+        }
+      },
+      "custos": {
+        "tecnologia": {
+          "valor": 55000,
+          "premissa": "licencas e API no primeiro ano"
+        },
+        "dados": {
+          "valor": 45000,
+          "premissa": "padronizacao e integracao da base"
+        },
+        "pessoas": {
+          "valor": 25000,
+          "premissa": "treinamento e curadoria"
+        },
+        "mudanca": {
+          "valor": 15000,
+          "premissa": "comunicacao e adocao"
+        },
+        "governanca": {
+          "valor": 20000,
+          "premissa": "validacao e auditoria"
+        }
+      },
+      "janela_meses": 12,
+      "cenario": "provavel",
+      "decisao": "aprovar_piloto"
     }
   },
   "selecionados": [
