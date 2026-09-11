@@ -2058,17 +2058,19 @@ function renderRelatorio(){
     <h3>Selecionados (3 prioritários)</h3>
     ${selHtml}
 
-    <h3>Recomendação executiva</h3>
-    <div class="report-recomendacao">${aplicarTooltips(rec)}</div>
 
     ${renderRelatorioBCs()}
+
+
+    ${relatorioComparativo()}
+    ${relatorioRiscos()}
+
+    <h3>Recomendação executiva</h3>
+    <div class="report-recomendacao">${aplicarTooltips(rec)}</div>
 
     <div class="meta-line" style="margin-top:18px;font-size:11px;color:#87939b">
       Mapa IA-PPPM v2.0 HTML · Aulas 1, 2 e 3 (Prof. Dr. José Bezerra, BSBr).
     </div>
-
-    ${relatorioComparativo()}
-    ${relatorioRiscos()}
   `;
 }
 
@@ -2415,13 +2417,17 @@ const RISCO_CFG = {
 // controla a causa, e quanto custa agir diante do dano esperado.
 const RISCO_RESPOSTAS = [
   {id:"evitar",     rotulo:"Evitar — mudar o plano para eliminar a causa",
-   ancora:"Use quando o risco e inaceitavel: nao pode acontecer em hipotese alguma. Muda-se o plano ate a causa desaparecer."},
+   ancora:"Use quando o risco e inaceitavel: nao pode acontecer em hipotese alguma. Muda-se o plano ate a causa desaparecer.",
+   acao_padrao:"alterar o plano para eliminar a causa, com o que sai de escopo"},
   {id:"mitigar",    rotulo:"Mitigar — reduzir probabilidade ou impacto",
-   ancora:"Use quando voce controla a causa e agir custa menos que o dano esperado. E o caso mais comum."},
+   ancora:"Use quando voce controla a causa e agir custa menos que o dano esperado. E o caso mais comum.",
+   acao_padrao:"acao concreta que reduz a probabilidade ou o impacto, com prazo"},
   {id:"transferir", rotulo:"Transferir — contrato, seguro ou terceiro",
-   ancora:"O risco continua existindo; muda quem paga. Use quando um terceiro absorve melhor que voce."},
+   ancora:"O risco continua existindo; muda quem paga. Use quando um terceiro absorve melhor que voce.",
+   acao_padrao:"clausula contratual, seguro ou responsabilidade formal do fornecedor"},
   {id:"aceitar",    rotulo:"Aceitar — assumir e monitorar",
-   ancora:"Use quando o custo de agir supera o dano esperado. E decisao economica, nao omissao: exige justificativa e monitoramento."}
+   ancora:"Use quando o custo de agir supera o dano esperado. E decisao economica, nao omissao: exige justificativa e monitoramento.",
+   acao_padrao:"justificativa da aceitacao e rotina de monitoramento"}
 ];
 const RISCO_CATEGORIAS = ["Dados", "Tecnologia", "Pessoas e adoção", "Governança e compliance", "Fornecedor", "Orçamento", "Prazo"];
 
@@ -2495,7 +2501,9 @@ function renderRiscos(){
       '<label>Resposta</label><select onchange="setRisco(\''+r.id+'\',\'resposta\',this.value,false)">'+resp+'</select>' + respDica +
       '<label>Dono</label><input type="text" value="'+escapeAttr(r.dono)+'" oninput="setRisco(\''+r.id+'\',\'dono\',this.value,false)">' +
       '<label>Gatilho — o que indica que o risco se materializou</label><input type="text" value="'+escapeAttr(r.gatilho)+'" oninput="setRisco(\''+r.id+'\',\'gatilho\',this.value,false)">' +
-      '<label>Ação acordada</label><input type="text" value="'+escapeAttr(r.acao)+'" oninput="setRisco(\''+r.id+'\',\'acao\',this.value,false)">' +
+      '<label>Ação acordada</label><input type="text" value="'+escapeAttr(r.acao)+'" placeholder="'+
+        escapeAttr(respAtual ? ("Padrão: " + respAtual.acao_padrao) : "")+
+        '" oninput="setRisco(\''+r.id+'\',\'acao\',this.value,false)">' +
     '</div>';
   }).join("");
   renderMatrizRiscos();

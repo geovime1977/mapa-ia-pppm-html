@@ -303,6 +303,13 @@ declarado + decisão registrada = caso **pronto para produção**.
 Sim, sai tudo detalhado. O PDF gerado é um dossiê executivo estruturado em 5
 seções fixas + apêndice pedagógico:
 
+### Ordem das seções no relatório (v2.0)
+
+A recomendação executiva passou a **fechar** o relatório, depois do business case,
+do comparativo e dos riscos — acompanhando a mudança de ordem das etapas. Assim o
+leitor percorre a evidência antes de chegar à recomendação, em vez de lê-la antes
+de saber ROI e risco.
+
 ### Estrutura do PDF
 
 | Seção | Conteúdo | Vem de |
@@ -524,6 +531,60 @@ campo manual. Se qualquer um dos dois estiver zero, o aluno mantém o número
 digitado direto. A ideia é forçar o exercício mental "baseline × ganho esperado"
 antes de aceitar um número final solto.
 
+### Como o payback é calculado — passo a passo
+
+Payback responde uma pergunta só: **em quantos meses o dinheiro investido volta?**
+
+```
+payback (meses) = investimento ÷ benefício mensal ajustado
+
+benefício mensal ajustado = (benefício bruto anual ÷ 12) × multiplicador do cenário
+```
+
+Com os números do exemplo das clínicas (Previsão de absenteísmo):
+
+| Passo | Conta | Resultado |
+|---|---|---|
+| 1. Quanto saiu do caixa | 90.000 + 60.000 + 40.000 + 30.000 + 45.000 | **265.000** |
+| 2. Quanto entra por mês | 350.000 ÷ 12 × 1,0 *(provável)* | **29.167** |
+| 3. Divide | 265.000 ÷ 29.167 | **9,1 meses** |
+
+Lido em voz alta: *gastei 265 mil de uma vez; a partir daí entram 29,2 mil por mês;
+em pouco mais de 9 meses recuperei o que gastei.*
+
+**Por que muda com o cenário:** no conservador entram só 14.583 por mês, e o mesmo
+investimento demora o dobro — 18,2 meses. O investimento **nunca muda** entre
+cenários; muda apenas a velocidade com que o dinheiro volta.
+
+**O investimento é único; o benefício é mensal.** É isso que faz a divisão render
+meses. Os custos das cinco camadas são tratados como desembolso de setup — licença
+inicial, limpeza de base, treinamento, comunicação, governança —, não como despesa
+recorrente.
+
+**E se o projeto tiver custo mensal?** Licença de API, mensalidade de ferramenta.
+A fórmula da aula não tem campo para isso. Duas saídas, ambas imperfeitas:
+
+| Caminho | Efeito |
+|---|---|
+| Lançar o valor anual em "tecnologia" | vira investimento único; o payback fica **otimista**, como se o custo parasse depois do primeiro ano |
+| Abater do benefício anual | mais honesto, mas o custo some do campo de investimento |
+
+Se for relevante no seu caso, prefira **abater do benefício** e escrever a premissa:
+*"economia líquida de custeio de R$ 60 mil/ano"*. O número fica correto e a origem,
+rastreável.
+
+**Duas limitações que o comitê pode levantar:**
+
+- **Não desconta custeio mensal.** Licença ou mensalidade não é abatida do fluxo.
+  A fórmula da aula não prevê essa camada.
+- **Não traz a valor presente.** R$ 29 mil daqui a um ano valem o mesmo que hoje na
+  conta. Payback mede recuperação de caixa, não rentabilidade — para isso existiriam
+  VPL ou TIR, fora do método.
+
+**ROI e payback dizem coisas diferentes:** ROI mede *quanto rende*; payback mede
+*em quanto tempo volta*. Um projeto pode ter ROI alto e payback longo, se o
+benefício chegar devagar.
+
 ### Corte obrigatório novo da Aula 3
 
 A decisão **"Aprovar piloto"** só é liberada quando **3 condições** valem juntas:
@@ -716,7 +777,9 @@ Três perguntas resolvem na prática:
 3. **Agir custa mais que o dano?** Se sim, **aceitar** é a resposta racional, não
    preguiça. Gastar R$ 100 mil para evitar dano esperado de R$ 10 mil destrói valor.
 
-Cada opção do seletor mostra a âncora correspondente na tela.
+Cada opção do seletor mostra a âncora correspondente na tela, e o campo **Ação
+acordada** sugere o padrão daquela estratégia — no mesmo estilo do catálogo de
+riscos da etapa 9. O texto sugerido é só referência: nada é preenchido sozinho.
 
 **Exemplo prático** (construtora, no `exemplos/`): base de medição sem padrão é
 **mitigar** — você controla, padroniza antes. Contestação de subempreiteiro é
