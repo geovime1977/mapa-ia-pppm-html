@@ -840,14 +840,14 @@ const AULA3_CFG = {
        {id:"custo_evitado_anual", rotulo:"Custo evitado anual (R$)", tipo:"moeda"},
        {id:"premissa", rotulo:"Premissa e fonte", tipo:"texto"}
      ]},
-    {id:"operacional", rotulo:"Operacional", descricao:"produtividade, velocidade, qualidade, retrabalho, SLA",
+    {id:"operacional", rotulo:"Operacional", descricao:"produtividade, velocidade, qualidade, retrabalho, SLA — ATENCAO: os tres campos se MULTIPLICAM (horas x 12 x pessoas x custo/hora) e entram no ROI. As horas sao POR PESSOA, por mes. Preencher so parte deles zera o ganho.",
      campos:[
        {id:"horas_economizadas_mes", rotulo:"Horas economizadas/mês", tipo:"numero"},
        {id:"pessoas_impactadas", rotulo:"Pessoas impactadas", tipo:"numero"},
        {id:"custo_hora", rotulo:"Custo por hora (R$)", tipo:"moeda"},
        {id:"premissa", rotulo:"Premissa e fonte", tipo:"texto"}
      ]},
-    {id:"estrategico", rotulo:"Estratégico", descricao:"decisão, risco, cliente, governança (qualitativo — não entra no ROI)",
+    {id:"estrategico", rotulo:"Estratégico", descricao:"decisão, risco, cliente, governança — qualitativo, NAO entra no ROI; serve ao comitê e ao PDF",
      campos:[
        {id:"velocidade_decisao", rotulo:"Ganho de velocidade de decisão", tipo:"texto"},
        {id:"stakeholders", rotulo:"Efeito em stakeholders", tipo:"texto"}
@@ -2189,6 +2189,15 @@ function trazerDaEtapa10(silencioso){
       economia_anual: Number(b.economia_anual) || 0,
       receita_adicional: Number(b.receita_adicional_anual) || 0,
       custos_evitados: Number(b.custo_evitado_anual) || 0,
+      // a etapa 10 soma a camada operacional ao beneficio bruto; sem trazer isto,
+      // o projeto apareceria aqui com beneficio menor que o do proprio business case
+      ganho_operacional: (function(){
+        const op = (bc.beneficios && bc.beneficios.operacional) || {};
+        const h = Number(op.horas_economizadas_mes) || 0;
+        const n = Number(op.pessoas_impactadas) || 0;
+        const c = Number(op.custo_hora) || 0;
+        return Math.round(h * 12 * n * c * 100) / 100;
+      })(),
       custo_tecnologia: custo("tecnologia"),
       custo_dados: custo("dados"),
       custo_pessoas: custo("pessoas"),
@@ -2217,7 +2226,7 @@ function nextProjId(){ return "p" + Date.now().toString(36) + Math.floor(Math.ra
 function addProjeto(){
   state.projetos.push({
     id: nextProjId(), rotulo: "Projeto " + (state.projetos.length + 1),
-    economia_anual: 0, receita_adicional: 0, custos_evitados: 0,
+    economia_anual: 0, receita_adicional: 0, custos_evitados: 0, ganho_operacional: 0,
     custo_tecnologia: 0, custo_dados: 0, custo_pessoas: 0,
     custo_mudanca: 0, custo_governanca: 0,
     janela_meses: 12, cenario: "provavel"
@@ -2245,7 +2254,7 @@ function calcProjeto(p){
   // dois ROIs diferentes dentro do app.
   const janela = p.janela_meses > 0 ? p.janela_meses : 12;
   const mult = Number(AULA3_CFG.cenarios_multiplicador[p.cenario] || 1.0);
-  const beneficioAnual = p.economia_anual + p.receita_adicional + p.custos_evitados;
+  const beneficioAnual = p.economia_anual + p.receita_adicional + p.custos_evitados + (Number(p.ganho_operacional) || 0);
   const investimento = p.custo_tecnologia + p.custo_dados + p.custo_pessoas + p.custo_mudanca + p.custo_governanca;
   const beneficioAjustado = beneficioAnual * (janela / 12) * mult;
   const beneficioLiquido = beneficioAjustado - investimento;
@@ -2296,6 +2305,7 @@ function renderProjetos(){
       campoNum(p.id,"economia_anual","Economia anual (R$)",p.economia_anual) +
       campoNum(p.id,"receita_adicional","Receita adicional (R$)",p.receita_adicional) +
       campoNum(p.id,"custos_evitados","Custos evitados (R$)",p.custos_evitados) +
+      campoNum(p.id,"ganho_operacional","Ganho operacional anual (R$)",p.ganho_operacional) +
       '<h3>Investimento</h3>' +
       campoNum(p.id,"custo_tecnologia","Tecnologia (R$)",p.custo_tecnologia) +
       campoNum(p.id,"custo_dados","Dados (R$)",p.custo_dados) +
@@ -2719,6 +2729,7 @@ function hidratarState(data){
         economia_anual: Number(p.economia_anual) || 0,
         receita_adicional: Number(p.receita_adicional) || 0,
         custos_evitados: Number(p.custos_evitados) || 0,
+        ganho_operacional: Number(p.ganho_operacional) || 0,
         custo_tecnologia: Number(p.custo_tecnologia) || 0,
         custo_dados: Number(p.custo_dados) || 0,
         custo_pessoas: Number(p.custo_pessoas) || 0,

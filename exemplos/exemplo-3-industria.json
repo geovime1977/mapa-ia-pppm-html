@@ -102,7 +102,18 @@
           "percentual_reducao": 30,
           "economia_anual": 648000,
           "receita_adicional_anual": 0,
-          "custo_evitado_anual": 0
+          "custo_evitado_anual": 0,
+          "premissa": "180 horas de parada nao programada x R$ 12 mil/hora, base 2025."
+        },
+        "operacional": {
+          "horas_economizadas_mes": 10,
+          "pessoas_impactadas": 5,
+          "custo_hora": 80,
+          "premissa": "Inspecao manual e diagnostico pos-parada somam ~10h/mes por tecnico; 5 tecnicos."
+        },
+        "estrategico": {
+          "velocidade_decisao": "Parada deixa de ser descoberta pelo operador e passa a ser antecipada.",
+          "stakeholders": "Producao recebe aviso com antecedencia para replanejar a linha."
         }
       },
       "custos": {
@@ -129,7 +140,8 @@
       },
       "janela_meses": 12,
       "cenario": "provavel",
-      "decisao": "aprovar_piloto"
+      "decisao": "aprovar_piloto",
+      "justificativa": "Concentra o retorno e tem a melhor base de dados. Aprovar piloto com calibracao de 8 semanas."
     },
     "c_os": {
       "caso_id": "c_os",
@@ -143,7 +155,18 @@
           "percentual_reducao": 35,
           "economia_anual": 126000,
           "receita_adicional_anual": 0,
-          "custo_evitado_anual": 0
+          "custo_evitado_anual": 0,
+          "premissa": "25 horas/mes de retrabalho de agenda do PCM."
+        },
+        "operacional": {
+          "horas_economizadas_mes": 8,
+          "pessoas_impactadas": 3,
+          "custo_hora": 70,
+          "premissa": "Reordenacao manual da fila de OS consome ~8h/mes por planejador; 3 no PCM."
+        },
+        "estrategico": {
+          "velocidade_decisao": "Fila de OS passa a refletir criticidade, nao antiguidade.",
+          "stakeholders": "Manutencao e producao discutem prioridade com o mesmo criterio."
         }
       },
       "custos": {
@@ -170,7 +193,8 @@
       },
       "janela_meses": 12,
       "cenario": "provavel",
-      "decisao": "aprovar_piloto"
+      "decisao": "aprovar_piloto",
+      "justificativa": "Implantacao com equipe propria e retorno rapido. Aprovar piloto em paralelo."
     },
     "c_pec": {
       "caso_id": "c_pec",
@@ -184,7 +208,18 @@
           "percentual_reducao": 42,
           "economia_anual": 210000,
           "receita_adicional_anual": 0,
-          "custo_evitado_anual": 0
+          "custo_evitado_anual": 0,
+          "premissa": "6 rupturas no ultimo ano x 7 horas de parada media."
+        },
+        "operacional": {
+          "horas_economizadas_mes": 5,
+          "pessoas_impactadas": 2,
+          "custo_hora": 65,
+          "premissa": "Levantamento manual de consumo leva ~5h/mes por comprador; 2 compradores."
+        },
+        "estrategico": {
+          "velocidade_decisao": "Compra de peca critica deixa de ser reativa.",
+          "stakeholders": "Suprimentos negocia com prazo, nao em regime de urgencia."
         }
       },
       "custos": {
@@ -211,7 +246,8 @@
       },
       "janela_meses": 12,
       "cenario": "provavel",
-      "decisao": "aprovar_piloto"
+      "decisao": "aprovar_piloto",
+      "justificativa": "Depende de acordo de nivel de servico com suprimentos. Estudar melhor."
     }
   },
   "selecionados": [
@@ -220,47 +256,7 @@
     "c_pec"
   ],
   "recomendacao_texto": "O alerta preditivo concentra o retorno e tem a melhor base de dados disponível — é o piloto recomendado. A priorização de OS tem implantação mais simples e pode correr em paralelo com equipe própria. A previsão de consumo de peças depende de acordo prévio com suprimentos sobre nível de serviço, e fica para a segunda onda.",
-  "projetos": [
-    {
-      "rotulo": "Alerta preditivo de falha",
-      "economia_anual": 648000,
-      "receita_adicional": 0,
-      "custos_evitados": 0,
-      "custo_tecnologia": 140000,
-      "custo_dados": 80000,
-      "custo_pessoas": 60000,
-      "custo_mudanca": 40000,
-      "custo_governanca": 50000,
-      "janela_meses": 12,
-      "cenario": "provavel"
-    },
-    {
-      "rotulo": "Priorização de ordens de serviço",
-      "economia_anual": 126000,
-      "receita_adicional": 0,
-      "custos_evitados": 0,
-      "custo_tecnologia": 40000,
-      "custo_dados": 25000,
-      "custo_pessoas": 30000,
-      "custo_mudanca": 20000,
-      "custo_governanca": 15000,
-      "janela_meses": 12,
-      "cenario": "provavel"
-    },
-    {
-      "rotulo": "Previsão de consumo de peças",
-      "economia_anual": 210000,
-      "receita_adicional": 0,
-      "custos_evitados": 0,
-      "custo_tecnologia": 55000,
-      "custo_dados": 45000,
-      "custo_pessoas": 25000,
-      "custo_mudanca": 15000,
-      "custo_governanca": 20000,
-      "janela_meses": 18,
-      "cenario": "provavel"
-    }
-  ],
+  "projetos": [],
   "riscos": [
     {
       "descricao": "Alarme falso recorrente leva a equipe a ignorar o alerta",
@@ -302,5 +298,6 @@
       "gatilho": "Prazo de integração estourado em 15 dias",
       "acao": "Cláusula de prazo no contrato e plano B por exportação manual"
     }
-  ]
+  ],
+  "_nota_projetos": "Vazio de proposito: a etapa 11 herda os casos da etapa 10 ao ser aberta, evitando numeros duplicados em dois lugares."
 }

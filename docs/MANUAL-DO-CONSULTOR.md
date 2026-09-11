@@ -513,6 +513,63 @@ Aulas 1, 2 e 3.
 
 ---
 
+## 8A. Quais campos entram no cálculo — e quais não entram
+
+Dúvida recorrente: por que dois casos parecidos dão ROI tão diferente? Quase sempre
+é campo em branco, não erro de conta.
+
+### Entram no benefício bruto anual
+
+**Camada financeira** — basta uma das formas:
+
+| Campo | Observação |
+|---|---|
+| `Perda ou custo atual anual` + `% redução esperado` | a economia é derivada automaticamente |
+| `Economia anual` | use quando já tiver o número pronto |
+| `Receita adicional anual` | soma direta |
+| `Custo evitado anual` | soma direta |
+
+**Camada operacional** — e aqui mora a armadilha:
+
+```
+ganho operacional = horas economizadas/mês × 12 × pessoas impactadas × custo por hora
+```
+
+Os três campos **se multiplicam**. Duas consequências:
+
+1. **Preencher só parte deles zera o ganho.** Horas e pessoas sem custo/hora resulta
+   em zero, silenciosamente.
+2. **As horas são por pessoa, por mês** — não o total da equipe. Lançar o total da
+   equipe e ainda multiplicar por pessoas impactadas infla o benefício várias vezes.
+
+### Entram no investimento
+
+As cinco camadas de custo, somadas cruas: tecnologia, dados, pessoas, mudança e
+governança. **Camada esquecida vira zero** e, como o ROI divide pelo investimento,
+o resultado aparece *maior*. É o erro mais caro do app: não deixa buraco visível,
+produz um número saudável e falso.
+
+### Não entram na conta
+
+Camada estratégica (ganho de velocidade de decisão, efeito em stakeholders), campos
+de premissa e fonte, os controles de risco e a justificativa da decisão. São
+qualitativos — sustentam a conversa no comitê e aparecem no PDF, mas não movem o ROI.
+
+Não preencher não altera o número, mas enfraquece a defesa: um business case sem
+premissa declarada é um número sem origem.
+
+### Parâmetros que mudam tudo
+
+| Parâmetro | Efeito |
+|---|---|
+| `Janela de análise` | benefício é proporcional (janela/12); investimento não muda |
+| `Cenário` | conservador ×0,5 · provável ×1,0 · otimista ×1,3 |
+
+Comparar dois casos com janelas ou cenários diferentes não é comparação. Se um está
+em 24 meses e outro em 12, o mais longo ganha por construção.
+
+---
+
 ## 8B. Etapa 11 — Business Case comparativo *(só HTML, v2.0)*
 
 A etapa 10 responde "este caso vale a pena?". A etapa 11 responde outra pergunta,
@@ -543,7 +600,8 @@ apareceria com dois ROIs no mesmo relatório.
 
 ```
 Investimento       = tecnologia + dados + pessoas + mudança + governança
-Benefício ajustado = (economia + receita adicional + custos evitados)
+Benefício ajustado = (economia + receita adicional + custos evitados
+                      + ganho operacional)
                      × janela/12 × multiplicador do cenário
 Benefício líquido  = benefício ajustado − investimento
 ROI                = benefício líquido ÷ investimento

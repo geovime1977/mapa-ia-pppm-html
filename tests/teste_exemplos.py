@@ -27,8 +27,19 @@ async def main():
               sel: state.selecionados.length,
               projetos: state.projetos.length,
               riscos: state.riscos.length,
-              rec: (state.recomendacao_texto||"").length
+              rec: (state.recomendacao_texto||"").length,
+              op_preenchido: Object.values(state.business_cases).filter(function(bc){
+                 const o=(bc.beneficios||{}).operacional||{};
+                 return (Number(o.horas_economizadas_mes)||0)>0 && (Number(o.pessoas_impactadas)||0)>0 && (Number(o.custo_hora)||0)>0;
+              }).length,
+              est_preenchido: Object.values(state.business_cases).filter(function(bc){
+                 const e=(bc.beneficios||{}).estrategico||{};
+                 return String(e.velocidade_decisao||"").length>10;
+              }).length
             })""")
+            # etapa 11 herda da 10; so depois disso o relatorio tem o comparativo
+            await pg.evaluate("goToStep(11)"); await pg.wait_for_timeout(400)
+            r["projetos"] = await pg.evaluate("state.projetos.length")
             await pg.evaluate("goToStep(13)"); await pg.wait_for_timeout(450)
             rel = await pg.evaluate("document.getElementById('finalReport').innerHTML")
             import re as _re
@@ -37,12 +48,15 @@ async def main():
             base=os.path.basename(arq)
             print(f"{base}")
             print(f"   nome={r['nome'][:34]!r} diag={r['diag']}/5 mapa={r['mapa']}/5 casos={r['casos']} gov={r['gov']} bc={r['bcs']} sel={r['sel']} proj={r['projetos']} riscos={r['riscos']} rec={r['rec']}ch")
+            print(f"   camadas: operacional={r['op_preenchido']}/3  estrategico={r['est_preenchido']}/3")
             print(f"   relatorio com comparativo+riscos: {ok_rel}")
             for cond,msg in [(r['diag']==5,"diagnostico incompleto"),(r['mapa']==5,"mapa incompleto"),
                              (r['casos']>=3,"poucos casos"),(r['gov']>=3,"governanca incompleta"),
                              (r['bcs']>=2,"business cases faltando"),(r['sel']>=3,"selecionados faltando"),
-                             (r['projetos']>=3,"projetos faltando"),(r['riscos']>=4,"riscos faltando"),
-                             (r['rec']>100,"recomendacao curta"),(ok_rel,"relatorio sem secoes novas")]:
+                             (r['projetos']>=3,"heranca da etapa 11 nao trouxe os casos"),(r['riscos']>=4,"riscos faltando"),
+                             (r['rec']>100,"recomendacao curta"),(ok_rel,"relatorio sem secoes novas"),
+                             (r['op_preenchido']==3,"camada operacional incompleta"),
+                             (r['est_preenchido']==3,"camada estrategica incompleta")]:
                 if not cond: falhas.append(f"{base}: {msg}")
             if errs: falhas.append(f"{base}: erro JS {errs[0][:70]}")
             await pg.close()

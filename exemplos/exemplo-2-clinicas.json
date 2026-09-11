@@ -102,7 +102,18 @@
           "percentual_reducao": 25,
           "economia_anual": 350000,
           "receita_adicional_anual": 0,
-          "custo_evitado_anual": 0
+          "custo_evitado_anual": 0,
+          "premissa": "Capacidade ociosa por falta, calculada sobre 14 mil consultas/mes."
+        },
+        "operacional": {
+          "horas_economizadas_mes": 6,
+          "pessoas_impactadas": 12,
+          "custo_hora": 35,
+          "premissa": "Reagendamento de faltas consome ~6h/mes por atendente; 12 atendentes."
+        },
+        "estrategico": {
+          "velocidade_decisao": "Coordenacao decide overbooking com base em probabilidade, nao em intuicao.",
+          "stakeholders": "Paciente em fila e chamado mais cedo; reducao de reclamacao na ouvidoria."
         }
       },
       "custos": {
@@ -129,7 +140,8 @@
       },
       "janela_meses": 12,
       "cenario": "provavel",
-      "decisao": "aprovar_piloto"
+      "decisao": "aprovar_piloto",
+      "justificativa": "Maior retorno, mas exige parecer de privacidade por envolver dado de saude. Aprovar piloto condicionado ao parecer."
     },
     "c_con": {
       "caso_id": "c_con",
@@ -143,7 +155,18 @@
           "percentual_reducao": 30,
           "economia_anual": 126000,
           "receita_adicional_anual": 0,
-          "custo_evitado_anual": 0
+          "custo_evitado_anual": 0,
+          "premissa": "Taxa de resposta atual de 38% aplicada ao custo da central."
+        },
+        "operacional": {
+          "horas_economizadas_mes": 5,
+          "pessoas_impactadas": 12,
+          "custo_hora": 35,
+          "premissa": "Confirmacao manual ocupa ~5h/mes por atendente; 12 atendentes."
+        },
+        "estrategico": {
+          "velocidade_decisao": "Aditivo deixa de esperar fila juridica para ser lido.",
+          "stakeholders": "Juridico passa a atuar em excecao, nao em conferencia repetitiva."
         }
       },
       "custos": {
@@ -170,7 +193,8 @@
       },
       "janela_meses": 12,
       "cenario": "provavel",
-      "decisao": "aprovar_piloto"
+      "decisao": "aprovar_piloto",
+      "justificativa": "Implantacao simples e risco controlado. Aprovar piloto imediato."
     },
     "c_enc": {
       "caso_id": "c_enc",
@@ -184,7 +208,18 @@
           "percentual_reducao": 30,
           "economia_anual": 84000,
           "receita_adicional_anual": 0,
-          "custo_evitado_anual": 0
+          "custo_evitado_anual": 0,
+          "premissa": "Tempo medio entre encaminhamento e marcacao, base de 900/mes."
+        },
+        "operacional": {
+          "horas_economizadas_mes": 4,
+          "pessoas_impactadas": 6,
+          "custo_hora": 40,
+          "premissa": "Triagem manual de encaminhamentos leva ~4h/mes por recepcionista; 6 unidades."
+        },
+        "estrategico": {
+          "velocidade_decisao": "Urgencia declarada passa a ser visivel no momento da entrada.",
+          "stakeholders": "Direcao clinica ganha visao de demanda por especialidade."
         }
       },
       "custos": {
@@ -211,7 +246,8 @@
       },
       "janela_meses": 12,
       "cenario": "conservador",
-      "decisao": "estudar"
+      "decisao": "estudar",
+      "justificativa": "Beneficio liquido negativo na janela de 12 meses. Estudar melhor antes de comprometer orcamento."
     }
   },
   "selecionados": [
@@ -220,47 +256,7 @@
     "c_enc"
   ],
   "recomendacao_texto": "A previsão de absenteísmo é o caso de maior retorno, mas depende de parecer da área de privacidade antes do piloto, por envolver dado de saúde. A confirmação ativa pode começar imediatamente, com impacto menor e risco controlado. A triagem de encaminhamentos exige padronização prévia do formulário de entrada.",
-  "projetos": [
-    {
-      "rotulo": "Previsão de absenteísmo",
-      "economia_anual": 350000,
-      "receita_adicional": 0,
-      "custos_evitados": 0,
-      "custo_tecnologia": 90000,
-      "custo_dados": 60000,
-      "custo_pessoas": 40000,
-      "custo_mudanca": 30000,
-      "custo_governanca": 45000,
-      "janela_meses": 12,
-      "cenario": "provavel"
-    },
-    {
-      "rotulo": "Confirmação ativa personalizada",
-      "economia_anual": 126000,
-      "receita_adicional": 0,
-      "custos_evitados": 0,
-      "custo_tecnologia": 35000,
-      "custo_dados": 25000,
-      "custo_pessoas": 20000,
-      "custo_mudanca": 18000,
-      "custo_governanca": 15000,
-      "janela_meses": 12,
-      "cenario": "provavel"
-    },
-    {
-      "rotulo": "Triagem de encaminhamentos",
-      "economia_anual": 84000,
-      "receita_adicional": 0,
-      "custos_evitados": 0,
-      "custo_tecnologia": 28000,
-      "custo_dados": 30000,
-      "custo_pessoas": 15000,
-      "custo_mudanca": 10000,
-      "custo_governanca": 20000,
-      "janela_meses": 12,
-      "cenario": "conservador"
-    }
-  ],
+  "projetos": [],
   "riscos": [
     {
       "descricao": "Uso de dado de saúde sem base legal adequada",
@@ -302,5 +298,6 @@
       "gatilho": "Divergência acima de 10% na conciliação por unidade",
       "acao": "Excluir a unidade do piloto até regularizar a base"
     }
-  ]
+  ],
+  "_nota_projetos": "Vazio de proposito: a etapa 11 herda os casos da etapa 10 ao ser aberta, evitando numeros duplicados em dois lugares."
 }
