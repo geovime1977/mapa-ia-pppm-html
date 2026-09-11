@@ -37,8 +37,8 @@ async def main():
                  return String(e.velocidade_decisao||"").length>10;
               }).length
             })""")
-            # etapa 11 herda da 10; so depois disso o relatorio tem o comparativo
-            await pg.evaluate("goToStep(11)"); await pg.wait_for_timeout(400)
+            # etapa 10 herda da 9; so depois disso o relatorio tem o comparativo
+            await pg.evaluate("goToStep(10)"); await pg.wait_for_timeout(400)
             r["projetos"] = await pg.evaluate("state.projetos.length")
             await pg.evaluate("goToStep(13)"); await pg.wait_for_timeout(450)
             rel = await pg.evaluate("document.getElementById('finalReport').innerHTML")

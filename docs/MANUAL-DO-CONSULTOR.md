@@ -34,11 +34,16 @@ site remoto), Streamlit quando você está apresentando ao vivo com projetor.
 | Matriz Impacto × Viabilidade | (integrada Aba 4) | Etapa 6 |
 | Governança & HITL | Aba 5 | Etapa 7 |
 | Seleção dos 3 prioritários | (implícita) | Etapa 8 |
-| Recomendação executiva | (integrada exportação) | Etapa 9 |
-| Business Case + ROI | Aba 6 | Etapa 10 |
-| Business Case comparativo | — | **Etapa 11** |
-| Sessão de riscos | — | **Etapa 12** |
+| Business Case + ROI | Aba 6 | Etapa 9 |
+| Business Case comparativo | — | **Etapa 10** |
+| Sessão de riscos | — | **Etapa 11** |
+| Recomendação executiva | (integrada exportação) | **Etapa 12** |
 | Exportar PDF | Aba 7 | **Etapa 13** |
+
+**A recomendação executiva mudou de lugar na v2.0.** Antes vinha na etapa 9, antes
+do business case. Recomendar sem conhecer ROI, ranking e riscos é decidir com menos
+informação do que se tem — agora ela fecha o fluxo, na etapa 12. No Streamlit a
+ordem antiga permanece.
 
 As etapas 11 e 12 existem **apenas na versão HTML** (v2.0). Quem usa o Streamlit
 vai da Aba 6 direto para a exportação.
@@ -600,19 +605,19 @@ em 24 meses e outro em 12, o mais longo ganha por construção.
 
 ---
 
-## 8B. Etapa 11 — Business Case comparativo *(só HTML, v2.0)*
+## 8B. Etapa 10 — Business Case comparativo *(só HTML, v2.0)*
 
-A etapa 10 responde "este caso vale a pena?". A etapa 11 responde outra pergunta,
+A etapa 9 responde "este caso vale a pena?". A etapa 10 responde outra pergunta,
 que aparece quando há mais de um caso aprovado e um orçamento só: **"qual primeiro?"**.
 
 ### De onde vêm os projetos
 
 Não se digita nada aqui. Ao entrar na etapa pela primeira vez, o app traz
-automaticamente os casos que têm business case na etapa 10 — os mesmos que
+automaticamente os casos que têm business case na etapa 9 — os mesmos que
 nasceram das dores na etapa 4, foram pontuados na 5 e selecionados na 8. Cada
 projeto herdado aparece com o selo **etapa 10**.
 
-Se você alterar números na etapa 10 depois, use **Re-sincronizar com a etapa 10**.
+Se você alterar números na etapa 9 depois, use **Re-sincronizar com a etapa 9**.
 O botão traz os valores atualizados e **preserva** os projetos que você tenha
 adicionado à mão.
 
@@ -625,7 +630,7 @@ fazer de qualquer jeito — melhor fazê-la na mesma régua.
 
 ### A conta
 
-Idêntica à da etapa 10, de propósito. Se fosse diferente, o mesmo projeto
+Idêntica à da etapa 9, de propósito. Se fosse diferente, o mesmo projeto
 apareceria com dois ROIs no mesmo relatório.
 
 ```
@@ -645,7 +650,7 @@ sobre investimento de R$ 10 mil devolve menos dinheiro que um de 80% sobre R$ 50
 mil — e é o dinheiro que o comitê discute.
 
 **O ranking não é a decisão.** Ele diz o que rende mais na janela informada.
-Confronte com a etapa 12 antes de recomendar: o primeiro colocado pode ser
+Confronte com a etapa 11 antes de recomendar: o primeiro colocado pode ser
 justamente o que concentra os riscos de severidade alta.
 
 ### Erros comuns
@@ -658,7 +663,7 @@ justamente o que concentra os riscos de severidade alta.
 
 ---
 
-## 8C. Etapa 12 — Sessão de riscos *(só HTML, v2.0)*
+## 8C. Etapa 11 — Sessão de riscos *(só HTML, v2.0)*
 
 Registra o que pode impedir o piloto de entregar o valor projetado na etapa
 anterior. A régua segue a análise qualitativa de riscos do PMBOK, no mesmo
@@ -699,9 +704,27 @@ O app alerta quando há risco de severidade 5 ou mais sem dono definido.
 | **Transferir** | Contrato, seguro ou terceiro assume. Não elimina, realoca |
 | **Aceitar** | Assumir e monitorar. Exige justificativa em severidade média ou alta |
 
+### A severidade escolhe a resposta?
+
+Não. A severidade indica **urgência**, não **estratégia**. Um risco alto pode ser
+evitado, mitigado ou transferido conforme custo, alçada e contexto — decisão que é
+sua, não do app.
+
+O que o app faz é apontar combinações que o comitê costuma questionar:
+
+| Situação | Alerta |
+|---|---|
+| Severidade alta (15+) com resposta "Aceitar" | aceitar risco alto exige justificativa formal do sponsor |
+| Severidade média (5–14) aceita sem ação escrita | aceitação ativa precisa de justificativa registrada |
+| Severidade alta (15+) sem gatilho preenchido | sem gatilho, ninguém sabe dizer se o risco se materializou |
+| Severidade 5+ sem dono | risco sem dono não é gerenciado |
+
+Nenhum deles impede avançar. São avisos para você decidir com o problema à vista,
+não travas.
+
 ### Como usar na reunião
 
-Rode a etapa 12 **depois** da 11, com o ranking à vista. A pergunta que fecha a
+Rode a etapa 11 **depois** da 10, com o ranking à vista. A pergunta que fecha a
 sessão é: *o primeiro colocado do ranking continua sendo o primeiro depois de
 olhar os riscos?* Às vezes sim, e a decisão ganha respaldo. Às vezes não, e
 você evitou um piloto que ia falhar por um motivo que já era conhecido.

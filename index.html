@@ -312,7 +312,7 @@
 <main>
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-label" id="progressLabel">Etapa 1 de 11</div>
+    <div class="progress-label" id="progressLabel">Etapa 1 de 13</div>
   </div>
 
 <!-- STEP 1: Identificação -->
@@ -453,9 +453,70 @@
     </div>
   </section>
 
-  <!-- STEP 9: Recomendação executiva -->
+  <!-- STEP 9: Business Case (Aula 3) -->
   <section class="step" data-step="9">
-    <h2>9. Recomendação executiva</h2>
+    <h2>9. Business Case preliminar</h2>
+    <p class="hint">Aula 3 &middot; Prof. Bezerra &mdash; para cada caso da etapa 4, monte a tese de valor que vai ao comitê. A conta é a matemática direta do slide 14 (ROI).</p>
+    <div class="info-box" id="bcPrincipio"></div>
+    <div id="bcContainer"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(12)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(10)">Avançar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 10: Business Case comparativo -->
+  <section class="step" data-step="10">
+    <h2>10. Business Case comparativo</h2>
+    <p class="hint">Aula 3 &middot; quando há mais de um projeto disputando o mesmo orçamento, a pergunta deixa de ser &ldquo;vale a pena?&rdquo; e passa a ser &ldquo;qual primeiro?&rdquo;. Cadastre os concorrentes e compare ROI, payback e benefício líquido na mesma janela.</p>
+    <div class="info-box">
+      Investimento = tecnologia + dados + pessoas + mudança + governança.<br>
+      Benefício ajustado = (economia + receita adicional + custos evitados) &times; janela/12 &times; multiplicador do cenário.<br>
+      Benefício líquido = benefício ajustado &minus; investimento. ROI = benefício líquido &divide; investimento.<br>
+      Payback = investimento &divide; benefício mensal ajustado.<br>
+      <em>Mesma conta da etapa 9, para que o projeto não apareça com dois ROIs diferentes no app.</em>
+    </div>
+    <p class="hint" style="margin-top:-8px">Os projetos abaixo vêm dos casos da etapa 9 &mdash; os mesmos que nasceram das dores na etapa 4. Se você alterar a etapa 9 depois, use <em>Re-sincronizar</em>. A comparação segue a ideia do aplicativo de business case do Daniel, apresentado na turma; o cálculo é idêntico ao da etapa 9, conforme a Aula 3.</p>
+    <div id="projContainer"></div>
+    <div class="nav-buttons" style="margin-top:4px">
+      <button type="button" class="btn-use-suggestion" onclick="trazerDaEtapa9(false)">Re-sincronizar com a etapa 9</button>
+    </div>
+    <button class="btn-add-case" onclick="addProjeto()">+ Adicionar projeto (alternativa externa)</button>
+    <div id="projComparativo"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(9)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(11)">Avançar &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 11: Sessao de riscos -->
+  <section class="step" data-step="11">
+    <h2>11. Sessão de riscos</h2>
+    <p class="hint">Registre o que pode impedir o piloto de entregar o valor projetado na etapa anterior. A ferramenta organiza a evidência e calcula a severidade de forma consistente &mdash; a decisão continua sendo sua.</p>
+    <div class="info-box">
+      Severidade = probabilidade &times; impacto, ambos de 1 a 5 (faixa de 1 a 25).<br>
+      <strong>Alto (15–25)</strong>: resposta obrigatória, com dono e gatilho.
+      <strong>Médio (5–14)</strong>: resposta planejada; aceitar exige justificativa.
+      <strong>Baixo (1–4)</strong>: lista de observação.<br>
+      <em>Régua alinhada à análise qualitativa de riscos do PMBOK, como no método do riscos-pppm.</em><br>
+      <strong>Impacto:</strong> avalie prazo, custo e escopo separadamente e registre a <strong>maior</strong> nota.
+      Um risco de prazo 2 mas custo 5 é um risco 5.<br>
+      A severidade <strong>não escolhe a resposta por você</strong> — ela indica urgência, não estratégia.
+      O app apenas aponta combinações que o comitê costuma questionar.
+    </div>
+    <p class="hint" style="margin-top:-8px">Escalas e faixas seguem o método da ferramenta <a href="https://filipetb.github.io/riscos-pppm/" target="_blank" rel="noopener">riscos-pppm</a>, de Filipe TB, publicada sob licença MIT e apresentada na turma.</p>
+    <div id="riscoContainer"></div>
+    <button class="btn-add-case" onclick="addRisco()">+ Adicionar risco</button>
+    <div id="riscoMatriz"></div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="goToStep(10)">&larr; Voltar</button>
+      <button class="btn-primary" onclick="goToStep(13)">Gerar relatório &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 12: Recomendação executiva -->
+  <section class="step" data-step="12">
+    <h2>12. Recomendação executiva</h2>
     <p class="hint">A sugestão abaixo é gerada por template determinístico com os dados que você preencheu. Revise, edite ou reescreva &mdash; o texto final é seu.</p>
     <div class="suggestion-box" id="suggestionBox">
       <strong class="suggestion-label">Sugestão automática</strong>
@@ -466,67 +527,7 @@
     <textarea id="recomendacaoTexto" placeholder="Edite livremente o texto sugerido ou escreva sua própria recomendação..."></textarea>
     <div class="nav-buttons">
       <button class="btn-secondary" onclick="goToStep(8)">&larr; Voltar</button>
-      <button class="btn-primary" onclick="goToStep(10)">Business Case &rarr;</button>
-    </div>
-  </section>
-
-  <!-- STEP 10: Business Case (Aula 3) -->
-  <section class="step" data-step="10">
-    <h2>10. Business Case preliminar</h2>
-    <p class="hint">Aula 3 &middot; Prof. Bezerra &mdash; para cada caso da etapa 4, monte a tese de valor que vai ao comitê. A conta é a matemática direta do slide 14 (ROI).</p>
-    <div class="info-box" id="bcPrincipio"></div>
-    <div id="bcContainer"></div>
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(9)">&larr; Voltar</button>
-      <button class="btn-primary" onclick="goToStep(11)">Avançar &rarr;</button>
-    </div>
-  </section>
-
-
-  <!-- STEP 11: Business Case comparativo -->
-  <section class="step" data-step="11">
-    <h2>11. Business Case comparativo</h2>
-    <p class="hint">Aula 3 &middot; quando há mais de um projeto disputando o mesmo orçamento, a pergunta deixa de ser &ldquo;vale a pena?&rdquo; e passa a ser &ldquo;qual primeiro?&rdquo;. Cadastre os concorrentes e compare ROI, payback e benefício líquido na mesma janela.</p>
-    <div class="info-box">
-      Investimento = tecnologia + dados + pessoas + mudança + governança.<br>
-      Benefício ajustado = (economia + receita adicional + custos evitados) &times; janela/12 &times; multiplicador do cenário.<br>
-      Benefício líquido = benefício ajustado &minus; investimento. ROI = benefício líquido &divide; investimento.<br>
-      Payback = investimento &divide; benefício mensal ajustado.<br>
-      <em>Mesma conta da etapa 10, para que o projeto não apareça com dois ROIs diferentes no app.</em>
-    </div>
-    <p class="hint" style="margin-top:-8px">Os projetos abaixo vêm dos casos da etapa 10 &mdash; os mesmos que nasceram das dores na etapa 4. Se você alterar a etapa 10 depois, use <em>Re-sincronizar</em>. A comparação segue a ideia do aplicativo de business case do Daniel, apresentado na turma; o cálculo é idêntico ao da etapa 10, conforme a Aula 3.</p>
-    <div id="projContainer"></div>
-    <div class="nav-buttons" style="margin-top:4px">
-      <button type="button" class="btn-use-suggestion" onclick="trazerDaEtapa10(false)">Re-sincronizar com a etapa 10</button>
-    </div>
-    <button class="btn-add-case" onclick="addProjeto()">+ Adicionar projeto (alternativa externa)</button>
-    <div id="projComparativo"></div>
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(10)">&larr; Voltar</button>
-      <button class="btn-primary" onclick="goToStep(12)">Avançar &rarr;</button>
-    </div>
-  </section>
-
-  <!-- STEP 12: Sessao de riscos -->
-  <section class="step" data-step="12">
-    <h2>12. Sessão de riscos</h2>
-    <p class="hint">Registre o que pode impedir o piloto de entregar o valor projetado na etapa anterior. A ferramenta organiza a evidência e calcula a severidade de forma consistente &mdash; a decisão continua sendo sua.</p>
-    <div class="info-box">
-      Severidade = probabilidade &times; impacto, ambos de 1 a 5 (faixa de 1 a 25).<br>
-      <strong>Alto (15–25)</strong>: resposta obrigatória, com dono e gatilho.
-      <strong>Médio (5–14)</strong>: resposta planejada; aceitar exige justificativa.
-      <strong>Baixo (1–4)</strong>: lista de observação.<br>
-      <em>Régua alinhada à análise qualitativa de riscos do PMBOK, como no método do riscos-pppm.</em><br>
-      <strong>Impacto:</strong> avalie prazo, custo e escopo separadamente e registre a <strong>maior</strong> nota.
-      Um risco de prazo 2 mas custo 5 é um risco 5.
-    </div>
-    <p class="hint" style="margin-top:-8px">Escalas e faixas seguem o método da ferramenta <a href="https://filipetb.github.io/riscos-pppm/" target="_blank" rel="noopener">riscos-pppm</a>, de Filipe TB, publicada sob licença MIT e apresentada na turma.</p>
-    <div id="riscoContainer"></div>
-    <button class="btn-add-case" onclick="addRisco()">+ Adicionar risco</button>
-    <div id="riscoMatriz"></div>
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(11)">&larr; Voltar</button>
-      <button class="btn-primary" onclick="goToStep(13)">Gerar relatório &rarr;</button>
+      <button class="btn-primary" onclick="goToStep(9)">Business Case &rarr;</button>
     </div>
   </section>
 
@@ -534,7 +535,7 @@
   <section class="step" data-step="13">
     <div class="final-report" id="finalReport"></div>
     <div class="nav-buttons" id="exportButtons">
-      <button class="btn-secondary" onclick="goToStep(12)">&larr; Voltar</button>
+      <button class="btn-secondary" onclick="goToStep(11)">&larr; Voltar</button>
       <div class="nav-right">
         <button class="btn-ghost" onclick="exportJSON()">Salvar JSON</button>
         <button class="btn-ghost" onclick="exportCSV()">Exportar CSV</button>
@@ -543,6 +544,7 @@
       </div>
     </div>
   </section>
+
 
   <footer>
     Mapa IA-PPPM &middot; v2.0 HTML &middot; Aulas 1, 2 e 3 + comparativo e riscos &middot; Prof. Dr. José Bezerra (BSBr)<br>
@@ -1264,13 +1266,13 @@ function goToStep(n){
   destino.classList.add("active");
 
   salvarLocal();
-  if(n === 11){
-    // Primeira visita sem projetos: herda os casos da etapa 10 sem pedir clique.
+  if(n === 10){
+    // Primeira visita sem projetos: herda os casos da etapa 9 sem pedir clique.
     // Depois disso o usuario manda no conteudo, e a re-sincronizacao e manual.
-    if(!state.projetos || state.projetos.length === 0) trazerDaEtapa10(true);
+    if(!state.projetos || state.projetos.length === 0) trazerDaEtapa9(true);
     renderProjetos();
   }
-  if(n === 12){ renderRiscos(); }
+  if(n === 11){ renderRiscos(); }
   document.getElementById("progressFill").style.width = ((n/TOTAL_STEPS)*100) + "%";
   document.getElementById("progressLabel").textContent = `Etapa ${n} de ${TOTAL_STEPS}`;
   window.scrollTo({top:0, behavior:"smooth"});
@@ -1285,7 +1287,7 @@ function goToStep(n){
   if(n === 6) renderMatriz();
   if(n === 7) renderGovernanca();
   if(n === 8) renderSelecao();
-  if(n === 9){
+  if(n === 12){
     const sug = gerarSugestaoRecomendacao();
     document.getElementById("suggestionText").innerHTML = aplicarTooltips(sug);
     delete document.getElementById("suggestionText").dataset.tooltipsApplied;
@@ -1294,7 +1296,7 @@ function goToStep(n){
     }
     document.getElementById("recomendacaoTexto").value = state.recomendacao_texto;
   }
-  if(n === 10){
+  if(n === 13){
     state.recomendacao_texto = document.getElementById("recomendacaoTexto") ? document.getElementById("recomendacaoTexto").value : state.recomendacao_texto;
     renderBusinessCase();
   }
@@ -2158,14 +2160,14 @@ function exportJSON(){
 
 
 /* ============================================================
-   ETAPA 11 — BUSINESS CASE COMPARATIVO
+   ETAPA 10 — BUSINESS CASE COMPARATIVO
    Matematica de ROI, payback e beneficio liquido conforme a Aula 3
    do Prof. Bezerra (BSBr). Implementacao propria; a ideia de comparar
    projetos concorrentes na mesma janela veio do aplicativo do Daniel,
    apresentado na turma.
    ============================================================ */
 
-function trazerDaEtapa10(silencioso){
+function trazerDaEtapa9(silencioso){
   // Os projetos comparados aqui sao os casos que vieram das dores (etapa 4),
   // foram pontuados (5), selecionados (8) e ganharam business case (10).
   // Redigitar abriria espaco para divergencia entre as etapas.
@@ -2173,7 +2175,7 @@ function trazerDaEtapa10(silencioso){
     ? state.selecionados
     : Object.keys(state.business_cases || {});
   if(!ids.length){
-    if(!silencioso) alert("Nenhum caso com business case na etapa 10. Preencha a etapa 10 antes de comparar.");
+    if(!silencioso) alert("Nenhum caso com business case na etapa 9. Preencha a etapa 9 antes de comparar.");
     return 0;
   }
   const novos = [];
@@ -2190,7 +2192,7 @@ function trazerDaEtapa10(silencioso){
       economia_anual: Number(b.economia_anual) || 0,
       receita_adicional: Number(b.receita_adicional_anual) || 0,
       custos_evitados: Number(b.custo_evitado_anual) || 0,
-      // a etapa 10 soma a camada operacional ao beneficio bruto; sem trazer isto,
+      // a etapa 9 soma a camada operacional ao beneficio bruto; sem trazer isto,
       // o projeto apareceria aqui com beneficio menor que o do proprio business case
       ganho_operacional: (function(){
         const op = (bc.beneficios && bc.beneficios.operacional) || {};
@@ -2209,7 +2211,7 @@ function trazerDaEtapa10(silencioso){
     });
   });
   if(!novos.length){
-    if(!silencioso) alert("Os casos selecionados ainda nao tem business case na etapa 10.");
+    if(!silencioso) alert("Os casos selecionados ainda nao tem business case na etapa 9.");
     return 0;
   }
   const manuais = (state.projetos || []).filter(function(p){ return !p.origem_caso; });
@@ -2217,7 +2219,7 @@ function trazerDaEtapa10(silencioso){
   renderProjetos();
   salvarLocal();
   if(!silencioso){
-    alert(novos.length + " caso(s) re-sincronizado(s) com a etapa 10. Os numeros vieram do business case; ajuste aqui se quiser simular variacoes.");
+    alert(novos.length + " caso(s) re-sincronizado(s) com a etapa 9. Os numeros vieram do business case; ajuste aqui se quiser simular variacoes.");
   }
   return novos.length;
 }
@@ -2249,7 +2251,7 @@ function setProj(id, campo, valor, numerico){
 }
 
 function calcProjeto(p){
-  // Mesma matematica da etapa 10 (Aula 3, Prof. Bezerra): investimento e a soma
+  // Mesma matematica da etapa 9 (Aula 3, Prof. Bezerra): investimento e a soma
   // das camadas de custo, beneficio ajustado por janela e cenario, ROI medido
   // sobre o investimento. Manter identico evita que o mesmo projeto apareca com
   // dois ROIs diferentes dentro do app.
@@ -2299,7 +2301,7 @@ function renderProjetos(){
     return '<div class="case-card">' +
       '<div class="case-head">' +
         '<input type="text" value="' + escapeAttr(p.rotulo) + '" oninput="setProj(\'' + p.id + '\',\'rotulo\',this.value,false)">' +
-        (p.origem_caso ? '<span class="badge-sev sev-baixo" style="white-space:nowrap">etapa 10</span>' : '') +
+        (p.origem_caso ? '<span class="badge-sev sev-baixo" style="white-space:nowrap">etapa 9</span>' : '') +
         '<button class="btn-remove-case" onclick="removeProjeto(\'' + p.id + '\')">remover</button>' +
       '</div>' +
       '<h3>Benefícios anuais</h3>' +
@@ -2360,7 +2362,7 @@ function renderComparativo(){
 }
 
 /* ============================================================
-   ETAPA 12 — SESSAO DE RISCOS
+   ETAPA 11 — SESSAO DE RISCOS
    Severidade = probabilidade x impacto (1..5), conforme pratica
    corrente de gerenciamento de riscos em projetos.
    Ferramenta de referencia do colega Filipe TB:
@@ -2398,7 +2400,12 @@ const RISCO_CFG = {
      tratamento:"Lista de observacao; revisao periodica."}
   ],
   limite_resposta_obrigatoria: 15,
-  limite_exige_dono: 5
+  limite_exige_dono: 5,
+  // Coerencia entre severidade e resposta. O app nao escolhe a resposta por voce
+  // — a estrategia depende de custo, alcada e contexto. Mas aponta a combinacao
+  // que o comite vai questionar.
+  aceitar_exige_justificativa_a_partir_de: 5,
+  exige_gatilho_a_partir_de: 15
 };
 
 const RISCO_RESPOSTAS = [
@@ -2499,14 +2506,38 @@ function renderMatrizRiscos(){
   html += '</tbody></table>';
 
   const criticos = ord.filter(function(r){ return severidade(r) >= RISCO_CFG.limite_resposta_obrigatoria; });
+  const aceitosAlto = ord.filter(function(r){
+    return r.resposta === "aceitar" && severidade(r) >= RISCO_CFG.limite_resposta_obrigatoria;
+  });
+  const aceitosSemJust = ord.filter(function(r){
+    return r.resposta === "aceitar"
+        && severidade(r) >= RISCO_CFG.aceitar_exige_justificativa_a_partir_de
+        && severidade(r) < RISCO_CFG.limite_resposta_obrigatoria
+        && !String(r.acao || "").trim();
+  });
+  const semGatilho = ord.filter(function(r){
+    return severidade(r) >= RISCO_CFG.exige_gatilho_a_partir_de && !String(r.gatilho || "").trim();
+  });
   const semDono  = ord.filter(function(r){ return severidade(r) >= RISCO_CFG.limite_exige_dono && !String(r.dono).trim(); });
   if(criticos.length){
     html += '<div class="alert show"><strong>'+criticos.length+' risco(s) de severidade alta</strong> ('+RISCO_CFG.limite_resposta_obrigatoria+'+). Exigem resposta com dono e gatilho antes de iniciar o piloto.</div>';
   }
+  if(aceitosAlto.length){
+    html += '<div class="alert show"><strong>'+aceitosAlto.length+' risco(s) de severidade alta com resposta "Aceitar"</strong>. '
+         +  'Aceitar risco alto exige justificativa formal do sponsor — registre na ação acordada ou reveja a resposta.</div>';
+  }
+  if(aceitosSemJust.length){
+    html += '<div class="alert show">'+aceitosSemJust.length+' risco(s) de severidade média aceito(s) sem ação escrita. '
+         +  'Aceitação ativa precisa de justificativa registrada.</div>';
+  }
+  if(semGatilho.length){
+    html += '<div class="alert show">'+semGatilho.length+' risco(s) de severidade alta sem gatilho. '
+         +  'Sem gatilho, ninguém saberá dizer se o risco se materializou.</div>';
+  }
   if(semDono.length){
     html += '<div class="alert show">'+semDono.length+' risco(s) de severidade '+RISCO_CFG.limite_exige_dono+'+ sem dono. Risco sem dono não é gerenciado.</div>';
   }
-  if(!criticos.length && !semDono.length){
+  if(!criticos.length && !semDono.length && !aceitosAlto.length && !aceitosSemJust.length && !semGatilho.length){
     html += '<div class="info-box">Nenhum risco de severidade alta sem tratamento. Mantenha os gatilhos sob monitoramento durante o piloto.</div>';
   }
   alvo.innerHTML = html;
@@ -2721,7 +2752,7 @@ function hidratarState(data){
     state.business_cases = bcNorm;
   }
 
-  // Etapa 11 — projetos comparados
+  // Etapa 10 — projetos comparados
   if(Array.isArray(data.projetos)){
     state.projetos = data.projetos.map(function(p){
       return {
@@ -2742,7 +2773,7 @@ function hidratarState(data){
     });
   }
 
-  // Etapa 12 — riscos
+  // Etapa 11 — riscos
   if(Array.isArray(data.riscos)){
     state.riscos = data.riscos.map(function(r){
       return {

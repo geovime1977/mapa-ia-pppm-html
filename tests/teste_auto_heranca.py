@@ -12,7 +12,7 @@ async def main():
         await pg.evaluate("x => { localStorage.clear(); hidratarState(x); }", d)
 
         # 1) primeira visita: deve herdar sozinho, sem alert
-        await pg.evaluate("goToStep(11)"); await pg.wait_for_timeout(450)
+        await pg.evaluate("goToStep(10)"); await pg.wait_for_timeout(450)
         n1 = await pg.evaluate("state.projetos.length")
         print("1) entrada automatica -> projetos:", n1, "| alertas:", len(dialogs))
         if n1 != 3: falhas.append(f"auto-heranca trouxe {n1}, esperado 3")
@@ -20,8 +20,8 @@ async def main():
 
         # 2) usuario edita e sai/volta: nao pode sobrescrever
         await pg.evaluate("state.projetos[0].rotulo='EDITADO PELO USUARIO'; state.projetos.pop(); salvarLocal();")
-        await pg.evaluate("goToStep(10)"); await pg.wait_for_timeout(200)
-        await pg.evaluate("goToStep(11)"); await pg.wait_for_timeout(400)
+        await pg.evaluate("goToStep(9)"); await pg.wait_for_timeout(200)
+        await pg.evaluate("goToStep(10)"); await pg.wait_for_timeout(400)
         n2 = await pg.evaluate("state.projetos.length")
         rot = await pg.evaluate("state.projetos[0].rotulo")
         print("2) voltando depois de editar -> projetos:", n2, "| primeiro rotulo:", rot)
@@ -29,7 +29,7 @@ async def main():
 
         # 3) re-sincronizar manual: restaura os 3 e avisa
         dialogs.clear()
-        await pg.evaluate("trazerDaEtapa10(false)"); await pg.wait_for_timeout(400)
+        await pg.evaluate("trazerDaEtapa9(false)"); await pg.wait_for_timeout(400)
         n3 = await pg.evaluate("state.projetos.length")
         print("3) re-sincronizar -> projetos:", n3, "| avisou:", len(dialogs)>0)
         if n3 != 3: falhas.append(f"re-sincronizar trouxe {n3}, esperado 3")
@@ -37,7 +37,7 @@ async def main():
 
         # 4) projeto manual sobrevive a re-sincronizacao
         await pg.evaluate("addProjeto(); state.projetos[state.projetos.length-1].rotulo='Fornecedor externo';")
-        await pg.evaluate("trazerDaEtapa10(false)"); await pg.wait_for_timeout(350)
+        await pg.evaluate("trazerDaEtapa9(false)"); await pg.wait_for_timeout(350)
         manuais = await pg.evaluate("state.projetos.filter(p=>!p.origem_caso).map(p=>p.rotulo)")
         print("4) manuais preservados na re-sincronizacao:", manuais)
         if "Fornecedor externo" not in manuais: falhas.append("re-sincronizar apagou projeto manual")
