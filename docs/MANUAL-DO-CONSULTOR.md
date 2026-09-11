@@ -36,7 +36,12 @@ site remoto), Streamlit quando você está apresentando ao vivo com projetor.
 | Seleção dos 3 prioritários | (implícita) | Etapa 8 |
 | Recomendação executiva | (integrada exportação) | Etapa 9 |
 | Business Case + ROI | Aba 6 | Etapa 10 |
-| Exportar PDF | Aba 7 | Etapa 11 |
+| Business Case comparativo | — | **Etapa 11** |
+| Sessão de riscos | — | **Etapa 12** |
+| Exportar PDF | Aba 7 | **Etapa 13** |
+
+As etapas 11 e 12 existem **apenas na versão HTML** (v2.0). Quem usa o Streamlit
+vai da Aba 6 direto para a exportação.
 
 **Ao longo do manual usarei o nome do método** (ex: "Diagnóstico") **em vez de
 aba/etapa**. Quando precisar apontar para um lugar específico do app, cito ambos
@@ -44,7 +49,7 @@ entre parênteses: *(Streamlit: Aba 2 · HTML: Etapa 2)*.
 
 ## O que este manual cobre
 
-1. Como preencher cada uma das 11 etapas da metodologia
+1. Como preencher cada uma das 13 etapas da metodologia (HTML) ou 7 abas (Streamlit)
 2. Regras dos cortes obrigatórios da Aula 2 e da Aula 3
 3. Como o app calcula ROI, Payback e cenários
 4. **Prompts SMART do consultor** (Aulas 1, 2 e 3) — quando, por que e como usar
@@ -323,8 +328,20 @@ Sidebar → **"📥 Exportar JSON"** → salva o arquivo em qualquer lugar (Down
 Drive, e-mail). Em outra sessão, abre a URL do app, sidebar → **"Importar JSON"**
 → carrega o arquivo → continua exatamente de onde parou.
 
-**Regra crítica:** o Streamlit Cloud **não persiste nada entre sessões**. Se
-você fechar a aba sem exportar, o trabalho some.
+**Regra crítica no Streamlit:** o Streamlit Cloud **não persiste nada entre
+sessões**. Se fechar a aba sem exportar, o trabalho some.
+
+**Na versão HTML (v2.0) isso mudou.** O app grava o preenchimento no próprio
+navegador a cada alteração e restaura sozinho quando você reabre o arquivo.
+Ao reabrir com trabalho salvo, aparece um aviso no topo com o link
+**"Começar do zero"**, que limpa tudo.
+
+Duas consequências práticas:
+
+- O trabalho fica **naquele navegador, naquele computador**. Trocar de máquina
+  continua exigindo Exportar JSON → Carregar progresso.
+- Ao demonstrar para um cliente novo em um computador já usado, clique em
+  **Começar do zero** antes. Caso contrário o preenchimento anterior aparece.
 
 ### O app funciona em qualquer computador?
 
@@ -493,6 +510,134 @@ qualquer método de Pesquisa Operacional. Só a matemática direta do slide 14 d
 Prof. Bezerra. Se o consultor precisa de análise probabilística mais fina,
 usa uma ferramenta separada — este app cobre estritamente o escopo das
 Aulas 1, 2 e 3.
+
+---
+
+## 8B. Etapa 11 — Business Case comparativo *(só HTML, v2.0)*
+
+A etapa 10 responde "este caso vale a pena?". A etapa 11 responde outra pergunta,
+que aparece quando há mais de um caso aprovado e um orçamento só: **"qual primeiro?"**.
+
+### De onde vêm os projetos
+
+Não se digita nada aqui. Ao entrar na etapa pela primeira vez, o app traz
+automaticamente os casos que têm business case na etapa 10 — os mesmos que
+nasceram das dores na etapa 4, foram pontuados na 5 e selecionados na 8. Cada
+projeto herdado aparece com o selo **etapa 10**.
+
+Se você alterar números na etapa 10 depois, use **Re-sincronizar com a etapa 10**.
+O botão traz os valores atualizados e **preserva** os projetos que você tenha
+adicionado à mão.
+
+### Quando adicionar projeto manualmente
+
+O botão **"+ Adicionar projeto (alternativa externa)"** existe para comparar o
+caso interno com algo que não é caso de uso de IA: contratar um fornecedor,
+comprar um sistema pronto, ampliar o time. É a comparação que o comitê costuma
+fazer de qualquer jeito — melhor fazê-la na mesma régua.
+
+### A conta
+
+Idêntica à da etapa 10, de propósito. Se fosse diferente, o mesmo projeto
+apareceria com dois ROIs no mesmo relatório.
+
+```
+Investimento       = tecnologia + dados + pessoas + mudança + governança
+Benefício ajustado = (economia + receita adicional + custos evitados)
+                     × janela/12 × multiplicador do cenário
+Benefício líquido  = benefício ajustado − investimento
+ROI                = benefício líquido ÷ investimento
+Payback            = investimento ÷ benefício mensal ajustado
+```
+
+### Como ler o resultado
+
+O ranking ordena por **benefício líquido**, não por ROI. Um caso com ROI de 300%
+sobre investimento de R$ 10 mil devolve menos dinheiro que um de 80% sobre R$ 500
+mil — e é o dinheiro que o comitê discute.
+
+**O ranking não é a decisão.** Ele diz o que rende mais na janela informada.
+Confronte com a etapa 12 antes de recomendar: o primeiro colocado pode ser
+justamente o que concentra os riscos de severidade alta.
+
+### Erros comuns
+
+| Erro | Por que atrapalha |
+|---|---|
+| Comparar projetos com janelas diferentes | 12 meses contra 24 favorece artificialmente o mais longo |
+| Misturar cenários sem dizer | Um projeto no otimista contra outro no conservador não é comparação |
+| Deixar investimento zerado | Sem investimento não há ROI; o app mostra "—" em vez de inventar número |
+
+---
+
+## 8C. Etapa 12 — Sessão de riscos *(só HTML, v2.0)*
+
+Registra o que pode impedir o piloto de entregar o valor projetado na etapa
+anterior. A régua segue a análise qualitativa de riscos do PMBOK, no mesmo
+formato adotado pela ferramenta `riscos-pppm` (Filipe TB, licença MIT),
+apresentada na turma.
+
+### A régua
+
+```
+Severidade = probabilidade × impacto      (ambos de 1 a 5, resultado de 1 a 25)
+
+Alto    15 – 25   resposta obrigatória, com dono e gatilho
+Médio    5 – 14   resposta planejada; aceitar exige justificativa
+Baixo    1 –  4   lista de observação
+```
+
+Cada nota dos seletores mostra a âncora correspondente. **Use as âncoras** — sem
+elas, cada pessoa pontua numa régua diferente e a priorização perde sentido.
+
+### A regra que mais muda o resultado
+
+Impacto se avalia **por dimensão** — prazo, custo e escopo — e registra-se a
+**maior** nota, não a média. Um risco de prazo 2 mas custo 5 é um risco 5.
+Fazer média mental é o erro que mais subestima risco concentrado.
+
+### Os campos que o comitê cobra
+
+**Dono** e **gatilho** não são burocracia. Risco sem dono não é gerenciado, e
+risco sem gatilho não é monitorado — ninguém sabe dizer se ele se materializou.
+O app alerta quando há risco de severidade 5 ou mais sem dono definido.
+
+### Respostas possíveis
+
+| Resposta | Quando usar |
+|---|---|
+| **Evitar** | Mudar o plano para eliminar a causa. Use quando o risco é inaceitável |
+| **Mitigar** | Reduzir probabilidade ou impacto. O caso mais comum |
+| **Transferir** | Contrato, seguro ou terceiro assume. Não elimina, realoca |
+| **Aceitar** | Assumir e monitorar. Exige justificativa em severidade média ou alta |
+
+### Como usar na reunião
+
+Rode a etapa 12 **depois** da 11, com o ranking à vista. A pergunta que fecha a
+sessão é: *o primeiro colocado do ranking continua sendo o primeiro depois de
+olhar os riscos?* Às vezes sim, e a decisão ganha respaldo. Às vezes não, e
+você evitou um piloto que ia falhar por um motivo que já era conhecido.
+
+---
+
+## 8D. Exemplos prontos para demonstração
+
+A pasta `exemplos/` traz três casos completos, com as 13 etapas preenchidas:
+
+| Arquivo | Setor | Contexto |
+|---|---|---|
+| `exemplo-1-construtora.json` | Construção civil | Contratos e medições de 11 obras |
+| `exemplo-2-clinicas.json` | Saúde | Absenteísmo e fila em 8 clínicas |
+| `exemplo-3-industria.json` | Indústria | Manutenção preditiva em usinagem |
+
+Para carregar: etapa 1 → **📂 Carregar progresso** → escolher o arquivo.
+
+Servem para demonstrar o método em 5 minutos sem digitar nada, e para o consultor
+novo entender o nível de detalhe esperado em cada campo. **Os números são
+fictícios e didáticos** — não use como referência de mercado em proposta.
+
+Antes de carregar um exemplo numa máquina já usada, clique em **Começar do zero**,
+senão o preenchimento anterior se mistura.
 
 ---
 
